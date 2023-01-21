@@ -35,7 +35,7 @@
             ],
             "bindings": [
                 {
-                    "name": "left / right",
+                    "name": "Arrows",
                     "id": "ca1b99db-47ea-46eb-9019-88e62b5d613b",
                     "path": "1DAxis",
                     "interactions": "",
@@ -68,7 +68,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "left / right",
+                    "name": "A / D",
                     "id": "01ff2e0c-160f-4029-8a8b-3841f9b564e7",
                     "path": "1DAxis",
                     "interactions": "",
