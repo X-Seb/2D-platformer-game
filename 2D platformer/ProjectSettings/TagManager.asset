@@ -5,9 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ground
-  - Block
-  - Ladder
   - Platform
+  - Movable object
   layers:
   - Default
   - TransparentFX

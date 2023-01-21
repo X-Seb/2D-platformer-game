@@ -5,6 +5,17 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+    [Header("Setup: ")]
+    [SerializeField] private PlayerInput playerInput;
+    [Header("Movement: ")]
+    [SerializeField] private Vector2 moveVal;
+
+    public void SwitchCurrentActionMap(string map)
+    {
+        playerInput.SwitchCurrentActionMap(map);
+        Debug.Log(playerInput.currentActionMap);
+    }
+
     public void Jump(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
@@ -19,5 +30,11 @@ public class InputManager : MonoBehaviour
         {
             Debug.Log("Dash!");
         }
+    }
+
+    public void Move(InputAction.CallbackContext value)
+    {
+        moveVal = value.ReadValue<Vector2>();
+
     }
 }
