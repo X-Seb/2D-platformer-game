@@ -2,11 +2,11 @@
     "name": "Game Controls",
     "maps": [
         {
-            "name": "2D controls",
+            "name": "Game",
             "id": "ebaecb78-08b1-47a7-960e-4e0a305dd36f",
             "actions": [
                 {
-                    "name": "Move left / right",
+                    "name": "Move",
                     "type": "Value",
                     "id": "752e30e7-5f8c-4313-add1-92ae9fef53b4",
                     "expectedControlType": "Button",
@@ -31,6 +31,33 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "f1ff07cd-5855-4771-806b-6fb4d15a1436",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "48dbfbe8-a503-437d-ae35-4041b3b5c536",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Restart",
+                    "type": "Button",
+                    "id": "12d8185f-24d0-4083-92f1-6699eb5bcdf2",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -41,7 +68,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move left / right",
+                    "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -52,7 +79,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move left / right",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -63,18 +90,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move left / right",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "A / D",
+                    "name": "A/D",
                     "id": "01ff2e0c-160f-4029-8a8b-3841f9b564e7",
                     "path": "1DAxis",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move left / right",
+                    "action": "Move",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -85,7 +112,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move left / right",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -96,20 +123,9 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move left / right",
+                    "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "20f1bf58-56ff-4bc6-8069-5c1fb4597843",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -163,6 +179,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b6cc2ce7-7f0c-41be-8836-9af0d6debfa1",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fc0cb644-d5cd-4616-9122-1c729a058a9a",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d2c4b09c-55c8-4ec6-9257-1f0febd2f817",
+                    "path": "<Keyboard>/p",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "381fb840-b9ac-4b70-bf48-4e83953b3b29",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Restart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

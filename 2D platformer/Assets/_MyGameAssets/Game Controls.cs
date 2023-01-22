@@ -24,11 +24,11 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     ""name"": ""Game Controls"",
     ""maps"": [
         {
-            ""name"": ""2D controls"",
+            ""name"": ""Game"",
             ""id"": ""ebaecb78-08b1-47a7-960e-4e0a305dd36f"",
             ""actions"": [
                 {
-                    ""name"": ""Move left / right"",
+                    ""name"": ""Move"",
                     ""type"": ""Value"",
                     ""id"": ""752e30e7-5f8c-4313-add1-92ae9fef53b4"",
                     ""expectedControlType"": ""Button"",
@@ -53,6 +53,33 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""f1ff07cd-5855-4771-806b-6fb4d15a1436"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""48dbfbe8-a503-437d-ae35-4041b3b5c536"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Restart"",
+                    ""type"": ""Button"",
+                    ""id"": ""12d8185f-24d0-4083-92f1-6699eb5bcdf2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -63,7 +90,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move left / right"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -74,7 +101,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move left / right"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -85,18 +112,18 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move left / right"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""A / D"",
+                    ""name"": ""A/D"",
                     ""id"": ""01ff2e0c-160f-4029-8a8b-3841f9b564e7"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move left / right"",
+                    ""action"": ""Move"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -107,7 +134,7 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move left / right"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -118,20 +145,9 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move left / right"",
+                    ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""20f1bf58-56ff-4bc6-8069-5c1fb4597843"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Jump"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -187,17 +203,64 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6cc2ce7-7f0c-41be-8836-9af0d6debfa1"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fc0cb644-d5cd-4616-9122-1c729a058a9a"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d2c4b09c-55c8-4ec6-9257-1f0febd2f817"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""381fb840-b9ac-4b70-bf48-4e83953b3b29"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Restart"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
     ],
     ""controlSchemes"": []
 }");
-        // 2D controls
-        m__2Dcontrols = asset.FindActionMap("2D controls", throwIfNotFound: true);
-        m__2Dcontrols_Moveleftright = m__2Dcontrols.FindAction("Move left / right", throwIfNotFound: true);
-        m__2Dcontrols_Jump = m__2Dcontrols.FindAction("Jump", throwIfNotFound: true);
-        m__2Dcontrols_Dash = m__2Dcontrols.FindAction("Dash", throwIfNotFound: true);
+        // Game
+        m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
+        m_Game_Move = m_Game.FindAction("Move", throwIfNotFound: true);
+        m_Game_Jump = m_Game.FindAction("Jump", throwIfNotFound: true);
+        m_Game_Dash = m_Game.FindAction("Dash", throwIfNotFound: true);
+        m_Game_Attack = m_Game.FindAction("Attack", throwIfNotFound: true);
+        m_Game_Pause = m_Game.FindAction("Pause", throwIfNotFound: true);
+        m_Game_Restart = m_Game.FindAction("Restart", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -254,58 +317,85 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // 2D controls
-    private readonly InputActionMap m__2Dcontrols;
-    private I_2DcontrolsActions m__2DcontrolsActionsCallbackInterface;
-    private readonly InputAction m__2Dcontrols_Moveleftright;
-    private readonly InputAction m__2Dcontrols_Jump;
-    private readonly InputAction m__2Dcontrols_Dash;
-    public struct _2DcontrolsActions
+    // Game
+    private readonly InputActionMap m_Game;
+    private IGameActions m_GameActionsCallbackInterface;
+    private readonly InputAction m_Game_Move;
+    private readonly InputAction m_Game_Jump;
+    private readonly InputAction m_Game_Dash;
+    private readonly InputAction m_Game_Attack;
+    private readonly InputAction m_Game_Pause;
+    private readonly InputAction m_Game_Restart;
+    public struct GameActions
     {
         private @GameControls m_Wrapper;
-        public _2DcontrolsActions(@GameControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Moveleftright => m_Wrapper.m__2Dcontrols_Moveleftright;
-        public InputAction @Jump => m_Wrapper.m__2Dcontrols_Jump;
-        public InputAction @Dash => m_Wrapper.m__2Dcontrols_Dash;
-        public InputActionMap Get() { return m_Wrapper.m__2Dcontrols; }
+        public GameActions(@GameControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Game_Move;
+        public InputAction @Jump => m_Wrapper.m_Game_Jump;
+        public InputAction @Dash => m_Wrapper.m_Game_Dash;
+        public InputAction @Attack => m_Wrapper.m_Game_Attack;
+        public InputAction @Pause => m_Wrapper.m_Game_Pause;
+        public InputAction @Restart => m_Wrapper.m_Game_Restart;
+        public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(_2DcontrolsActions set) { return set.Get(); }
-        public void SetCallbacks(I_2DcontrolsActions instance)
+        public static implicit operator InputActionMap(GameActions set) { return set.Get(); }
+        public void SetCallbacks(IGameActions instance)
         {
-            if (m_Wrapper.m__2DcontrolsActionsCallbackInterface != null)
+            if (m_Wrapper.m_GameActionsCallbackInterface != null)
             {
-                @Moveleftright.started -= m_Wrapper.m__2DcontrolsActionsCallbackInterface.OnMoveleftright;
-                @Moveleftright.performed -= m_Wrapper.m__2DcontrolsActionsCallbackInterface.OnMoveleftright;
-                @Moveleftright.canceled -= m_Wrapper.m__2DcontrolsActionsCallbackInterface.OnMoveleftright;
-                @Jump.started -= m_Wrapper.m__2DcontrolsActionsCallbackInterface.OnJump;
-                @Jump.performed -= m_Wrapper.m__2DcontrolsActionsCallbackInterface.OnJump;
-                @Jump.canceled -= m_Wrapper.m__2DcontrolsActionsCallbackInterface.OnJump;
-                @Dash.started -= m_Wrapper.m__2DcontrolsActionsCallbackInterface.OnDash;
-                @Dash.performed -= m_Wrapper.m__2DcontrolsActionsCallbackInterface.OnDash;
-                @Dash.canceled -= m_Wrapper.m__2DcontrolsActionsCallbackInterface.OnDash;
+                @Move.started -= m_Wrapper.m_GameActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnMove;
+                @Jump.started -= m_Wrapper.m_GameActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnJump;
+                @Dash.started -= m_Wrapper.m_GameActionsCallbackInterface.OnDash;
+                @Dash.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnDash;
+                @Dash.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnDash;
+                @Attack.started -= m_Wrapper.m_GameActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnAttack;
+                @Pause.started -= m_Wrapper.m_GameActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnPause;
+                @Restart.started -= m_Wrapper.m_GameActionsCallbackInterface.OnRestart;
+                @Restart.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnRestart;
+                @Restart.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnRestart;
             }
-            m_Wrapper.m__2DcontrolsActionsCallbackInterface = instance;
+            m_Wrapper.m_GameActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Moveleftright.started += instance.OnMoveleftright;
-                @Moveleftright.performed += instance.OnMoveleftright;
-                @Moveleftright.canceled += instance.OnMoveleftright;
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+                @Restart.started += instance.OnRestart;
+                @Restart.performed += instance.OnRestart;
+                @Restart.canceled += instance.OnRestart;
             }
         }
     }
-    public _2DcontrolsActions @_2Dcontrols => new _2DcontrolsActions(this);
-    public interface I_2DcontrolsActions
+    public GameActions @Game => new GameActions(this);
+    public interface IGameActions
     {
-        void OnMoveleftright(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnRestart(InputAction.CallbackContext context);
     }
 }

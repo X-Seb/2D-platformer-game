@@ -7,8 +7,17 @@ public class InputManager : MonoBehaviour
 {
     [Header("Setup: ")]
     [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private PlayerManager playerManager;
     [Header("Movement: ")]
-    [SerializeField] private Vector2 moveVal;
+    [SerializeField] private float axisX;
+
+    private void FixedUpdate()
+    {
+        if (axisX != 0)
+        {
+            playerManager.MovePlayer(axisX);
+        }
+    }
 
     public void SwitchCurrentActionMap(string map)
     {
@@ -20,7 +29,7 @@ public class InputManager : MonoBehaviour
     {
         if (ctx.performed)
         {
-            Debug.Log("You should be jumping now!");
+            playerManager.Jump();
         }
     }
 
@@ -34,7 +43,22 @@ public class InputManager : MonoBehaviour
 
     public void Move(InputAction.CallbackContext value)
     {
-        moveVal = value.ReadValue<Vector2>();
+        axisX = value.ReadValue<float>();
+    }
 
+    public void Pause(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            Debug.Log("Pause the game!");
+        }
+    }
+
+    public void Restart(InputAction.CallbackContext ctx)
+    {
+        if (ctx.performed)
+        {
+            Debug.Log("Restart the game!");
+        }
     }
 }
