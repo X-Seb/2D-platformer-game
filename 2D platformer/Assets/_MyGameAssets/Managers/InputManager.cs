@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour
     [Header("Setup: ")]
     [SerializeField] private PlayerInput playerInput;
     [SerializeField] private PlayerManager playerManager;
+    [SerializeField] private GameManager gameManager;
     [Header("Movement: ")]
     [SerializeField] private float axisX;
 

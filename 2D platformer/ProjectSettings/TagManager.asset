@@ -7,6 +7,9 @@ TagManager:
   - Ground
   - Platform
   - Movable object
+  - decoration
+  - Enemy
+  - Collectible
   layers:
   - Default
   - TransparentFX
@@ -18,6 +21,7 @@ TagManager:
   - 
   - 
   - 
+  - Decorations
   - 
   - 
   - 
@@ -27,8 +31,7 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Player
   - 
   - 
   - 
@@ -43,4 +46,25 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 1008565413
+    locked: 0
+  - name: Decoration
+    uniqueID: 606993801
+    locked: 0
+  - name: Ground
+    uniqueID: 2733218403
+    locked: 0
+  - name: Platform
+    uniqueID: 4145476667
+    locked: 0
+  - name: Enemy
+    uniqueID: 1389580113
+    locked: 0
+  - name: Collectible
+    uniqueID: 3020371547
+    locked: 0
+  - name: Player
+    uniqueID: 468816705
     locked: 0
