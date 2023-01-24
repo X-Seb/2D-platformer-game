@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] BrackeysCharacterController characterController;
+    [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Animator anim;
     [Range(0.0f, 200.0f)][SerializeField] float speed;
     [SerializeField] float axisX;
     [SerializeField] bool jump = false;
@@ -12,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         axisX = InputManager.instance.ReturnAxisX();
+        anim.SetFloat("speed", Mathf.Abs(rb.velocity.x));
     }
 
 
