@@ -6,32 +6,28 @@ using UnityEngine.InputSystem;
 public class InputManager : MonoBehaviour
 {
     [Header("Setup: ")]
-    [SerializeField] private PlayerInput playerInput;
-    [SerializeField] private PlayerManager playerManager;
+    public static InputManager instance;
     [SerializeField] private GameManager gameManager;
+    [SerializeField] private PlayerMovement playerMovement;
     [Header("Movement: ")]
     [SerializeField] private float axisX;
 
-    private void FixedUpdate()
+    private void Awake()
     {
-        if (axisX != 0)
-        {
-            playerManager.MovePlayer(axisX);
-        }
-    }
-
-    public void SwitchCurrentActionMap(string map)
-    {
-        playerInput.SwitchCurrentActionMap(map);
-        Debug.Log(playerInput.currentActionMap);
+        instance = this;
     }
 
     public void Jump(InputAction.CallbackContext ctx)
     {
         if (ctx.performed)
         {
-            playerManager.Jump();
+            playerMovement.Jump();
         }
+    }
+
+    public void MovePlayer(InputAction.CallbackContext value)
+    {
+        axisX = value.ReadValue<float>();
     }
 
     public void Dash(InputAction.CallbackContext ctx)
@@ -40,11 +36,6 @@ public class InputManager : MonoBehaviour
         {
             Debug.Log("Dash!");
         }
-    }
-
-    public void Move(InputAction.CallbackContext value)
-    {
-        axisX = value.ReadValue<float>();
     }
 
     public void Pause(InputAction.CallbackContext ctx)
@@ -61,5 +52,10 @@ public class InputManager : MonoBehaviour
         {
             Debug.Log("Restart the game!");
         }
+    }
+
+    public float ReturnAxisX()
+    {
+        return axisX;
     }
 }
