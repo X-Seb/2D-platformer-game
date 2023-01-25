@@ -7,6 +7,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Setup: ")]
     [SerializeField] private Rigidbody2D m_Rigidbody2D;
     [SerializeField] private TrailRenderer m_trailRenderer;
+    [SerializeField] private Animator m_animator;
     [SerializeField] private LayerMask m_WhatIsGround; // A mask determining what is ground to the character
     [SerializeField] private Transform m_GroundCheck;  // A position marking where to check if the player is grounded.
     [Header("Input: ")]
@@ -55,6 +56,10 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         m_axisX = InputManager.instance.ReturnAxisX();
+        m_animator.SetFloat("x-speed", Mathf.Abs(m_Rigidbody2D.velocity.x));
+        m_animator.SetFloat("y-velocity", m_Rigidbody2D.velocity.y);
+        m_animator.SetBool("isGrounded", m_Grounded);
+        m_animator.SetFloat("x-input", m_axisX);
     }
 
     private void FixedUpdate()
@@ -145,6 +150,7 @@ public class PlayerManager : MonoBehaviour
     {
         m_canDash = false;
         m_isDashing = true;
+        m_animator.SetBool("isDashing", true);
 
         //Remove gravity for now
         float originalGravity = m_Rigidbody2D.gravityScale;
@@ -159,6 +165,7 @@ public class PlayerManager : MonoBehaviour
         m_trailRenderer.emitting = false;
         m_Rigidbody2D.gravityScale = originalGravity;
         m_isDashing = false;
+        m_animator.SetBool("isDashing", false);
 
         // Wait for the cooldown to finish before allowing you to dash again
         yield return new WaitForSeconds(m_dashingCooldownTime);
