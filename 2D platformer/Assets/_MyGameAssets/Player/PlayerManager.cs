@@ -53,6 +53,11 @@ public class PlayerManager : MonoBehaviour
             OnLandEvent = new UnityEvent();
     }
 
+    private void Start()
+    {
+        m_animator.SetBool("isDead", false);
+    }
+
     private void Update()
     {
         m_axisX = InputManager.instance.ReturnAxisX();
@@ -73,7 +78,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            m_animator.SetTrigger("die");
+            m_animator.SetBool("isDead", true);
             GameManager.instance.EndGame();
         }
         if (collision.gameObject.CompareTag("Collectible"))
