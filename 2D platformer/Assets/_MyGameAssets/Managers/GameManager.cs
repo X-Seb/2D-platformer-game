@@ -1,10 +1,18 @@
 using UnityEngine;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 //This class controls the entire game flow
 public class GameManager : MonoBehaviour
 {
     [Header("Setup: ")]
     public static GameManager instance;
+    [Header("UI: ")]
+    [SerializeField] private GameObject m_startScreen;
+    [SerializeField] private GameObject m_pauseScreen;
+    [SerializeField] private GameObject m_gameScreen;
+    [SerializeField] private GameObject m_loseScreen;
+    [SerializeField] private GameObject m_victoryScreen;
     [Header("Other: ")]
     [SerializeField] private GameState currentGameState;
 
@@ -26,6 +34,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         SetState(GameState.start);
+        m_startScreen.SetActive(true);
+        m_gameScreen.SetActive(false);
+        m_pauseScreen.SetActive(false);
+        m_loseScreen.SetActive(false);
+        m_victoryScreen.SetActive(false);
     }
 
     public void SetState(GameState newState)
@@ -39,29 +52,66 @@ public class GameManager : MonoBehaviour
         return currentGameState;
     }
 
-    public void TryToPause()
-    {
-        if (currentGameState == GameState.playing)
-        {
-            PauseGame();
-        }
-    }
-
-    public void TryToResume()
+    public void SwitchPause()
     {
         if (currentGameState == GameState.paused)
         {
             ResumeGame();
+        }
+        else if(currentGameState == GameState.playing)
+        {
+            PauseGame();
         }
     }
 
     private void PauseGame()
     {
         SetState(GameState.paused);
+        Time.timeScale = 0.0f;
+        m_pauseScreen.SetActive(true);
+        m_gameScreen.SetActive(false);
     }
 
     private void ResumeGame()
     {
         SetState(GameState.playing);
+        Time.timeScale = 1.0f;
+        m_pauseScreen.SetActive(false);
+        m_gameScreen.SetActive(true);
+    }
+
+    public void RestartLevel()
+    {
+        // Restart the game at the exact same checkpoint
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene(0);
+        Debug.Log("Go back to Main Menu");
+    }
+
+    public void LoadRewardScene()
+    {
+        //SceneManager.LoadScene(2);
+        Debug.Log("Go to the final scene for a reward!");
+    }
+
+    public void StartPlaying()
+    {
+        SetState(GameState.playing);
+        m_gameScreen.SetActive(true);
+        m_startScreen.SetActive(false);
+    }
+
+    public void EndGame()
+    {
+        SetState(GameState.lose);
+        StartCoroutine(EndGameTransition());
+    }
+
+    private IEnumerator EndGameTransition()
+    {
+        yield return null;
     }
 }

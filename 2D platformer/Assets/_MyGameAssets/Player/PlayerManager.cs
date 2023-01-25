@@ -69,13 +69,23 @@ public class PlayerManager : MonoBehaviour
         TryToFlip();
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            GameManager.instance.EndGame();
+        }
+        if (collision.gameObject.CompareTag("Collectible"))
+        {
+            //TODO update the player's score count or something
+        }
+    }
 
     private void Move(float move)
     {
-        //only control the player if grounded or airControl is turned on and you're not dashing
-        if ((m_Grounded || m_AirControl) && !m_isDashing)
+        //only control the player if grounded or airControl is turned on, you're not dashing and you're playing the game
+        if ((m_Grounded || m_AirControl) && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
             // And then smoothing it out and applying it to the character
@@ -89,7 +99,6 @@ public class PlayerManager : MonoBehaviour
         m_Grounded = false;
 
         // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-        // This can be done using layers instead but Sample Assets will not overwrite your project settings.
         Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
         for (int i = 0; i < colliders.Length; i++)
         {
@@ -106,14 +115,15 @@ public class PlayerManager : MonoBehaviour
 
     public void TryToJump()
     {
-        if (m_Grounded && !m_isDashing)
+        if (m_Grounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             // Jump from the ground
             m_Grounded = false;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_JumpForce);
             Debug.Log("The player jumped!");
         }
-        else if ((m_infiniteAirJumps || m_numberOfAirJumps > 0) && !m_Grounded && !m_isDashing)
+        else if ((m_infiniteAirJumps || m_numberOfAirJumps > 0) && !m_Grounded && !m_isDashing
+            && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             // Jump from the air
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_airJumpForce);
@@ -124,7 +134,8 @@ public class PlayerManager : MonoBehaviour
 
     public void TryToDash()
     {
-        if ((m_infiniteDash || m_numberOfDash > 0) && m_canDash)
+        if ((m_infiniteDash || m_numberOfDash > 0) && m_canDash
+            && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             StartCoroutine(Dash());
             m_numberOfDash--;
