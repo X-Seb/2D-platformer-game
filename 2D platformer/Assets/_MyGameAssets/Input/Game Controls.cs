@@ -64,15 +64,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Restart"",
-                    ""type"": ""Button"",
-                    ""id"": ""12d8185f-24d0-4083-92f1-6699eb5bcdf2"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Movement"",
                     ""type"": ""Value"",
                     ""id"": ""6d6a3474-1cbd-46da-9a84-f9372d3ba428"",
@@ -98,6 +89,28 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""2632442d-b3e7-49f5-afe3-868c0e8271e5"",
                     ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6cca2b66-3f83-4a91-bb56-b13fcc40b904"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4d06810d-4917-44ff-96e7-c92c8d9cf052"",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -140,6 +153,28 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""08fed0b4-b8f8-4aa3-ac29-34915ca48915"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eb62634e-e232-49af-ac97-5d4ab1c8e8bf"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dash"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""b6cc2ce7-7f0c-41be-8836-9af0d6debfa1"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
@@ -173,17 +208,17 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""381fb840-b9ac-4b70-bf48-4e83953b3b29"",
-                    ""path"": ""<Keyboard>/r"",
+                    ""id"": ""8b4528b0-3215-47c8-acae-49ccf0590dc3"",
+                    ""path"": ""*/{Menu}"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Restart"",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""1D Axis"",
+                    ""name"": ""1D Axis keyboard letters"",
                     ""id"": ""b1ac5565-a2c3-4c8a-ba4a-b48f32f27f8f"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
@@ -247,6 +282,72 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis Gamepad D-Pad"",
+                    ""id"": ""e8f3c494-0d19-470c-a78f-b8968659b5f1"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""dc8b2a64-3859-47ea-8b7e-e6a3233cdf3c"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""08ec590d-72fa-40b7-91dd-72caccbdf5e6"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis Gamepad left stick"",
+                    ""id"": ""cebc641a-d5dd-46a2-ba95-e122f35501d1"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""4596e347-f2cb-48c7-88d1-daeabdf48a3c"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""4609abeb-d141-4d24-bf2a-a1f29a594af2"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -259,7 +360,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         m_Game_Dash = m_Game.FindAction("Dash", throwIfNotFound: true);
         m_Game_Attack = m_Game.FindAction("Attack", throwIfNotFound: true);
         m_Game_Pause = m_Game.FindAction("Pause", throwIfNotFound: true);
-        m_Game_Restart = m_Game.FindAction("Restart", throwIfNotFound: true);
         m_Game_Movement = m_Game.FindAction("Movement", throwIfNotFound: true);
     }
 
@@ -324,7 +424,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Game_Dash;
     private readonly InputAction m_Game_Attack;
     private readonly InputAction m_Game_Pause;
-    private readonly InputAction m_Game_Restart;
     private readonly InputAction m_Game_Movement;
     public struct GameActions
     {
@@ -334,7 +433,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         public InputAction @Dash => m_Wrapper.m_Game_Dash;
         public InputAction @Attack => m_Wrapper.m_Game_Attack;
         public InputAction @Pause => m_Wrapper.m_Game_Pause;
-        public InputAction @Restart => m_Wrapper.m_Game_Restart;
         public InputAction @Movement => m_Wrapper.m_Game_Movement;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
         public void Enable() { Get().Enable(); }
@@ -357,9 +455,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @Pause.started -= m_Wrapper.m_GameActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnPause;
-                @Restart.started -= m_Wrapper.m_GameActionsCallbackInterface.OnRestart;
-                @Restart.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnRestart;
-                @Restart.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnRestart;
                 @Movement.started -= m_Wrapper.m_GameActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnMovement;
@@ -379,9 +474,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
-                @Restart.started += instance.OnRestart;
-                @Restart.performed += instance.OnRestart;
-                @Restart.canceled += instance.OnRestart;
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
@@ -395,7 +487,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         void OnDash(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
-        void OnRestart(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
     }
 }

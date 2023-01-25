@@ -7,8 +7,7 @@ public class InputManager : MonoBehaviour
 {
     [Header("Setup: ")]
     public static InputManager instance;
-    [SerializeField] private GameManager gameManager;
-    [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private PlayerManager m_playerManager;
     [Header("Movement: ")]
     [SerializeField] private float axisX;
 
@@ -21,7 +20,7 @@ public class InputManager : MonoBehaviour
     {
         if (ctx.performed)
         {
-            playerMovement.Jump();
+            m_playerManager.TryToJump();
         }
     }
 
@@ -34,7 +33,7 @@ public class InputManager : MonoBehaviour
     {
         if (ctx.performed)
         {
-            Debug.Log("Dash!");
+            m_playerManager.TryToDash();
         }
     }
 
@@ -42,7 +41,7 @@ public class InputManager : MonoBehaviour
     {
         if (ctx.performed)
         {
-            Debug.Log("Pause the game!");
+            Debug.Log("Pause!");
         }
     }
 

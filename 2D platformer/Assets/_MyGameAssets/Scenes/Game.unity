@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 1414474750}
-  playerMovement: {fileID: 1128061743}
+  playerMovement: {fileID: 0}
   axisX: 0
 --- !u!4 &67667413
 Transform:
@@ -1348,7 +1348,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1128061738}
   - component: {fileID: 1128061742}
-  - component: {fileID: 1128061743}
   - component: {fileID: 1128061741}
   - component: {fileID: 1128061740}
   - component: {fileID: 1128061739}
@@ -1452,43 +1451,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 1128061737}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f01f6b71cc41743d7a470f21018529de, type: 3}
+  m_Script: {fileID: 11500000, guid: 5b034097f4b0e4e9cb7e345fd104ea25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_JumpForce: 700
-  m_CrouchSpeed: 0.401
-  m_MovementSmoothing: 0.05
-  m_AirControl: 1
   m_WhatIsGround:
     serializedVersion: 2
-    m_Bits: 1143
+    m_Bits: 87
   m_GroundCheck: {fileID: 347630495}
-  m_CeilingCheck: {fileID: 2075937068}
-  m_CrouchDisableCollider: {fileID: 0}
+  m_JumpForce: 400
+  m_MovementSmoothing: 0.05
+  m_AirControl: 1
+  m_numberOfAirJumps: 1
+  m_Grounded: 0
+  m_FacingRight: 1
+  m_Velocity: {x: 0, y: 0, z: 0}
   OnLandEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnCrouchEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1128061743
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1128061737}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 78245592cb6ee4759b622262d328e7a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  characterController: {fileID: 1128061742}
-  rb: {fileID: 1128061741}
-  anim: {fileID: 565605433}
-  speed: 45
-  axisX: 0
-  jump: 0
 --- !u!1 &1207476952
 GameObject:
   m_ObjectHideFlags: 0

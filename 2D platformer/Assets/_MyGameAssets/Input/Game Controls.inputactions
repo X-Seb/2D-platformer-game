@@ -42,15 +42,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Restart",
-                    "type": "Button",
-                    "id": "12d8185f-24d0-4083-92f1-6699eb5bcdf2",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Movement",
                     "type": "Value",
                     "id": "6d6a3474-1cbd-46da-9a84-f9372d3ba428",
@@ -76,6 +67,28 @@
                     "name": "",
                     "id": "2632442d-b3e7-49f5-afe3-868c0e8271e5",
                     "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6cca2b66-3f83-4a91-bb56-b13fcc40b904",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4d06810d-4917-44ff-96e7-c92c8d9cf052",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -118,6 +131,28 @@
                 },
                 {
                     "name": "",
+                    "id": "08fed0b4-b8f8-4aa3-ac29-34915ca48915",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "eb62634e-e232-49af-ac97-5d4ab1c8e8bf",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "b6cc2ce7-7f0c-41be-8836-9af0d6debfa1",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -151,17 +186,17 @@
                 },
                 {
                     "name": "",
-                    "id": "381fb840-b9ac-4b70-bf48-4e83953b3b29",
-                    "path": "<Keyboard>/r",
+                    "id": "8b4528b0-3215-47c8-acae-49ccf0590dc3",
+                    "path": "*/{Menu}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Restart",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "1D Axis",
+                    "name": "1D Axis keyboard letters",
                     "id": "b1ac5565-a2c3-4c8a-ba4a-b48f32f27f8f",
                     "path": "1DAxis",
                     "interactions": "",
@@ -219,6 +254,72 @@
                     "name": "positive",
                     "id": "89ba936d-76c9-4ff2-9a3f-2d3460b87238",
                     "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis Gamepad D-Pad",
+                    "id": "e8f3c494-0d19-470c-a78f-b8968659b5f1",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "dc8b2a64-3859-47ea-8b7e-e6a3233cdf3c",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "08ec590d-72fa-40b7-91dd-72caccbdf5e6",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "1D Axis Gamepad left stick",
+                    "id": "cebc641a-d5dd-46a2-ba95-e122f35501d1",
+                    "path": "1DAxis",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "negative",
+                    "id": "4596e347-f2cb-48c7-88d1-daeabdf48a3c",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "4609abeb-d141-4d24-bf2a-a1f29a594af2",
+                    "path": "<Gamepad>/leftStick/right",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

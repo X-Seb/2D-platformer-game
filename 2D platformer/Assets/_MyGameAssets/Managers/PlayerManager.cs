@@ -1,193 +1,167 @@
 using UnityEngine;
+using System.Collections;
+using UnityEngine.Events;
 
 public class PlayerManager : MonoBehaviour
 {
-    public static PlayerManager instance;
     [Header("Setup: ")]
-    [SerializeField] private Rigidbody2D rb;
-    [SerializeField] private Animator animator;
-    [SerializeField] private InputManager inputManager;
-    [SerializeField] private GameObject spriteRenderer;
+    [SerializeField] private Rigidbody2D m_Rigidbody2D;
+    [SerializeField] private TrailRenderer m_trailRenderer;
+    [SerializeField] private LayerMask m_WhatIsGround; // A mask determining what is ground to the character
+    [SerializeField] private Transform m_GroundCheck;  // A position marking where to check if the player is grounded.
+    [Header("Input: ")]
+    [SerializeField] private float m_axisX = 0f; // Either -1, 0, or 1
+    [Header("Movement: ")]
+    [Range(0, 200)][SerializeField] private float m_playerMoveSpeed = 80f; // How fast the player can move.
+    [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f; // How much to smooth out the movement
+    [SerializeField] private bool m_AirControl = false; // If the player can move horizontally while in the air.
+    [Header("Jumping: ")]
+    [Range(0, 50)][SerializeField] private float m_JumpForce = 25f; // Amount of force added when the player jumps.
+    [Range(0, 50)][SerializeField] private float m_airJumpForce = 15f; // Amount of force added when the player jumps in the air.
+    [SerializeField] private bool m_infiniteAirJumps = false;
+    [Range(0, 10)][SerializeField] private int m_maxNumberOfAirJumps = 1;
+    [Header("Dashing: ")]
+    [SerializeField] private bool m_infiniteDash = false;
+    [Range(0, 10)][SerializeField] private int m_maxNumberOfDash = 1;
+    [Range(0, 50)][SerializeField] private float m_dashForce = 25f;
+    [Range(0, 2)][SerializeField] private float m_dashTime = 0.2f;
+    [Range(0, 10)][SerializeField] private float m_dashingCooldownTime = 1.5f;
+    [Header("Useful information for reference only: ")]
+    [SerializeField] const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
+    [SerializeField] private bool m_Grounded;  // Whether or not the player is grounded.
+    [SerializeField] private bool m_FacingRight = true; // For determining which way the player is currently facing.
+    [SerializeField] private int m_numberOfAirJumps = 0;
+    [SerializeField] private bool m_canDash = true;
+    [SerializeField] private bool m_isDashing = false;
+    [SerializeField] private int m_numberOfDash = 0;
+    [SerializeField] private Vector3 m_Velocity = Vector3.zero;
 
-    [Header("Movement values: ")]
-    [SerializeField] private float jumpForce;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float dashForce;
-    [SerializeField] private float doubleJumpForce;
-    [Header("Other: ")]
-    [SerializeField] private Vector2 movement = new Vector2(0, 0);
-    [SerializeField] private float axis;
-    [SerializeField] private PlayerState startingPlayerState;
-    [SerializeField] private bool facingRight = true;
-    [SerializeField] private float distToGround;
-    [SerializeField] private bool grounded = false;
-    [SerializeField] private int jumpsLeft = 0;
-    [SerializeField] private float runningSpeed = 10;
+    [Header("Events")]
+    [Space]
 
-    public PlayerState currentPlayerState;
+    public UnityEvent OnLandEvent;
+
+    [System.Serializable]
+    public class BoolEvent : UnityEvent<bool> { }
 
     private void Awake()
     {
-        instance = this;
-    }
+        m_Rigidbody2D = GetComponent<Rigidbody2D>();
 
-    public enum PlayerState
-    {
-        idle,
-        walk,
-        run,
-        fall,
-        jump,
-        doubleJump
-    }
-
-    void Start()
-    {
-        currentPlayerState = startingPlayerState;
-        StartAnim(currentPlayerState);
+        if (OnLandEvent == null)
+            OnLandEvent = new UnityEvent();
     }
 
     private void Update()
     {
-        //Always make sure the player is facing the right direction
-        if (rb.velocity.x >= 0)
-        {
-            facingRight = true;
-            spriteRenderer.transform.localRotation = Quaternion.Euler(0, 0, 0);
-        }
-        else
-        {
-            facingRight = false;
-            spriteRenderer.transform.localRotation = Quaternion.Euler(0, 180, 0);
-        }
+        m_axisX = InputManager.instance.ReturnAxisX();
+    }
 
-        //Set the correct player state depending on your speed, if you're on the ground
-        if (grounded)
+    private void FixedUpdate()
+    {
+        UpdateGrounded();
+        Move(m_axisX * Time.fixedDeltaTime * m_playerMoveSpeed);
+        TryToFlip();
+    }
+
+
+    private void Move(float move)
+    {
+        //only control the player if grounded or airControl is turned on and you're not dashing
+        if ((m_Grounded || m_AirControl) && !m_isDashing)
         {
-            if (rb.velocity.x > runningSpeed || rb.velocity.x < -runningSpeed)
+
+            // Move the character by finding the target velocity
+            Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
+            // And then smoothing it out and applying it to the character
+            m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+        }
+    }
+
+    private void UpdateGrounded()
+    {
+        bool wasGrounded = m_Grounded;
+        m_Grounded = false;
+
+        // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
+        // This can be done using layers instead but Sample Assets will not overwrite your project settings.
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i].gameObject != gameObject)
             {
-                if (currentPlayerState != PlayerState.run)
-                {
-                    SetState(PlayerState.run);
-                    StartAnim(currentPlayerState);
-                }
-            }
-            else if (rb.velocity.x != 0 && (rb.velocity.x < runningSpeed || -runningSpeed < rb.velocity.x))
-            {
-                if (currentPlayerState != PlayerState.walk)
-                {
-                    SetState(PlayerState.walk);
-                    StartAnim(currentPlayerState);
-                }
-            }
-            else
-            {
-                SetState(PlayerState.idle);
-                StartAnim(currentPlayerState);
+                m_Grounded = true;
+                m_numberOfAirJumps = m_maxNumberOfAirJumps;
+                m_numberOfDash = m_maxNumberOfDash;
+                if (!wasGrounded)
+                    OnLandEvent.Invoke();
             }
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void TryToJump()
     {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
+        if (m_Grounded && !m_isDashing)
         {
-            grounded = true;
-            jumpsLeft = 2;
+            // Jump from the ground
+            m_Grounded = false;
+            m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_JumpForce);
+            Debug.Log("The player jumped!");
+        }
+        else if ((m_infiniteAirJumps || m_numberOfAirJumps > 0) && !m_Grounded && !m_isDashing)
+        {
+            // Jump from the air
+            m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_airJumpForce);
+            m_numberOfAirJumps--;
+            Debug.Log("The player air-jumped!");
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    public void TryToDash()
     {
-        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Platform"))
+        if ((m_infiniteDash || m_numberOfDash > 0) && m_canDash)
         {
-            grounded = false;
+            StartCoroutine(Dash());
+            m_numberOfDash--;
         }
     }
 
-    public void SetState(PlayerState newState)
+    private void TryToFlip()
     {
-        currentPlayerState = newState;
-        Debug.Log("The current player state is now: " + newState);
-    }
-
-    public PlayerState GetState()
-    {
-        return currentPlayerState;
-    }
-
-    public void MovePlayer(float axisX)
-    {
-        movement = new Vector2(axisX * moveSpeed, 0);
-        rb.AddForce(movement);
-        Debug.Log("Move!");
-    }
-
-    public void Jump()
-    {
-        if (jumpsLeft == 2)
+        // Only flip if you're facing the opposite direction that you're tring to move in.
+        if ((m_FacingRight && m_axisX < 0f) || (!m_FacingRight && m_axisX > 0f))
         {
-            SetState(PlayerState.jump);
-            StartAnim(currentPlayerState);
+            // Switch the way the player is labelled as facing.
+            m_FacingRight = !m_FacingRight;
 
-            rb.AddForce(new Vector2(0, jumpForce));
-            jumpsLeft--;
-            Debug.Log("Jump!");
-        }
-        else if (jumpsLeft == 1)
-        {
-            SetState(PlayerState.doubleJump);
-            StartAnim(currentPlayerState);
-
-            rb.AddForce(new Vector2(0, doubleJumpForce));
-            jumpsLeft--;
+            // Multiply the player's x local scale by -1.
+            Vector3 theScale = transform.localScale;
+            theScale.x *= -1;
+            transform.localScale = theScale;
         }
     }
 
-    public void Dash()
+    private IEnumerator Dash()
     {
-        if (facingRight == true)
-        {
-            rb.AddForce(new Vector2(dashForce, 0));
-            Debug.Log("Dash to the right!");
-        }
-        else
-        {
-            rb.AddForce(new Vector2(-dashForce, 0));
-            Debug.Log("Dash to the right!");
-        }
-    }
+        m_canDash = false;
+        m_isDashing = true;
 
-    private bool IsPlayerGrounded()
-    {
-        return Physics2D.Raycast(transform.position, Vector3.down, distToGround + 0.1f);
-    }
+        //Remove gravity for now
+        float originalGravity = m_Rigidbody2D.gravityScale;
+        m_Rigidbody2D.gravityScale = 0f;
 
-    private void StartAnim(PlayerState state)
-    {
-        switch (state)
-        {
-            case PlayerState.idle:
-                animator.SetTrigger("idle");
-                break;
-            case PlayerState.walk:
-                animator.SetTrigger("walk");
-                break;
-            case PlayerState.run:
-                animator.SetTrigger("run");
-                break;
-            case PlayerState.jump:
-                animator.SetTrigger("jump");
-                break;
-            case PlayerState.fall:
-                animator.SetTrigger("fall");
-                break;
-            case PlayerState.doubleJump:
-                animator.SetTrigger("doubleJump");
-                break;
-            default:
-                animator.SetTrigger("idle");
-                break;
-        }
+        // Start dashing and make the trail appear behind you
+        m_Rigidbody2D.velocity = new Vector2(transform.localScale.x * m_dashForce, 0f);
+        m_trailRenderer.emitting = true;
+
+        //Wait for the player to finish dashing
+        yield return new WaitForSeconds(m_dashTime);
+        m_trailRenderer.emitting = false;
+        m_Rigidbody2D.gravityScale = originalGravity;
+        m_isDashing = false;
+
+        // Wait for the cooldown to finish before allowing you to dash again
+        yield return new WaitForSeconds(m_dashingCooldownTime);
+        m_canDash = true;
     }
 }
