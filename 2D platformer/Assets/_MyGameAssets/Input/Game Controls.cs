@@ -46,15 +46,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack"",
-                    ""type"": ""Button"",
-                    ""id"": ""f1ff07cd-5855-4771-806b-6fb4d15a1436"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""48dbfbe8-a503-437d-ae35-4041b3b5c536"",
@@ -175,28 +166,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""b6cc2ce7-7f0c-41be-8836-9af0d6debfa1"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Attack"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""fc0cb644-d5cd-4616-9122-1c729a058a9a"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Attack"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""d2c4b09c-55c8-4ec6-9257-1f0febd2f817"",
                     ""path"": ""<Keyboard>/p"",
                     ""interactions"": """",
@@ -210,6 +179,39 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""8b4528b0-3215-47c8-acae-49ccf0590dc3"",
                     ""path"": ""*/{Menu}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6ebf97d-5966-45c2-8b3e-f748a4cc8cc4"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d7621c35-027c-44f7-bd90-6a52b115da38"",
+                    ""path"": ""<Keyboard>/delete"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""393be43c-ec06-41a8-bd65-266b390045ea"",
+                    ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -358,7 +360,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         m_Game = asset.FindActionMap("Game", throwIfNotFound: true);
         m_Game_Jump = m_Game.FindAction("Jump", throwIfNotFound: true);
         m_Game_Dash = m_Game.FindAction("Dash", throwIfNotFound: true);
-        m_Game_Attack = m_Game.FindAction("Attack", throwIfNotFound: true);
         m_Game_Pause = m_Game.FindAction("Pause", throwIfNotFound: true);
         m_Game_Movement = m_Game.FindAction("Movement", throwIfNotFound: true);
     }
@@ -422,7 +423,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     private IGameActions m_GameActionsCallbackInterface;
     private readonly InputAction m_Game_Jump;
     private readonly InputAction m_Game_Dash;
-    private readonly InputAction m_Game_Attack;
     private readonly InputAction m_Game_Pause;
     private readonly InputAction m_Game_Movement;
     public struct GameActions
@@ -431,7 +431,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
         public GameActions(@GameControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Jump => m_Wrapper.m_Game_Jump;
         public InputAction @Dash => m_Wrapper.m_Game_Dash;
-        public InputAction @Attack => m_Wrapper.m_Game_Attack;
         public InputAction @Pause => m_Wrapper.m_Game_Pause;
         public InputAction @Movement => m_Wrapper.m_Game_Movement;
         public InputActionMap Get() { return m_Wrapper.m_Game; }
@@ -449,9 +448,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @Dash.started -= m_Wrapper.m_GameActionsCallbackInterface.OnDash;
                 @Dash.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnDash;
                 @Dash.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnDash;
-                @Attack.started -= m_Wrapper.m_GameActionsCallbackInterface.OnAttack;
-                @Attack.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnAttack;
-                @Attack.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnAttack;
                 @Pause.started -= m_Wrapper.m_GameActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_GameActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_GameActionsCallbackInterface.OnPause;
@@ -468,9 +464,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
                 @Dash.started += instance.OnDash;
                 @Dash.performed += instance.OnDash;
                 @Dash.canceled += instance.OnDash;
-                @Attack.started += instance.OnAttack;
-                @Attack.performed += instance.OnAttack;
-                @Attack.canceled += instance.OnAttack;
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
@@ -485,7 +478,6 @@ public partial class @GameControls : IInputActionCollection2, IDisposable
     {
         void OnJump(InputAction.CallbackContext context);
         void OnDash(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
         void OnMovement(InputAction.CallbackContext context);
     }

@@ -73,6 +73,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
+            m_animator.SetTrigger("die");
             GameManager.instance.EndGame();
         }
         if (collision.gameObject.CompareTag("Collectible"))

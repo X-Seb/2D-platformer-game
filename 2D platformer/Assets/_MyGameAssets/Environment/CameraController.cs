@@ -4,15 +4,16 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [Header("Setup: ")]
+    [Tooltip("Make sure the z component of the offset vector is in front of your other 2D objects.")]
+    [SerializeField] Vector3 m_offset = Vector3.zero;
+    [SerializeField] GameObject m_player;
 
-    // Update is called once per frame
-    void Update()
+    private void LateUpdate()
     {
-        
+        if (GameManager.instance.GetState() != GameManager.GameState.lose)
+        {
+            transform.position = m_player.transform.position + m_offset;
+        }
     }
 }

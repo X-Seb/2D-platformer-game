@@ -107,7 +107,10 @@ public class GameManager : MonoBehaviour
     public void EndGame()
     {
         SetState(GameState.lose);
-        StartCoroutine(EndGameTransition());
+        m_gameScreen.SetActive(false);
+        m_loseScreen.SetActive(true);
+
+        //StartCoroutine(EndGameTransition());
     }
 
     private IEnumerator EndGameTransition()
