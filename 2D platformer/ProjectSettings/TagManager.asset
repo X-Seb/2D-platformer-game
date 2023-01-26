@@ -11,6 +11,7 @@ TagManager:
   - Enemy
   - Collectible
   - Relic
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
