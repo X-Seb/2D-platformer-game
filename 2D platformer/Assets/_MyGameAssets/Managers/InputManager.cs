@@ -45,14 +45,6 @@ public class InputManager : MonoBehaviour
         }
     }
 
-    public void Restart(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed)
-        {
-            Debug.Log("Restart the game!");
-        }
-    }
-
     public float ReturnAxisX()
     {
         return axisX;
