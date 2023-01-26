@@ -4364,8 +4364,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f192df1d5f074b718d3a5b9338efcdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_gameTimer: {fileID: 0}
   m_timeElapsedText: {fileID: 1761135839}
   m_timeElapsed: 0
+  m_isPlayerSpeedrunning: 0
 --- !u!1 &991094361
 GameObject:
   m_ObjectHideFlags: 0
@@ -14028,8 +14030,8 @@ AudioSource:
   m_GameObject: {fileID: 1421636970}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 26a3c753b74a0484fbc347f5f8b3d8a6, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 58ceb12f5a5c3114089789a111f60758, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -14040,9 +14042,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 15
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -14075,7 +14077,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.463
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -14090,7 +14092,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.5416667
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -14585,10 +14587,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: e6fa8c21-b609-4af1-85e3-704a5f033afd
     m_ActionName: Game/Dash[/Keyboard/s,/Keyboard/downArrow,/Keyboard/f]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f1ff07cd-5855-4771-806b-6fb4d15a1436
-    m_ActionName: Game/Attack[/Keyboard/space,/Keyboard/e]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 67667412}
@@ -15421,6 +15419,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1621389608}
+  - component: {fileID: 1621389610}
   - component: {fileID: 1621389609}
   m_Layer: 0
   m_Name: Checkpoint 1
@@ -15473,6 +15472,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 8, y: 4}
   m_EdgeRadius: 0
+--- !u!114 &1621389610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621389607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cb4ab29cd87b47a1b698c304b57466d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_checkpointID: 1
 --- !u!1 &1678411256
 GameObject:
   m_ObjectHideFlags: 0

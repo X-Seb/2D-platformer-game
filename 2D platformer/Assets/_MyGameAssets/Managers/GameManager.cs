@@ -85,6 +85,11 @@ public class GameManager : MonoBehaviour
         // Restart the game at the exact same checkpoint
     }
 
+    public void LoadGameAtCheckpoint(int checkpointID)
+    {
+        //Load the game scene and place the player at the location of the last checkpoint
+    }
+
     public void LoadMainMenu()
     {
         SceneManager.LoadScene(0);

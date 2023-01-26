@@ -28,6 +28,8 @@ public class MainMenuManager : MonoBehaviour
         m_settingsScreen.SetActive(false);
         m_creditsScreen.SetActive(false);
 
+        SetSpeedrunningMode(false);
+
         if (PlayerPrefs.HasKey("Volume"))
         {
             m_audioMixer.SetFloat("Volume", PlayerPrefs.GetFloat("Volume"));
