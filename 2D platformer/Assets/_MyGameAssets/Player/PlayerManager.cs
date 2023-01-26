@@ -36,21 +36,16 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private bool m_isDashing = false;
     [SerializeField] private int m_numberOfDash = 0;
     [SerializeField] private Vector3 m_Velocity = Vector3.zero;
-
-    [Header("Events")]
-    [Space]
-
-    public UnityEvent OnLandEvent;
-
-    [System.Serializable]
-    public class BoolEvent : UnityEvent<bool> { }
+    [Header("Audio: ")]
+    [SerializeField] private AudioSource m_playerAudioSource;
+    [SerializeField] private AudioClip m_jumpAudioClip;
+    [SerializeField] private AudioClip m_landAudioClip;
+    [SerializeField] private AudioClip m_airJumpAudioClip;
+    [SerializeField] private AudioClip m_dashAudioClip;
 
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
-
-        if (OnLandEvent == null)
-            OnLandEvent = new UnityEvent();
     }
 
     private void Start()
@@ -81,10 +76,6 @@ public class PlayerManager : MonoBehaviour
             m_animator.SetBool("isDead", true);
             GameManager.instance.EndGame();
         }
-        if (collision.gameObject.CompareTag("Collectible"))
-        {
-            //TODO update the player's score count or something
-        }
     }
 
     private void Move(float move)
@@ -113,8 +104,11 @@ public class PlayerManager : MonoBehaviour
                 m_Grounded = true;
                 m_numberOfAirJumps = m_maxNumberOfAirJumps;
                 m_numberOfDash = m_maxNumberOfDash;
-                if (!wasGrounded)
-                    OnLandEvent.Invoke();
+
+                if (!wasGrounded && m_Grounded)
+                {
+                    m_playerAudioSource.PlayOneShot(m_landAudioClip);
+                }
             }
         }
     }
@@ -127,6 +121,7 @@ public class PlayerManager : MonoBehaviour
             m_Grounded = false;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_JumpForce);
             Debug.Log("The player jumped!");
+            m_playerAudioSource.PlayOneShot(m_jumpAudioClip);
         }
         else if ((m_infiniteAirJumps || m_numberOfAirJumps > 0) && !m_Grounded && !m_isDashing
             && GameManager.instance.GetState() == GameManager.GameState.playing)
@@ -135,6 +130,7 @@ public class PlayerManager : MonoBehaviour
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_airJumpForce);
             m_numberOfAirJumps--;
             Debug.Log("The player air-jumped!");
+            m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
         }
     }
 
@@ -176,6 +172,7 @@ public class PlayerManager : MonoBehaviour
         // Start dashing and make the trail appear behind you
         m_Rigidbody2D.velocity = new Vector2(transform.localScale.x * m_dashForce, 0f);
         m_trailRenderer.emitting = true;
+        m_playerAudioSource.PlayOneShot(m_dashAudioClip);
 
         //Wait for the player to finish dashing
         yield return new WaitForSeconds(m_dashTime);
