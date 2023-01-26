@@ -10,6 +10,7 @@ TagManager:
   - decoration
   - Enemy
   - Collectible
+  - Relic
   layers:
   - Default
   - TransparentFX
@@ -18,7 +19,7 @@ TagManager:
   - Water
   - UI
   - colliders
-  - 
+  - Ground
   - 
   - 
   - Decorations
