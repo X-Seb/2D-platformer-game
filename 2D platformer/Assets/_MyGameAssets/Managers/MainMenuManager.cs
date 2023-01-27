@@ -11,6 +11,19 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject m_mainScreen;
     [SerializeField] private GameObject m_settingsScreen;
     [SerializeField] private GameObject m_creditsScreen;
+    [Header("Stat screen UI elements: ")]
+    [SerializeField] private TextMeshProUGUI m_coinCountText;
+    [SerializeField] private TextMeshProUGUI m_deathCountText;
+    [SerializeField] private TextMeshProUGUI m_timeElapsedText;
+    [SerializeField] private TextMeshProUGUI m_jumpCountText;
+    [SerializeField] private TextMeshProUGUI m_dashCountText;
+    [SerializeField] private TextMeshProUGUI m_airJumpCountText;
+    [SerializeField] private Image m_relic1Image;
+    [SerializeField] private Image m_relic2Image;
+    [SerializeField] private Image m_relic3Image;
+    [SerializeField] private Image m_relic4Image;
+    [SerializeField] private Image m_relic5Image;
+    [SerializeField] private Image m_relic6Image;
     [Header("Audio: ")]
     [SerializeField] private AudioMixer m_audioMixer;
     [SerializeField] private Slider m_volumeSlider;
@@ -29,7 +42,14 @@ public class MainMenuManager : MonoBehaviour
         m_creditsScreen.SetActive(false);
 
         SetSpeedrunningMode(false);
+        SetSettingsInformation();
 
+        SetStatsInformation();
+        UpdateRelicColors();
+    }
+
+    private void SetSettingsInformation()
+    {
         if (PlayerPrefs.HasKey("Volume"))
         {
             m_audioMixer.SetFloat("Volume", PlayerPrefs.GetFloat("Volume"));
@@ -53,6 +73,75 @@ public class MainMenuManager : MonoBehaviour
         else
         {
             PlayerPrefs.SetInt("Difficulty", 1);
+        }
+    }
+
+
+
+    private void SetStatsInformation()
+    {
+        m_coinCountText.text = PlayerPrefs.GetInt("Coin_Count").ToString();
+        m_timeElapsedText.text = (Mathf.Abs(PlayerPrefs.GetFloat("Current_Time_Elapsed") * 100) * 0.01).ToString();
+        m_deathCountText.text = PlayerPrefs.GetInt("Death_Count").ToString();
+        m_dashCountText.text = PlayerPrefs.GetInt("Dash_Count").ToString();
+        m_jumpCountText.text = PlayerPrefs.GetInt("Jump_Count").ToString();
+        m_airJumpCountText.text = PlayerPrefs.GetInt("AirJump_Count").ToString();
+    }
+
+    private void UpdateRelicColors()
+    {
+        if (PlayerPrefs.HasKey("Relic_" + 1 + "_Collected"))
+        {
+            m_relic1Image.color = new Color32(255, 255, 255, 255);
+        }
+        else
+        {
+            m_relic1Image.color = new Color32(0, 0, 0, 255);
+        }
+
+        if (PlayerPrefs.HasKey("Relic_" + 2 + "_Collected"))
+        {
+            m_relic2Image.color = new Color32(255, 255, 255, 255);
+        }
+        else
+        {
+            m_relic2Image.color = new Color32(0, 0, 0, 255);
+        }
+
+        if (PlayerPrefs.HasKey("Relic_" + 3 + "_Collected"))
+        {
+            m_relic3Image.color = new Color32(255, 255, 255, 255);
+        }
+        else
+        {
+            m_relic3Image.color = new Color32(0, 0, 0, 255);
+        }
+
+        if (PlayerPrefs.HasKey("Relic_" + 4 + "_Collected"))
+        {
+            m_relic4Image.color = new Color32(255, 255, 255, 255);
+        }
+        else
+        {
+            m_relic4Image.color = new Color32(0, 0, 0, 255);
+        }
+
+        if (PlayerPrefs.HasKey("Relic_" + 5 + "_Collected"))
+        {
+            m_relic5Image.color = new Color32(255, 255, 255, 255);
+        }
+        else
+        {
+            m_relic5Image.color = new Color32(0, 0, 0, 255);
+        }
+
+        if (PlayerPrefs.HasKey("Relic_" + 6 + "_Collected"))
+        {
+            m_relic6Image.color = new Color32(255, 255, 255, 255);
+        }
+        else
+        {
+            m_relic6Image.color = new Color32(0, 0, 0, 255);
         }
     }
 

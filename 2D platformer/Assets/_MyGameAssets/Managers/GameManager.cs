@@ -94,6 +94,16 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
+        if (PlayerPrefs.HasKey("Death_Count"))
+        {
+            PlayerPrefs.SetInt("Death_Count", PlayerPrefs.GetInt("Death_Count") + 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Death_Count", 1);
+        }
+
+        PlayerPrefs.Save();
         SetState(GameState.lose);
         m_gameScreen.SetActive(false);
         m_loseScreen.SetActive(true);
