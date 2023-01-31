@@ -36,12 +36,17 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private bool m_isDashing = false;
     [SerializeField] private int m_numberOfDash = 0;
     [SerializeField] private Vector3 m_Velocity = Vector3.zero;
+    [SerializeField] private bool m_isLightIncreasing;
     [Header("Audio: ")]
     [SerializeField] private AudioSource m_playerAudioSource;
     [SerializeField] private AudioClip m_jumpAudioClip;
     [SerializeField] private AudioClip m_landAudioClip;
     [SerializeField] private AudioClip m_airJumpAudioClip;
     [SerializeField] private AudioClip m_dashAudioClip;
+    [Header("Light: ")]
+    [SerializeField] private Light m_playerLight;
+    [SerializeField] private float m_maxLightIntensity;
+    [SerializeField] private float m_minLightIntensity;
 
     private void Awake()
     {
@@ -60,6 +65,16 @@ public class PlayerManager : MonoBehaviour
         m_animator.SetFloat("y-velocity", m_Rigidbody2D.velocity.y);
         m_animator.SetBool("isGrounded", m_Grounded);
         m_animator.SetFloat("x-input", m_axisX);
+
+        // Ajust the player's light:
+        if (m_isLightIncreasing)
+        {
+
+        }
+        else
+        {
+
+        }
     }
 
     private void FixedUpdate()

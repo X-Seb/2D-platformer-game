@@ -92,6 +92,15 @@ public class GameManager : MonoBehaviour
         m_startScreen.SetActive(false);
     }
 
+    public void LeavingScene()
+    {
+        m_startScreen.SetActive(false);
+        m_gameScreen.SetActive(false);
+        m_pauseScreen.SetActive(false);
+        m_loseScreen.SetActive(false);
+        m_victoryScreen.SetActive(false);
+    }
+
     public void EndGame()
     {
         if (PlayerPrefs.HasKey("Death_Count"))
@@ -104,6 +113,7 @@ public class GameManager : MonoBehaviour
         }
 
         PlayerPrefs.Save();
+
         SetState(GameState.lose);
         m_gameScreen.SetActive(false);
         m_loseScreen.SetActive(true);

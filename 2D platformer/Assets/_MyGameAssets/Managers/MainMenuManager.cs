@@ -11,6 +11,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject m_mainScreen;
     [SerializeField] private GameObject m_settingsScreen;
     [SerializeField] private GameObject m_creditsScreen;
+    [SerializeField] private GameObject m_statsScreen;
     [Header("Stat screen UI elements: ")]
     [SerializeField] private TextMeshProUGUI m_coinCountText;
     [SerializeField] private TextMeshProUGUI m_deathCountText;
@@ -40,8 +41,8 @@ public class MainMenuManager : MonoBehaviour
         m_mainScreen.SetActive(true);
         m_settingsScreen.SetActive(false);
         m_creditsScreen.SetActive(false);
+        m_statsScreen.SetActive(false);
 
-        SetSpeedrunningMode(false);
         SetSettingsInformation();
 
         SetStatsInformation();
@@ -74,18 +75,21 @@ public class MainMenuManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("Difficulty", 1);
         }
+
+        if (!PlayerPrefs.HasKey("Speedrunning"))
+        {
+            SetSpeedrunningMode(false);
+        }
     }
-
-
 
     private void SetStatsInformation()
     {
         m_coinCountText.text = PlayerPrefs.GetInt("Coin_Count").ToString();
-        m_timeElapsedText.text = (Mathf.Abs(PlayerPrefs.GetFloat("Current_Time_Elapsed") * 100) * 0.01).ToString();
+        m_timeElapsedText.text = (Mathf.Round(PlayerPrefs.GetFloat("Current_Time_Elapsed") * 100) * 0.01).ToString();
         m_deathCountText.text = PlayerPrefs.GetInt("Death_Count").ToString();
-        m_dashCountText.text = PlayerPrefs.GetInt("Dash_Count").ToString();
-        m_jumpCountText.text = PlayerPrefs.GetInt("Jump_Count").ToString();
-        m_airJumpCountText.text = PlayerPrefs.GetInt("AirJump_Count").ToString();
+        m_dashCountText.text = "Dashes: " + PlayerPrefs.GetInt("Dash_Count").ToString();
+        m_jumpCountText.text = "Jumps: " + PlayerPrefs.GetInt("Jump_Count").ToString();
+        m_airJumpCountText.text = "Air-jumps: " + PlayerPrefs.GetInt("AirJump_Count").ToString();
     }
 
     private void UpdateRelicColors()
@@ -147,6 +151,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void CreditsButton()
     {
+        m_statsScreen.SetActive(false);
         m_mainScreen.SetActive(false);
         m_creditsScreen.SetActive(true);
         m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
@@ -154,14 +159,23 @@ public class MainMenuManager : MonoBehaviour
 
     public void SettingsButton()
     {
+        m_statsScreen.SetActive(false);
         m_mainScreen.SetActive(false);
         m_settingsScreen.SetActive(true);
+        m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+    }
+
+    public void StatsButton()
+    {
+        m_mainScreen.SetActive(false);
+        m_statsScreen.SetActive(true);
         m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
     }
 
     public void BackButton()
     {
         m_mainScreen.SetActive(true);
+        m_statsScreen.SetActive(false);
         m_settingsScreen.SetActive(false);
         m_creditsScreen.SetActive(false);
         m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
@@ -201,5 +215,13 @@ public class MainMenuManager : MonoBehaviour
             PlayerPrefs.SetInt("Speedrunning", 0);
         }
         m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+    }
+
+    public void LeavingScene()
+    {
+        m_mainScreen.SetActive(false);
+        m_settingsScreen.SetActive(false);
+        m_creditsScreen.SetActive(false);
+        m_statsScreen.SetActive(false);
     }
 }
