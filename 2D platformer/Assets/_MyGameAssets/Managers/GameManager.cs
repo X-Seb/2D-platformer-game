@@ -127,12 +127,15 @@ public class GameManager : MonoBehaviour
         m_loseScreen.SetActive(true);
         RelicManager.s_showRelics = true;
 
-
         StartCoroutine(EndGameTransition());
     }
 
     private void MovePlayer()
     {
+        if (!PlayerPrefs.HasKey("Last_Checkpoint"))
+        {
+            PlayerPrefs.SetInt("Last_Checkpoint", 1);
+        }
         int checkpoint = PlayerPrefs.GetInt("Last_Checkpoint");
         m_player.transform.position = GameObject.Find("Checkpoint_" + checkpoint).transform.position;
     }

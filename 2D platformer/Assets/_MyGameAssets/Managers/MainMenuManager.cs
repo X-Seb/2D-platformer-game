@@ -187,6 +187,29 @@ public class MainMenuManager : MonoBehaviour
         m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
     }
 
+    public void ResetAllStats()
+    {
+        int quality = PlayerPrefs.GetInt("Quality");
+        float volume = PlayerPrefs.GetFloat("Volume");
+        int speedrunning = PlayerPrefs.GetInt("Speedrunning");
+        int difficulty = PlayerPrefs.GetInt("Difficulty");
+
+        PlayerPrefs.DeleteAll();
+
+        PlayerPrefs.SetInt("Quality", quality);
+        m_qualityDropdown.value = PlayerPrefs.GetInt("Quality");
+        PlayerPrefs.SetFloat("Volume", volume);
+        m_audioMixer.SetFloat("Volume", PlayerPrefs.GetFloat("Volume"));
+        m_volumeSlider.value = PlayerPrefs.GetFloat("Volume");
+        PlayerPrefs.SetInt("Speedrunning", speedrunning);
+        PlayerPrefs.SetInt("Difficulty", difficulty);
+        m_difficultyDropdown.value = PlayerPrefs.GetInt("Difficulty");
+        SetStatsInformation();
+
+        PlayerPrefs.Save();
+        Debug.Log("All stats got reset!");
+    }
+
     public void SetVolume(float volume)
     {
         m_audioMixer.SetFloat("Volume", volume);
