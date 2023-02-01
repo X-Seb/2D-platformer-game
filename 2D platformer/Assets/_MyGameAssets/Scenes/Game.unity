@@ -4597,10 +4597,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_relicCount: 0
-  m_showRelics: 0
   m_topPos: {fileID: 2068992148}
   m_bottonPos: {fileID: 1894358756}
-  m_relicBackground: {fileID: 2077787361}
+  m_speed: 200
+  m_targetPos: {x: 0, y: 0, z: 0}
+  m_yPos: 0
+  m_rectTransform: {fileID: 2077787362}
   m_relic1Image: {fileID: 1400227390}
   m_relic2Image: {fileID: 947315252}
   m_relic3Image: {fileID: 1549637523}
@@ -17096,6 +17098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_checkpointID: 1
+  m_relicManager: {fileID: 0}
 --- !u!1 &1573257210
 GameObject:
   m_ObjectHideFlags: 0
@@ -17658,6 +17661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_checkpointID: 1
+  m_relicManager: {fileID: 0}
 --- !u!1 &1678411256
 GameObject:
   m_ObjectHideFlags: 0
@@ -19809,7 +19813,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 50}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 500, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2077787363

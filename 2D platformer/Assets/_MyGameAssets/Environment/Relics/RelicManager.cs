@@ -5,14 +5,18 @@ using UnityEngine.UI;
 
 public class RelicManager : MonoBehaviour
 {
-    [Header("Important: ")]
+    [Header("Important relic info: ")]
     [SerializeField] private int m_relicCount;
-    [SerializeField] private bool m_showRelics = false;
+    [SerializeField] public static bool s_showRelics = false;
+    [Header("Objects to determine min/max position:")]
     [SerializeField] private GameObject m_topPos;
     [SerializeField] private GameObject m_bottonPos;
+    [Header("Variables for moving: ")]
+    [SerializeField] private float m_speed;
     [SerializeField] private Vector3 m_targetPos = new Vector3(0, 0, 0);
+    [SerializeField] private float m_yPos;
     [Header("UI elements: ")]
-    [SerializeField] private GameObject m_relicBackground;
+    [SerializeField] private RectTransform m_rectTransform;
     [SerializeField] private Image m_relic1Image;
     [SerializeField] private Image m_relic2Image;
     [SerializeField] private Image m_relic3Image;
@@ -27,14 +31,19 @@ public class RelicManager : MonoBehaviour
 
     private void Update()
     {
-        if (m_showRelics && m_relicBackground.transform.position.y < m_topPos.transform.position.y)
+        if (s_showRelics && m_rectTransform.position.y < m_topPos.transform.position.y)
         {
-            m_targetPos = new Vector3();
-            m_relicBackground.transform.position = m_targetPos;
+            m_yPos += Time.deltaTime * m_speed;
+            m_targetPos = new Vector3(m_rectTransform.position.x, m_yPos, m_rectTransform.position.z);
+            m_rectTransform.position = m_targetPos;
+            Debug.Log("Relics should be moving up.");
         }
-        else if (!m_showRelics && m_relicBackground.transform.position.y > m_bottonPos.transform.position.y)
+        else if (!s_showRelics && m_rectTransform.position.y > m_bottonPos.transform.position.y)
         {
-            m_relicBackground.transform.position = m_targetPos;
+            m_yPos -= Time.deltaTime * m_speed;
+            m_targetPos = new Vector3(m_rectTransform.position.x, m_yPos, m_rectTransform.position.z);
+            m_rectTransform.position = m_targetPos;
+            Debug.Log("Relics should be moving down.");
         }
     }
 
@@ -99,6 +108,13 @@ public class RelicManager : MonoBehaviour
     {
         m_relicCount++;
         PlayerPrefs.SetInt("Relic_Count", m_relicCount);
+        StartCoroutine(ShowRelics());
+    }
 
+    private IEnumerator ShowRelics()
+    {
+        s_showRelics = true;
+        yield return new WaitForSeconds(2);
+        s_showRelics = false;
     }
 }
