@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        // Restart the game at the exact same checkpoint
+        SceneLoader.instance.LoadScene(1);
     }
 
     public void StartPlaying()
@@ -125,8 +125,10 @@ public class GameManager : MonoBehaviour
         SetState(GameState.lose);
         m_gameScreen.SetActive(false);
         m_loseScreen.SetActive(true);
+        RelicManager.s_showRelics = true;
 
-        //StartCoroutine(EndGameTransition());
+
+        StartCoroutine(EndGameTransition());
     }
 
     private void MovePlayer()
@@ -137,6 +139,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator EndGameTransition()
     {
-        yield return null;
+        yield return new WaitForSeconds(1.5f);
+
+        SceneLoader.instance.LoadScene(1);
     }
 }

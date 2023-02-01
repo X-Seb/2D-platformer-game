@@ -7,6 +7,7 @@ public class SceneLoader : MonoBehaviour
 {
     public static SceneLoader instance;
     [Header("UI stuff: ")]
+    [SerializeField] private GameObject m_loadingCanva;
     [SerializeField] private GameObject m_loadingScreen;
     [Header("Checkpoint stuff: ")]
     [SerializeField] private int m_lastCheckpoint;
@@ -56,6 +57,7 @@ public class SceneLoader : MonoBehaviour
     private IEnumerator LoadPlayerAtCheckpoint(int sceneBuildIndex)
     {
         //Fade in the loading screen + disable other screens
+        m_loadingCanva.SetActive(true);
         m_loadingScreen.SetActive(true);
 
         if (SceneManager.GetActiveScene().buildIndex == 0)
@@ -83,7 +85,6 @@ public class SceneLoader : MonoBehaviour
         else if (SceneManager.GetActiveScene().buildIndex == 1)
         {
 
-            
         }
         else if (SceneManager.GetActiveScene().buildIndex == 2)
         {
@@ -91,6 +92,7 @@ public class SceneLoader : MonoBehaviour
         }
 
         //Fade out the loading Screen
+        m_loadingCanva.SetActive(false);
         m_loadingScreen.SetActive(false);
     }
 }

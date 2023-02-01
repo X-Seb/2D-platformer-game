@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CheckpointController : MonoBehaviour
 {
+    [Header("Each checkpointID has to be unique: ")]
     [SerializeField] private int m_checkpointID;
-    [SerializeField] private RelicManager m_relicManager;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -19,7 +19,10 @@ public class CheckpointController : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        RelicManager.s_showRelics = true;
+        if (collision.CompareTag("Player"))
+        {
+            RelicManager.s_showRelics = true;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)

@@ -2956,7 +2956,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &612560715
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16659,7 +16659,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: The funny text should go right here (if I want to add this feature).
+  m_text: get good bro
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 75afa24bf4bea4d4d9a0a0255ce5878c, type: 2}
   m_sharedMaterial: {fileID: 802993357999365756, guid: 75afa24bf4bea4d4d9a0a0255ce5878c, type: 2}
@@ -16820,8 +16820,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1604013129}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+      - m_Target: {fileID: 1414474750}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: LoadScene
         m_Mode: 3
         m_Arguments:
@@ -17097,8 +17097,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cb4ab29cd87b47a1b698c304b57466d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_checkpointID: 1
-  m_relicManager: {fileID: 0}
+  m_checkpointID: 2
 --- !u!1 &1573257210
 GameObject:
   m_ObjectHideFlags: 0
@@ -17661,7 +17660,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_checkpointID: 1
-  m_relicManager: {fileID: 0}
 --- !u!1 &1678411256
 GameObject:
   m_ObjectHideFlags: 0
@@ -18732,7 +18730,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1924061698
 RectTransform:
   m_ObjectHideFlags: 0
