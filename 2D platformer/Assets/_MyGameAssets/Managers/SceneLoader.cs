@@ -49,13 +49,13 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadScene(int sceneBuildIndex)
     {
+        TryToGetVariables();
         StartCoroutine(LoadPlayerAtCheckpoint(sceneBuildIndex));
     }
 
     private IEnumerator LoadPlayerAtCheckpoint(int sceneBuildIndex)
     {
         //Fade in the loading screen + disable other screens
-        TryToGetVariables();
         m_loadingScreen.SetActive(true);
 
         if (SceneManager.GetActiveScene().buildIndex == 0)
@@ -73,7 +73,7 @@ public class SceneLoader : MonoBehaviour
 
         //Wait before loading the scene
         yield return new WaitForSeconds(0.5f);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(sceneBuildIndex);
         TryToGetVariables();
 
         if (SceneManager.GetActiveScene().buildIndex == 0)
@@ -82,7 +82,7 @@ public class SceneLoader : MonoBehaviour
         }
         else if (SceneManager.GetActiveScene().buildIndex == 1)
         {
-            //Move the player to the correct checkpoint
+
             
         }
         else if (SceneManager.GetActiveScene().buildIndex == 2)

@@ -7,7 +7,12 @@ public class RelicManager : MonoBehaviour
 {
     [Header("Important: ")]
     [SerializeField] private int m_relicCount;
+    [SerializeField] private bool m_showRelics = false;
+    [SerializeField] private GameObject m_topPos;
+    [SerializeField] private GameObject m_bottonPos;
+    [SerializeField] private Vector3 m_targetPos = new Vector3(0, 0, 0);
     [Header("UI elements: ")]
+    [SerializeField] private GameObject m_relicBackground;
     [SerializeField] private Image m_relic1Image;
     [SerializeField] private Image m_relic2Image;
     [SerializeField] private Image m_relic3Image;
@@ -18,6 +23,19 @@ public class RelicManager : MonoBehaviour
     private void Start()
     {
         UpdateRelicColors();
+    }
+
+    private void Update()
+    {
+        if (m_showRelics && m_relicBackground.transform.position.y < m_topPos.transform.position.y)
+        {
+            m_targetPos = new Vector3();
+            m_relicBackground.transform.position = m_targetPos;
+        }
+        else if (!m_showRelics && m_relicBackground.transform.position.y > m_bottonPos.transform.position.y)
+        {
+            m_relicBackground.transform.position = m_targetPos;
+        }
     }
 
     public void UpdateRelicColors()
@@ -81,5 +99,6 @@ public class RelicManager : MonoBehaviour
     {
         m_relicCount++;
         PlayerPrefs.SetInt("Relic_Count", m_relicCount);
+
     }
 }

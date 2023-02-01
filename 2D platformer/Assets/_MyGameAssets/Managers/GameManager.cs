@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     [Header("Setup: ")]
     public static GameManager instance;
+    [SerializeField] private GameObject m_player;
     [Header("UI: ")]
     [SerializeField] private GameObject m_startScreen;
     [SerializeField] private GameObject m_pauseScreen;
@@ -39,6 +40,8 @@ public class GameManager : MonoBehaviour
         m_pauseScreen.SetActive(false);
         m_loseScreen.SetActive(false);
         m_victoryScreen.SetActive(false);
+
+        MovePlayer();
     }
 
     public void SetState(GameState newState)
@@ -92,6 +95,11 @@ public class GameManager : MonoBehaviour
         m_startScreen.SetActive(false);
     }
 
+    public void LoadScene(int sceneBuildIndex)
+    {
+        SceneLoader.instance.LoadScene(sceneBuildIndex);
+    }
+
     public void LeavingScene()
     {
         m_startScreen.SetActive(false);
@@ -119,6 +127,12 @@ public class GameManager : MonoBehaviour
         m_loseScreen.SetActive(true);
 
         //StartCoroutine(EndGameTransition());
+    }
+
+    private void MovePlayer()
+    {
+        int checkpoint = PlayerPrefs.GetInt("Last_Checkpoint");
+        m_player.transform.position = GameObject.Find("Checkpoint_" + checkpoint).transform.position;
     }
 
     private IEnumerator EndGameTransition()

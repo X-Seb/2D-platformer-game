@@ -56,6 +56,21 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         m_animator.SetBool("isDead", false);
+
+        if (!PlayerPrefs.HasKey("Jumps_Count"))
+        {
+            PlayerPrefs.SetInt("Jumps_Count", 0);
+        }
+
+        if (!PlayerPrefs.HasKey("Dashes_Count"))
+        {
+            PlayerPrefs.SetInt("Dashes_Count", 0);
+        }
+
+        if (!PlayerPrefs.HasKey("AirJumps_Count"))
+        {
+            PlayerPrefs.SetInt("AirJumps_Count", 0);
+        }
     }
 
     private void Update()
@@ -136,6 +151,7 @@ public class PlayerManager : MonoBehaviour
             m_Grounded = false;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_JumpForce);
             Debug.Log("The player jumped!");
+            PlayerPrefs.SetInt("Jumps_Count", PlayerPrefs.GetInt("Jumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_jumpAudioClip);
         }
         else if ((m_infiniteAirJumps || m_numberOfAirJumps > 0) && !m_Grounded && !m_isDashing
@@ -145,6 +161,7 @@ public class PlayerManager : MonoBehaviour
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_airJumpForce);
             m_numberOfAirJumps--;
             Debug.Log("The player air-jumped!");
+            PlayerPrefs.SetInt("AirJumps_Count", PlayerPrefs.GetInt("AirJumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
         }
     }
@@ -176,6 +193,8 @@ public class PlayerManager : MonoBehaviour
 
     private IEnumerator Dash()
     {
+        PlayerPrefs.SetInt("Dashes_Count", PlayerPrefs.GetInt("Dashes_Count") + 1);
+
         m_canDash = false;
         m_isDashing = true;
         m_animator.SetBool("isDashing", true);

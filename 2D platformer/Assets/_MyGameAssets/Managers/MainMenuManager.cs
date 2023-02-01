@@ -87,9 +87,9 @@ public class MainMenuManager : MonoBehaviour
         m_coinCountText.text = PlayerPrefs.GetInt("Coin_Count").ToString();
         m_timeElapsedText.text = (Mathf.Round(PlayerPrefs.GetFloat("Current_Time_Elapsed") * 100) * 0.01).ToString();
         m_deathCountText.text = PlayerPrefs.GetInt("Death_Count").ToString();
-        m_dashCountText.text = "Dashes: " + PlayerPrefs.GetInt("Dash_Count").ToString();
-        m_jumpCountText.text = "Jumps: " + PlayerPrefs.GetInt("Jump_Count").ToString();
-        m_airJumpCountText.text = "Air-jumps: " + PlayerPrefs.GetInt("AirJump_Count").ToString();
+        m_dashCountText.text = "Dashes: " + PlayerPrefs.GetInt("Dashes_Count").ToString();
+        m_jumpCountText.text = "Jumps: " + PlayerPrefs.GetInt("Jumps_Count").ToString();
+        m_airJumpCountText.text = "Air-jumps: " + PlayerPrefs.GetInt("AirJumps_Count").ToString();
     }
 
     private void UpdateRelicColors()
@@ -147,6 +147,12 @@ public class MainMenuManager : MonoBehaviour
         {
             m_relic6Image.color = new Color32(0, 0, 0, 255);
         }
+    }
+
+    public void PlayButton(int sceneBuildIndex)
+    {
+        m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+        SceneLoader.instance.LoadScene(sceneBuildIndex);
     }
 
     public void CreditsButton()
