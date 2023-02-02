@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class SceneLoader : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class SceneLoader : MonoBehaviour
     [Header("UI stuff: ")]
     [SerializeField] private GameObject m_loadingCanva;
     [SerializeField] private GameObject m_loadingScreen;
+    [SerializeField] private TextMeshProUGUI m_funnyText;
     [Header("Checkpoint stuff: ")]
     [SerializeField] private int m_lastCheckpoint;
     [Header("Main menu: ")]
@@ -16,6 +18,7 @@ public class SceneLoader : MonoBehaviour
     [Header("Levels: ")]
     [SerializeField] private GameManager m_gameManager;
     [SerializeField] private GameObject m_player;
+    [SerializeField] private string[] m_funnyTextOptions;
 
     private void Awake()
     {
@@ -29,6 +32,12 @@ public class SceneLoader : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        m_loadingCanva.SetActive(false);
+        m_loadingCanva.SetActive(false);
     }
 
     private void TryToGetVariables()
@@ -57,6 +66,7 @@ public class SceneLoader : MonoBehaviour
     private IEnumerator LoadPlayerAtCheckpoint(int sceneBuildIndex)
     {
         //Fade in the loading screen + disable other screens
+        RandomizeFunnyText();
         m_loadingCanva.SetActive(true);
         m_loadingScreen.SetActive(true);
 
@@ -74,7 +84,7 @@ public class SceneLoader : MonoBehaviour
         }
 
         //Wait before loading the scene
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSecondsRealtime(0.5f);
         SceneManager.LoadScene(sceneBuildIndex);
         TryToGetVariables();
 
@@ -94,5 +104,11 @@ public class SceneLoader : MonoBehaviour
         //Fade out the loading Screen
         m_loadingCanva.SetActive(false);
         m_loadingScreen.SetActive(false);
+    }
+
+    private void RandomizeFunnyText()
+    {
+        string text = m_funnyTextOptions[Random.Range(0, m_funnyTextOptions.Length - 1)];
+        m_funnyText.text = text;
     }
 }

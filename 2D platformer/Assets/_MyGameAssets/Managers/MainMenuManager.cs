@@ -205,6 +205,7 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.SetInt("Difficulty", difficulty);
         m_difficultyDropdown.value = PlayerPrefs.GetInt("Difficulty");
         SetStatsInformation();
+        UpdateRelicColors();
 
         PlayerPrefs.Save();
         Debug.Log("All stats got reset!");

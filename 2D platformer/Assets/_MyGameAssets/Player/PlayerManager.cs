@@ -44,7 +44,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private AudioClip m_airJumpAudioClip;
     [SerializeField] private AudioClip m_dashAudioClip;
     [Header("Light: ")]
-    [SerializeField] private Light m_playerLight;
+    //[SerializeField] private Light2D m_playerLight;
     [SerializeField] private float m_maxLightIntensity;
     [SerializeField] private float m_minLightIntensity;
 
@@ -81,14 +81,18 @@ public class PlayerManager : MonoBehaviour
         m_animator.SetBool("isGrounded", m_Grounded);
         m_animator.SetFloat("x-input", m_axisX);
 
-        // Ajust the player's light:
-        if (m_isLightIncreasing)
+        // Ajust the player's light
+        if (m_isLightIncreasing) // Make sure the light isn't at max power 
         {
-
+            // Increse the light quickly to max power
         }
-        else
+        else if(!m_isLightIncreasing) // Make sure your light isn't below the lowest point already
         {
-
+            // Decrease the light slowly, depending on the difficulty setting
+        }
+        else if (false)
+        {
+            // If your light is already at it's lowest, you die
         }
     }
 
