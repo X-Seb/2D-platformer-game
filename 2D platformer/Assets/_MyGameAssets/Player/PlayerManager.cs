@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -44,9 +46,15 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private AudioClip m_airJumpAudioClip;
     [SerializeField] private AudioClip m_dashAudioClip;
     [Header("Light: ")]
-    //[SerializeField] private Light2D m_playerLight;
+    [SerializeField] private Slider m_lightSlider;
+    [SerializeField] private Light2D m_playerLight;
     [SerializeField] private float m_maxLightIntensity;
     [SerializeField] private float m_minLightIntensity;
+    [SerializeField] private float m_increasingLightSpeed;
+    [SerializeField] private float m_decreasingLightSpeedMedium;
+    [SerializeField] private float m_decreasingLightSpeedHard;
+    [SerializeField] private float m_currentLightIntensity;
+    [SerializeField] private float m_lightAjustment;
 
     private void Awake()
     {
@@ -81,18 +89,47 @@ public class PlayerManager : MonoBehaviour
         m_animator.SetBool("isGrounded", m_Grounded);
         m_animator.SetFloat("x-input", m_axisX);
 
-        // Ajust the player's light
-        if (m_isLightIncreasing) // Make sure the light isn't at max power 
+        // Ajust the player's light (reminder: 2 is easy, 1 is medium, 0 is hard)
+        if (PlayerPrefs.GetInt("Difficulty") != 2 && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            // Increse the light quickly to max power
-        }
-        else if(!m_isLightIncreasing) // Make sure your light isn't below the lowest point already
-        {
-            // Decrease the light slowly, depending on the difficulty setting
-        }
-        else if (false)
-        {
-            // If your light is already at it's lowest, you die
+            if (m_isLightIncreasing && m_playerLight.intensity < m_maxLightIntensity)
+            {
+                // Increases the player's light quickly
+                m_lightAjustment = Time.deltaTime * m_increasingLightSpeed;
+                m_playerLight.intensity += m_lightAjustment;
+
+                if (m_playerLight.intensity > m_maxLightIntensity)
+                {
+                    m_playerLight.intensity = m_maxLightIntensity;
+                }
+            }
+            else if (!m_isLightIncreasing && m_playerLight.intensity > m_minLightIntensity)
+            {
+                // Decreases the player's light slowly, depending on the difficulty setting
+                if (PlayerPrefs.GetInt("Difficulty") == 1)
+                {
+                    m_lightAjustment = Time.deltaTime * m_decreasingLightSpeedMedium;
+                }
+                else
+                {
+                    m_lightAjustment = Time.deltaTime * m_decreasingLightSpeedHard;
+                }
+
+                m_playerLight.intensity -= m_lightAjustment;
+
+                if (m_playerLight.intensity < m_minLightIntensity)
+                {
+                    m_playerLight.intensity = m_minLightIntensity;
+                }
+            }
+            else if (m_playerLight.intensity == m_minLightIntensity)
+            {
+                // If your light is already at it's lowest, you die
+                m_animator.SetBool("isDead", true);
+                GameManager.instance.EndGame();
+            }
+
+            m_lightSlider.value = m_playerLight.intensity;
         }
     }
 
