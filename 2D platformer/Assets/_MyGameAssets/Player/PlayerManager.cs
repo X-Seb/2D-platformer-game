@@ -147,6 +147,35 @@ public class PlayerManager : MonoBehaviour
             m_animator.SetBool("isDead", true);
             GameManager.instance.EndGame();
         }
+
+        if (collision.gameObject.CompareTag("Checkpoint"))
+        {
+            m_isLightIncreasing = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Checkpoint"))
+        {
+            m_isLightIncreasing = false;
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Checkpoint"))
+        {
+            m_isLightIncreasing = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Checkpoint"))
+        {
+            m_isLightIncreasing = false;
+        }
     }
 
     private void Move(float move)
