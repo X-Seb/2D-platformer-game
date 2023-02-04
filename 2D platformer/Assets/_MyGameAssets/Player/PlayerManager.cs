@@ -12,6 +12,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private Animator m_animator;
     [SerializeField] private LayerMask m_WhatIsGround; // A mask determining what is ground to the character
     [SerializeField] private Transform m_GroundCheck;  // A position marking where to check if the player is grounded.
+    [Header("Upgrading the player: ")]
+    [SerializeField] private bool m_isDashUnlocked;
+    [SerializeField] private bool m_isAirJumpUnlocked;
+    [SerializeField] private bool m_isWallJumpUnlocked;
     [Header("Input: ")]
     [SerializeField] private float m_axisX = 0f; // Either -1, 0, or 1
     [Header("Movement: ")]
@@ -50,10 +54,14 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private Light2D m_playerLight;
     [SerializeField] private float m_maxLightIntensity;
     [SerializeField] private float m_minLightIntensity;
+    [SerializeField] private float m_minLightInnerRadius;
+    [SerializeField] private float m_maxLightOuterRadius;
+    // [SerializeField] private float m_minLightInnerRadius;
     [SerializeField] private float m_increasingLightSpeed;
     [SerializeField] private float m_decreasingLightSpeedMedium;
     [SerializeField] private float m_decreasingLightSpeedHard;
     [SerializeField] private float m_currentLightIntensity;
+    [SerializeField] private float m_currentLightOuterRadius;
     [SerializeField] private float m_lightAjustment;
 
     private void Awake()
@@ -129,6 +137,8 @@ public class PlayerManager : MonoBehaviour
                 GameManager.instance.EndGame();
             }
 
+            m_currentLightOuterRadius = m_playerLight.pointLightOuterRadius;
+            m_currentLightIntensity = m_playerLight.intensity;
             m_lightSlider.value = m_playerLight.intensity;
         }
     }
@@ -146,19 +156,6 @@ public class PlayerManager : MonoBehaviour
         {
             m_animator.SetBool("isDead", true);
             GameManager.instance.EndGame();
-        }
-
-        if (collision.gameObject.CompareTag("Checkpoint"))
-        {
-            m_isLightIncreasing = true;
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Checkpoint"))
-        {
-            m_isLightIncreasing = false;
         }
     }
 

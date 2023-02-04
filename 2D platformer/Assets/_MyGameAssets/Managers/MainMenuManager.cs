@@ -12,6 +12,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject m_settingsScreen;
     [SerializeField] private GameObject m_creditsScreen;
     [SerializeField] private GameObject m_statsScreen;
+    [SerializeField] private GameObject m_howToPlayScreen;
     [Header("Stat screen UI elements: ")]
     [SerializeField] private TextMeshProUGUI m_coinCountText;
     [SerializeField] private TextMeshProUGUI m_deathCountText;
@@ -163,6 +164,14 @@ public class MainMenuManager : MonoBehaviour
         m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
     }
 
+    public void HowToPlayButton()
+    {
+        m_statsScreen.SetActive(false);
+        m_mainScreen.SetActive(false);
+        m_howToPlayScreen.SetActive(true);
+        m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+    }
+
     public void SettingsButton()
     {
         m_statsScreen.SetActive(false);
@@ -184,6 +193,12 @@ public class MainMenuManager : MonoBehaviour
         m_statsScreen.SetActive(false);
         m_settingsScreen.SetActive(false);
         m_creditsScreen.SetActive(false);
+        m_howToPlayScreen.SetActive(false);
+        m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+    }
+
+    public void PlayButtonSound()
+    {
         m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
     }
 

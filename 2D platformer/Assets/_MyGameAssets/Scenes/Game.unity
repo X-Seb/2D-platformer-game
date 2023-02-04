@@ -7279,10 +7279,13 @@ MonoBehaviour:
   m_playerLight: {fileID: 1865957561}
   m_maxLightIntensity: 1
   m_minLightIntensity: 0.05
-  m_increasingLightSpeed: 0.05
+  m_minLightInnerRadius: 1
+  m_maxLightOuterRadius: 12
+  m_increasingLightSpeed: 0.2
   m_decreasingLightSpeedMedium: 0.004
   m_decreasingLightSpeedHard: 0.012
   m_currentLightIntensity: 0
+  m_currentLightOuterRadius: 0
   m_lightAjustment: 0
 --- !u!96 &1128061743
 TrailRenderer:
@@ -32534,7 +32537,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 24300002, guid: 26a3c753b74a0484fbc347f5f8b3d8a6, type: 2}
   m_audioClip: {fileID: 8300000, guid: 58ceb12f5a5c3114089789a111f60758, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.33
   m_Pitch: 1
   Loop: 1
   Mute: 0
