@@ -33,7 +33,12 @@ public class PlayerManager : MonoBehaviour
     [Range(0, 50)][SerializeField] private float m_dashForce = 25f;
     [Range(0, 2)][SerializeField] private float m_dashTime = 0.2f;
     [Range(0, 10)][SerializeField] private float m_dashingCooldownTime = 1.5f;
-    [Header("Useful information for reference only: ")]
+    [Header("Wall sliding: ")]
+    [SerializeField] private bool m_isPlayerWallSliding;
+    [SerializeField] private float m_wallSlidingSpeed;
+    [SerializeField] private Transform m_wallCheck;
+    [SerializeField] private LayerMask m_whatIsWall;
+    [Header("Reference information: ")]
     [SerializeField] const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     [SerializeField] private bool m_Grounded;  // Whether or not the player is grounded.
     [SerializeField] private bool m_FacingRight = true; // For determining which way the player is currently facing.
@@ -96,6 +101,7 @@ public class PlayerManager : MonoBehaviour
         m_animator.SetFloat("y-velocity", m_Rigidbody2D.velocity.y);
         m_animator.SetBool("isGrounded", m_Grounded);
         m_animator.SetFloat("x-input", m_axisX);
+        m_animator.SetBool("isOnWall", m_isPlayerWallSliding);
 
         // Ajust the player's light (reminder: 2 is easy, 1 is medium, 0 is hard)
         if (PlayerPrefs.GetInt("Difficulty") != 2 && GameManager.instance.GetState() == GameManager.GameState.playing)
@@ -147,6 +153,7 @@ public class PlayerManager : MonoBehaviour
     {
         UpdateGrounded();
         Move(m_axisX * Time.fixedDeltaTime * m_playerMoveSpeed);
+        TryToWallSlide();
         TryToFlip();
     }
 
@@ -233,6 +240,19 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void TryToWallSlide()
+    {
+        if (m_isWallJumpUnlocked && IsPlayerWalled() && !m_Grounded && m_axisX != 0)
+        {
+            m_isPlayerWallSliding = true;
+            m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, Mathf.Clamp(m_Rigidbody2D.velocity.y, -m_wallSlidingSpeed, float.MaxValue));
+        }
+        else
+        {
+            m_isPlayerWallSliding = false;
+        }
+    }
+
     public void TryToDash()
     {
         if ((m_infiniteDash || m_numberOfDash > 0) && m_canDash
@@ -285,5 +305,10 @@ public class PlayerManager : MonoBehaviour
         // Wait for the cooldown to finish before allowing you to dash again
         yield return new WaitForSeconds(m_dashingCooldownTime);
         m_canDash = true;
+    }
+
+    private bool IsPlayerWalled()
+    {
+        return Physics2D.OverlapCircle(m_wallCheck.position, 0.2f, m_whatIsWall);
     }
 }
