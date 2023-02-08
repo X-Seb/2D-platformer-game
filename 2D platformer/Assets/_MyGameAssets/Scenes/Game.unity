@@ -7248,8 +7248,8 @@ MonoBehaviour:
   m_animator: {fileID: 565605433}
   m_groundLayer:
     serializedVersion: 2
-    m_Bits: 0
-  m_groundCheck: {fileID: 0}
+    m_Bits: 128
+  m_groundCheck: {fileID: 347630495}
   m_isDashUnlocked: 1
   m_isAirJumpUnlocked: 1
   m_isWallSlideUnlocked: 1
@@ -7293,16 +7293,16 @@ MonoBehaviour:
   m_dashAudioClip: {fileID: 8300000, guid: b6d4bbac5531949cdb2f5d51cb4809bd, type: 3}
   m_lightSlider: {fileID: 601618011}
   m_playerLight: {fileID: 1865957561}
+  m_lightPercentage: 0
   m_maxLightIntensity: 1
-  m_minLightIntensity: 0.05
-  m_minLightInnerRadius: 1
+  m_minLightIntensity: 0.15
+  m_minLightOuterRadius: 2
   m_maxLightOuterRadius: 12
   m_increasingLightSpeed: 0.2
   m_decreasingLightSpeedMedium: 0.004
-  m_decreasingLightSpeedHard: 0.012
+  m_decreasingLightSpeedHard: 0.02
   m_currentLightIntensity: 0
   m_currentLightOuterRadius: 0
-  m_lightAjustment: 0
 --- !u!96 &1128061743
 TrailRenderer:
   serializedVersion: 2

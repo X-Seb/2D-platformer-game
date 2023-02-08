@@ -61,20 +61,19 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private AudioClip m_landAudioClip;
     [SerializeField] private AudioClip m_airJumpAudioClip;
     [SerializeField] private AudioClip m_dashAudioClip;
-    [Header("Light: ")]
+    [Header("Player light: ")]
     [SerializeField] private Slider m_lightSlider;
     [SerializeField] private Light2D m_playerLight;
+    [SerializeField] private float m_lightPercentage;
     [SerializeField] private float m_maxLightIntensity;
     [SerializeField] private float m_minLightIntensity;
-    [SerializeField] private float m_minLightInnerRadius;
+    [SerializeField] private float m_minLightOuterRadius;
     [SerializeField] private float m_maxLightOuterRadius;
-    //[SerializeField] private float m_minLightInnerRadius;
     [SerializeField] private float m_increasingLightSpeed;
     [SerializeField] private float m_decreasingLightSpeedMedium;
     [SerializeField] private float m_decreasingLightSpeedHard;
     [SerializeField] private float m_currentLightIntensity;
     [SerializeField] private float m_currentLightOuterRadius;
-    [SerializeField] private float m_lightAjustment;
     
     private void Awake()
     {
@@ -85,6 +84,7 @@ public class PlayerManager : MonoBehaviour
     {
         m_animator.SetBool("isDead", false);
         m_canWallJump = true;
+        m_lightPercentage = 1;
 
         if (!PlayerPrefs.HasKey("Jumps_Count"))
         {
@@ -157,49 +157,50 @@ public class PlayerManager : MonoBehaviour
 
     private void AjustPlayerLight()
     {
-        // Ajust the player's light (reminder: 2 is easy, 1 is medium, 0 is hard)
-        if (PlayerPrefs.GetInt("Difficulty") != 2 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        // Increase the light percentage if your light should be increasing
+        if (m_isLightIncreasing && m_lightPercentage < 1 && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            if (m_isLightIncreasing && m_playerLight.intensity < m_maxLightIntensity)
+            m_lightPercentage += Time.deltaTime * m_increasingLightSpeed;
+            if (m_lightPercentage >= 1)
             {
-                // Increases the player's light quickly
-                m_lightAjustment = Time.deltaTime * m_increasingLightSpeed;
-                m_playerLight.intensity += m_lightAjustment;
-
-                if (m_playerLight.intensity > m_maxLightIntensity)
-                {
-                    m_playerLight.intensity = m_maxLightIntensity;
-                }
+                m_lightPercentage = 1;
             }
-            else if (!m_isLightIncreasing && m_playerLight.intensity > m_minLightIntensity)
+        }
+
+        // Decrease the light percentage if you're not gaining any light (reminder: 2 is easy, 1 is medium, 0 is hard)
+        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 1 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            m_lightPercentage -= Time.deltaTime * m_decreasingLightSpeedMedium;
+            if (m_lightPercentage <= 0)
             {
-                // Decreases the player's light slowly, depending on the difficulty setting
-                if (PlayerPrefs.GetInt("Difficulty") == 1)
-                {
-                    m_lightAjustment = Time.deltaTime * m_decreasingLightSpeedMedium;
-                }
-                else
-                {
-                    m_lightAjustment = Time.deltaTime * m_decreasingLightSpeedHard;
-                }
-
-                m_playerLight.intensity -= m_lightAjustment;
-
-                if (m_playerLight.intensity < m_minLightIntensity)
-                {
-                    m_playerLight.intensity = m_minLightIntensity;
-                }
+                m_lightPercentage = 0;
             }
-            else if (m_playerLight.intensity == m_minLightIntensity)
+        }
+
+        // Decrease the light percentage if you're not gaining any + difficulty is set to hard
+        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 0 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            m_lightPercentage -= Time.deltaTime * m_decreasingLightSpeedHard;
+            if (m_lightPercentage <= 0)
             {
-                // If your light is already at it's lowest, you die
-                m_animator.SetBool("isDead", true);
-                GameManager.instance.EndGame();
+                m_lightPercentage = 0;
             }
+        }
 
-            m_currentLightOuterRadius = m_playerLight.pointLightOuterRadius;
-            m_currentLightIntensity = m_playerLight.intensity;
-            m_lightSlider.value = m_playerLight.intensity;
+        // If you're at 0% of light, you die
+        if (m_lightPercentage <= 0)
+        {
+            m_animator.SetBool("isDead", true);
+            GameManager.instance.EndGame();
+        }
+        else
+        {
+            m_currentLightIntensity = Mathf.Lerp(m_minLightIntensity, m_maxLightIntensity, m_lightPercentage);
+            m_playerLight.intensity = m_currentLightIntensity;
+            m_currentLightOuterRadius = Mathf.Lerp(m_minLightOuterRadius, m_maxLightOuterRadius, m_lightPercentage);
+            m_playerLight.pointLightOuterRadius = m_currentLightOuterRadius;
+            m_lightSlider.value = m_lightPercentage;
+
         }
     }
 
