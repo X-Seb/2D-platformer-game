@@ -21,40 +21,40 @@ public class PlayerManager : MonoBehaviour
     [Header("Movement: ")]
     [Range(0, 200)][SerializeField] private float m_playerMoveSpeed = 80f; // How fast the player can move.
     [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f; // How much to smooth out the movement
-    [SerializeField] private bool m_AirControl = false; // If the player can move horizontally while in the air.
+    [SerializeField] private bool m_isAirControlAllowed = false; // If the player can move horizontally while in the air.
     [Header("Jumping: ")]
-    [Range(0, 50)][SerializeField] private float m_JumpForce = 25f; // Amount of force added when the player jumps.
+    [Range(0, 50)][SerializeField] private float m_jumpForce = 25f; // Amount of force added when the player jumps.
     [Range(0, 50)][SerializeField] private float m_airJumpForce = 15f; // Amount of force added when the player jumps in the air.
-    [SerializeField] private bool m_infiniteAirJumps = false;
+    [SerializeField] private bool m_isInfiniteAirJumpsAllowed = false;
     [Range(0, 10)][SerializeField] private int m_maxNumberOfAirJumps = 1;
     [Header("Dashing: ")]
-    [SerializeField] private bool m_infiniteDash = false;
+    [SerializeField] private bool m_isInfiniteDashAllowed = false;
     [Range(0, 10)][SerializeField] private int m_maxNumberOfDash = 1;
     [Range(0, 50)][SerializeField] private float m_dashForce = 25f;
-    [Range(0, 2)][SerializeField] private float m_dashTime = 0.2f;
+    [Range(0, 2)][SerializeField] private float m_dashDuration = 0.2f;
     [Range(0, 10)][SerializeField] private float m_dashingCooldownTime = 1.5f;
     [Header("Wall sliding: ")]
-    [SerializeField] private bool m_isPlayerWallSliding;
+    [SerializeField] private bool m_isWallSliding;
     [SerializeField] private float m_wallSlidingSpeed;
     [SerializeField] private Transform m_wallCheck;
-    [SerializeField] private LayerMask m_whatIsWall;
+    [SerializeField] private LayerMask m_wallLayer;
     [Header("Wall jumping: ")]
     [SerializeField] private bool m_isWallJumping;
-    [SerializeField] private bool m_canPlayerWallJump;
+    [SerializeField] private bool m_canWallJump;
     [SerializeField] private float m_wallJumpingDirection;
     [SerializeField] private float m_wallJumpingTime = 0.2f;
     [SerializeField] private float m_wallJumpingDuration = 0.3f;
     [SerializeField] private float m_wallJumpingCounter;
     [SerializeField] private Vector2 m_wallJumpingPower = new Vector2(8.0f, 16.0f);
     [Header("Reference information: ")]
-    [SerializeField] private bool m_Grounded;  // Whether or not the player is grounded.
+    [SerializeField] private bool m_isGrounded;  // Whether or not the player is grounded.
     [SerializeField] private const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
-    [SerializeField] private bool m_FacingRight = true; // For determining which way the player is currently facing.
+    [SerializeField] private bool m_isFacingRight = true; // For determining which way the player is currently facing.
     [SerializeField] private int m_numberOfAirJumps = 0;
     [SerializeField] private bool m_canDash = true;
     [SerializeField] private bool m_isDashing = false;
     [SerializeField] private int m_numberOfDash = 0;
-    [SerializeField] private Vector3 m_Velocity = Vector3.zero;
+    [SerializeField] private Vector3 m_targetMoveVelocity = Vector3.zero;
     [SerializeField] private bool m_isLightIncreasing;
     [Header("Audio: ")]
     [SerializeField] private AudioSource m_playerAudioSource;
@@ -77,6 +77,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float m_currentLightOuterRadius;
     [SerializeField] private float m_lightAjustment;
 
+    public bool FacingRight { get => m_isFacingRight; set => m_isFacingRight = value; }
+
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -85,6 +87,7 @@ public class PlayerManager : MonoBehaviour
     private void Start()
     {
         m_animator.SetBool("isDead", false);
+        m_canWallJump = true;
 
         if (!PlayerPrefs.HasKey("Jumps_Count"))
         {
@@ -150,9 +153,9 @@ public class PlayerManager : MonoBehaviour
     {
         m_animator.SetFloat("x-speed", Mathf.Abs(m_Rigidbody2D.velocity.x));
         m_animator.SetFloat("y-velocity", m_Rigidbody2D.velocity.y);
-        m_animator.SetBool("isGrounded", m_Grounded);
+        m_animator.SetBool("isGrounded", m_isGrounded);
         m_animator.SetFloat("x-input", m_axisX);
-        m_animator.SetBool("isOnWall", m_isPlayerWallSliding);
+        m_animator.SetBool("isOnWall", m_isWallSliding);
     }
 
     private void AjustPlayerLight()
@@ -206,19 +209,19 @@ public class PlayerManager : MonoBehaviour
     private void Move(float move)
     {
         //only control the player if grounded or airControl is turned on, you're not dashing and you're playing the game
-        if ((m_Grounded || m_AirControl) && !m_isWallJumping &&!m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if ((m_isGrounded || m_isAirControlAllowed) && !m_isWallJumping &&!m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
             // And then smoothing it out and applying it to the character
-            m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
+            m_Rigidbody2D.velocity = Vector3.SmoothDamp(m_Rigidbody2D.velocity, targetVelocity, ref m_targetMoveVelocity, m_MovementSmoothing);
         }
     }
 
     private void UpdateGrounded()
     {
-        bool wasGrounded = m_Grounded;
-        m_Grounded = false;
+        bool wasGrounded = m_isGrounded;
+        m_isGrounded = false;
 
         // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
         Collider2D[] colliders = Physics2D.OverlapCircleAll(m_GroundCheck.position, k_GroundedRadius, m_WhatIsGround);
@@ -226,11 +229,11 @@ public class PlayerManager : MonoBehaviour
         {
             if (colliders[i].gameObject != gameObject)
             {
-                m_Grounded = true;
+                m_isGrounded = true;
                 m_numberOfAirJumps = m_maxNumberOfAirJumps;
                 m_numberOfDash = m_maxNumberOfDash;
 
-                if (!wasGrounded && m_Grounded)
+                if (!wasGrounded && m_isGrounded)
                 {
                     m_playerAudioSource.PlayOneShot(m_landAudioClip);
                 }
@@ -240,16 +243,16 @@ public class PlayerManager : MonoBehaviour
 
     public void TryToJump()
     {
-        if (m_Grounded && !m_isDashing && !m_isPlayerWallSliding && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (m_isGrounded && !m_isDashing && !m_isWallSliding && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             // Jump from the ground
-            m_Grounded = false;
-            m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_JumpForce);
+            m_isGrounded = false;
+            m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_jumpForce);
             Debug.Log("The player jumped!");
             PlayerPrefs.SetInt("Jumps_Count", PlayerPrefs.GetInt("Jumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_jumpAudioClip);
         }
-        else if ((m_infiniteAirJumps || m_numberOfAirJumps > 0) && !m_Grounded && !m_isDashing && !m_isWallJumping && !m_isPlayerWallSliding
+        else if ((m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) && !m_isGrounded && !m_isDashing && !m_isWallJumping && !m_isWallSliding
             && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             // Jump from the air
@@ -259,7 +262,7 @@ public class PlayerManager : MonoBehaviour
             PlayerPrefs.SetInt("AirJumps_Count", PlayerPrefs.GetInt("AirJumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
         }
-        else if (m_canPlayerWallJump && m_isPlayerWallSliding && !m_Grounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (m_canWallJump && m_isWallSliding && !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             Debug.Log("The player wall-jumped!");
             StartCoroutine(WallJump());
@@ -268,7 +271,7 @@ public class PlayerManager : MonoBehaviour
 
     private void OldWallJump()
     {
-        if (m_isPlayerWallSliding)
+        if (m_isWallSliding)
         {
             m_isWallJumping = false;
             m_wallJumpingDirection = transform.localScale.x;
@@ -281,7 +284,7 @@ public class PlayerManager : MonoBehaviour
 
         if (transform.localScale.x != m_wallJumpingDirection)
         {
-            m_FacingRight = !m_FacingRight;
+            m_isFacingRight = !m_isFacingRight;
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
@@ -297,20 +300,20 @@ public class PlayerManager : MonoBehaviour
 
     private void TryToWallSlide()
     {
-        if (m_isWallJumpUnlocked && IsPlayerWalled() && !m_Grounded && m_axisX != 0)
+        if (m_isWallJumpUnlocked && IsPlayerWalled() && !m_isGrounded && m_axisX != 0)
         {
-            m_isPlayerWallSliding = true;
+            m_isWallSliding = true;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, Mathf.Clamp(m_Rigidbody2D.velocity.y, -m_wallSlidingSpeed, float.MaxValue));
         }
         else
         {
-            m_isPlayerWallSliding = false;
+            m_isWallSliding = false;
         }
     }
 
     public void TryToDash()
     {
-        if ((m_infiniteDash || m_numberOfDash > 0) && m_canDash
+        if ((m_isInfiniteDashAllowed || m_numberOfDash > 0) && m_canDash
             && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             StartCoroutine(Dash());
@@ -321,10 +324,10 @@ public class PlayerManager : MonoBehaviour
     private void TryToFlip()
     {
         // Only flip if you're facing the opposite direction that you're tring to move in.
-        if ((m_FacingRight && m_axisX < 0f) || (!m_FacingRight && m_axisX > 0f))
+        if ((m_isFacingRight && m_axisX < 0f) || (!m_isFacingRight && m_axisX > 0f))
         {
             // Switch the way the player is labelled as facing.
-            m_FacingRight = !m_FacingRight;
+            m_isFacingRight = !m_isFacingRight;
 
             // Multiply the player's x local scale by -1.
             Vector3 theScale = transform.localScale;
@@ -351,7 +354,7 @@ public class PlayerManager : MonoBehaviour
         m_playerAudioSource.PlayOneShot(m_dashAudioClip);
 
         //Wait for the player to finish dashing
-        yield return new WaitForSeconds(m_dashTime);
+        yield return new WaitForSeconds(m_dashDuration);
         m_trailRenderer.emitting = false;
         m_Rigidbody2D.gravityScale = originalGravity;
         m_isDashing = false;
@@ -364,15 +367,24 @@ public class PlayerManager : MonoBehaviour
 
     private IEnumerator WallJump()
     {
-        m_canPlayerWallJump = false;
-        m_isPlayerWallSliding = false;
+        m_canWallJump = false;
+        m_isWallSliding = false;
         m_isWallJumping = true;
+
+        if (m_isFacingRight)
+        {
+            m_wallJumpingDirection = -1;
+        }
+        else
+        {
+            m_wallJumpingDirection = 1;
+        }
 
         m_Rigidbody2D.velocity = new Vector2(m_wallJumpingDirection * m_wallJumpingPower.x, m_wallJumpingPower.y);
 
         if (transform.localScale.x != m_wallJumpingDirection)
         {
-            m_FacingRight = !m_FacingRight;
+            m_isFacingRight = !m_isFacingRight;
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
@@ -380,12 +392,12 @@ public class PlayerManager : MonoBehaviour
 
         yield return new WaitForSeconds(m_wallJumpingDuration);
 
-        m_canPlayerWallJump = true;
+        m_canWallJump = true;
         m_isWallJumping = false;
     }
 
     private bool IsPlayerWalled()
     {
-        return Physics2D.OverlapCircle(m_wallCheck.position, 0.2f, m_whatIsWall);
+        return Physics2D.OverlapCircle(m_wallCheck.position, 0.2f, m_wallLayer);
     }
 }

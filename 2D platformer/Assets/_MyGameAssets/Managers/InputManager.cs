@@ -41,6 +41,7 @@ public class InputManager : MonoBehaviour
     {
         if (ctx.performed)
         {
+            GameManager.instance.SwitchPause();
             Debug.Log("Pause!");
         }
     }
