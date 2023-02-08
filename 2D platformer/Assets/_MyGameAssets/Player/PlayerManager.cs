@@ -38,9 +38,17 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float m_wallSlidingSpeed;
     [SerializeField] private Transform m_wallCheck;
     [SerializeField] private LayerMask m_whatIsWall;
+    [Header("Wall jumping: ")]
+    [SerializeField] private bool m_isWallJumping;
+    [SerializeField] private bool m_canPlayerWallJump;
+    [SerializeField] private float m_wallJumpingDirection;
+    [SerializeField] private float m_wallJumpingTime = 0.2f;
+    [SerializeField] private float m_wallJumpingDuration = 0.3f;
+    [SerializeField] private float m_wallJumpingCounter;
+    [SerializeField] private Vector2 m_wallJumpingPower = new Vector2(8.0f, 16.0f);
     [Header("Reference information: ")]
-    [SerializeField] const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     [SerializeField] private bool m_Grounded;  // Whether or not the player is grounded.
+    [SerializeField] private const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     [SerializeField] private bool m_FacingRight = true; // For determining which way the player is currently facing.
     [SerializeField] private int m_numberOfAirJumps = 0;
     [SerializeField] private bool m_canDash = true;
@@ -61,7 +69,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float m_minLightIntensity;
     [SerializeField] private float m_minLightInnerRadius;
     [SerializeField] private float m_maxLightOuterRadius;
-    // [SerializeField] private float m_minLightInnerRadius;
+    //[SerializeField] private float m_minLightInnerRadius;
     [SerializeField] private float m_increasingLightSpeed;
     [SerializeField] private float m_decreasingLightSpeedMedium;
     [SerializeField] private float m_decreasingLightSpeedHard;
@@ -97,12 +105,58 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         m_axisX = InputManager.instance.ReturnAxisX();
+        AnimatePlayer();
+        AjustPlayerLight();
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateGrounded();
+        Move(m_axisX * Time.fixedDeltaTime * m_playerMoveSpeed);
+        TryToWallSlide();
+
+        if (!m_isWallJumping)
+        {
+            TryToFlip();
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            m_animator.SetBool("isDead", true);
+            GameManager.instance.EndGame();
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Checkpoint"))
+        {
+            m_isLightIncreasing = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Checkpoint"))
+        {
+            m_isLightIncreasing = false;
+        }
+    }
+
+    private void AnimatePlayer()
+    {
         m_animator.SetFloat("x-speed", Mathf.Abs(m_Rigidbody2D.velocity.x));
         m_animator.SetFloat("y-velocity", m_Rigidbody2D.velocity.y);
         m_animator.SetBool("isGrounded", m_Grounded);
         m_animator.SetFloat("x-input", m_axisX);
         m_animator.SetBool("isOnWall", m_isPlayerWallSliding);
+    }
 
+    private void AjustPlayerLight()
+    {
         // Ajust the player's light (reminder: 2 is easy, 1 is medium, 0 is hard)
         if (PlayerPrefs.GetInt("Difficulty") != 2 && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
@@ -149,43 +203,10 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        UpdateGrounded();
-        Move(m_axisX * Time.fixedDeltaTime * m_playerMoveSpeed);
-        TryToWallSlide();
-        TryToFlip();
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy"))
-        {
-            m_animator.SetBool("isDead", true);
-            GameManager.instance.EndGame();
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Checkpoint"))
-        {
-            m_isLightIncreasing = true;
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Checkpoint"))
-        {
-            m_isLightIncreasing = false;
-        }
-    }
-
     private void Move(float move)
     {
         //only control the player if grounded or airControl is turned on, you're not dashing and you're playing the game
-        if ((m_Grounded || m_AirControl) && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if ((m_Grounded || m_AirControl) && !m_isWallJumping &&!m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
@@ -219,7 +240,7 @@ public class PlayerManager : MonoBehaviour
 
     public void TryToJump()
     {
-        if (m_Grounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (m_Grounded && !m_isDashing && !m_isPlayerWallSliding && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             // Jump from the ground
             m_Grounded = false;
@@ -228,7 +249,7 @@ public class PlayerManager : MonoBehaviour
             PlayerPrefs.SetInt("Jumps_Count", PlayerPrefs.GetInt("Jumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_jumpAudioClip);
         }
-        else if ((m_infiniteAirJumps || m_numberOfAirJumps > 0) && !m_Grounded && !m_isDashing
+        else if ((m_infiniteAirJumps || m_numberOfAirJumps > 0) && !m_Grounded && !m_isDashing && !m_isWallJumping && !m_isPlayerWallSliding
             && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             // Jump from the air
@@ -238,6 +259,40 @@ public class PlayerManager : MonoBehaviour
             PlayerPrefs.SetInt("AirJumps_Count", PlayerPrefs.GetInt("AirJumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
         }
+        else if (m_canPlayerWallJump && m_isPlayerWallSliding && !m_Grounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            Debug.Log("The player wall-jumped!");
+            StartCoroutine(WallJump());
+        }
+    }
+
+    private void OldWallJump()
+    {
+        if (m_isPlayerWallSliding)
+        {
+            m_isWallJumping = false;
+            m_wallJumpingDirection = transform.localScale.x;
+            m_wallJumpingCounter = m_wallJumpingTime;
+        }
+        else
+        {
+            m_wallJumpingCounter -= Time.deltaTime;
+        }
+
+        if (transform.localScale.x != m_wallJumpingDirection)
+        {
+            m_FacingRight = !m_FacingRight;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
+
+        Invoke(nameof(StopWallJumping), m_wallJumpingDuration);
+    }
+
+    private void StopWallJumping()
+    {
+        m_isWallJumping = false;
     }
 
     private void TryToWallSlide()
@@ -305,6 +360,28 @@ public class PlayerManager : MonoBehaviour
         // Wait for the cooldown to finish before allowing you to dash again
         yield return new WaitForSeconds(m_dashingCooldownTime);
         m_canDash = true;
+    }
+
+    private IEnumerator WallJump()
+    {
+        m_canPlayerWallJump = false;
+        m_isPlayerWallSliding = false;
+        m_isWallJumping = true;
+
+        m_Rigidbody2D.velocity = new Vector2(m_wallJumpingDirection * m_wallJumpingPower.x, m_wallJumpingPower.y);
+
+        if (transform.localScale.x != m_wallJumpingDirection)
+        {
+            m_FacingRight = !m_FacingRight;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
+
+        yield return new WaitForSeconds(m_wallJumpingDuration);
+
+        m_canPlayerWallJump = true;
+        m_isWallJumping = false;
     }
 
     private bool IsPlayerWalled()

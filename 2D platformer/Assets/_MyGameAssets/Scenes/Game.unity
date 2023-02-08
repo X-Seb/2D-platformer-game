@@ -7250,9 +7250,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   m_GroundCheck: {fileID: 347630495}
-  m_isDashUnlocked: 0
-  m_isAirJumpUnlocked: 0
-  m_isWallJumpUnlocked: 0
+  m_isDashUnlocked: 1
+  m_isAirJumpUnlocked: 1
+  m_isWallJumpUnlocked: 1
   m_axisX: 0
   m_playerMoveSpeed: 65
   m_MovementSmoothing: 0.075

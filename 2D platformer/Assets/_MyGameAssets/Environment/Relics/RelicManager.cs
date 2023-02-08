@@ -36,14 +36,12 @@ public class RelicManager : MonoBehaviour
             m_yPos += Time.deltaTime * m_speed;
             m_targetPos = new Vector3(m_rectTransform.position.x, m_yPos, m_rectTransform.position.z);
             m_rectTransform.position = m_targetPos;
-            Debug.Log("Relics should be moving up.");
         }
         else if (!s_showRelics && m_rectTransform.position.y > m_bottonPos.transform.position.y)
         {
             m_yPos -= Time.deltaTime * m_speed;
             m_targetPos = new Vector3(m_rectTransform.position.x, m_yPos, m_rectTransform.position.z);
             m_rectTransform.position = m_targetPos;
-            Debug.Log("Relics should be moving down.");
         }
     }
 
