@@ -86,6 +86,21 @@ public class PlayerManager : MonoBehaviour
         m_canWallJump = true;
         m_lightPercentage = 1;
 
+        if (PlayerPrefs.HasKey("AirJump_Unlocked"))
+        {
+            m_isAirJumpUnlocked = true;
+        }
+
+        if (PlayerPrefs.HasKey("Dash_Unlocked"))
+        {
+            m_isDashUnlocked = true;
+        }
+
+        if (PlayerPrefs.HasKey("WallJump_Unlocked"))
+        {
+            m_isWallJumpUnlocked = true;
+        }
+
         if (!PlayerPrefs.HasKey("Jumps_Count"))
         {
             PlayerPrefs.SetInt("Jumps_Count", 0);
@@ -135,6 +150,21 @@ public class PlayerManager : MonoBehaviour
         if (collision.CompareTag("Checkpoint"))
         {
             m_isLightIncreasing = true;
+        }
+        else if (collision.CompareTag("Air-Jump Item"))
+        {
+            PlayerPrefs.SetInt("AirJump_Unlocked", 1);
+            m_isAirJumpUnlocked = true;
+        }
+        else if (collision.CompareTag("Dash Item"))
+        {
+            PlayerPrefs.SetInt("Dash_Unlocked", 1);
+            m_isDashUnlocked = true;
+        }
+        else if (collision.CompareTag("Wall-Jump Item"))
+        {
+            PlayerPrefs.SetInt("WallJump_Unlocked", 1);
+            m_isWallJumpUnlocked = true;
         }
     }
 
@@ -252,7 +282,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         // Jump in mid-air
-        else if ((m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) && !m_isGrounded && !m_isDashing && !m_isWallJumping && !m_isWallSliding
+        else if (m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) && !m_isGrounded && !m_isDashing && !m_isWallJumping && !m_isWallSliding
             && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_airJumpForce);
@@ -263,7 +293,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         // Jump while sliding down a wall
-        else if (m_canWallJump && m_isWallSliding && !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (m_isWallJumpUnlocked && m_canWallJump && m_isWallSliding && !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             Debug.Log("The player wall-jumped!");
             StartCoroutine(WallJump());
@@ -285,7 +315,7 @@ public class PlayerManager : MonoBehaviour
 
     public void TryToDash()
     {
-        if ((m_isInfiniteDashAllowed || m_numberOfDash > 0) && m_canDash
+        if (m_isDashUnlocked && (m_isInfiniteDashAllowed || m_numberOfDash > 0) && m_canDash
             && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             StartCoroutine(Dash());

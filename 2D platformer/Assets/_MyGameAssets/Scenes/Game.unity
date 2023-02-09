@@ -7250,10 +7250,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   m_groundCheck: {fileID: 347630495}
-  m_isDashUnlocked: 1
-  m_isAirJumpUnlocked: 1
+  m_isDashUnlocked: 0
+  m_isAirJumpUnlocked: 0
   m_isWallSlideUnlocked: 1
-  m_isWallJumpUnlocked: 1
+  m_isWallJumpUnlocked: 0
   m_axisX: 0
   m_playerMoveSpeed: 65
   m_MovementSmoothing: 0.075
@@ -7264,7 +7264,7 @@ MonoBehaviour:
   m_maxNumberOfAirJumps: 1
   m_isInfiniteDashAllowed: 0
   m_maxNumberOfDash: 1
-  m_dashForce: 20
+  m_dashForce: 25
   m_dashDuration: 0.2
   m_dashingCooldownTime: 1
   m_isWallSliding: 0
@@ -35071,7 +35071,7 @@ RectTransform:
   m_GameObject: {fileID: 1549637520}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2077787362}
@@ -35110,7 +35110,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: eca1954e3092f6c468c69c10d19a6413, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fc9d7ac77b80e424d9c6d2890f9af52b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

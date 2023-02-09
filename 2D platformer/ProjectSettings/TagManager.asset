@@ -12,6 +12,9 @@ TagManager:
   - Collectible
   - Relic
   - Checkpoint
+  - Air-Jump Item
+  - Dash Item
+  - Wall-Jump Item
   layers:
   - Default
   - TransparentFX

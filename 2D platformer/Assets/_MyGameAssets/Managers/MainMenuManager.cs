@@ -13,19 +13,24 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject m_creditsScreen;
     [SerializeField] private GameObject m_statsScreen;
     [SerializeField] private GameObject m_howToPlayScreen;
-    [Header("Stat screen UI elements: ")]
+    [Header("Text UI elements: ")]
     [SerializeField] private TextMeshProUGUI m_coinCountText;
     [SerializeField] private TextMeshProUGUI m_deathCountText;
     [SerializeField] private TextMeshProUGUI m_timeElapsedText;
     [SerializeField] private TextMeshProUGUI m_jumpCountText;
     [SerializeField] private TextMeshProUGUI m_dashCountText;
     [SerializeField] private TextMeshProUGUI m_airJumpCountText;
+    [Header("Relic UI elements: ")]
     [SerializeField] private Image m_relic1Image;
     [SerializeField] private Image m_relic2Image;
     [SerializeField] private Image m_relic3Image;
     [SerializeField] private Image m_relic4Image;
     [SerializeField] private Image m_relic5Image;
     [SerializeField] private Image m_relic6Image;
+    [Header("Item UI elements: ")]
+    [SerializeField] private Image m_dashItemImage;
+    [SerializeField] private Image m_airJumpItemImage;
+    [SerializeField] private Image m_wallJumpItemImage;
     [Header("Audio: ")]
     [SerializeField] private AudioMixer m_audioMixer;
     [SerializeField] private Slider m_volumeSlider;
@@ -48,6 +53,7 @@ public class MainMenuManager : MonoBehaviour
 
         SetStatsInformation();
         UpdateRelicColors();
+        UpdateItemColors();
     }
 
     private void SetSettingsInformation()
@@ -91,6 +97,36 @@ public class MainMenuManager : MonoBehaviour
         m_dashCountText.text = "Dashes: " + PlayerPrefs.GetInt("Dashes_Count").ToString();
         m_jumpCountText.text = "Jumps: " + PlayerPrefs.GetInt("Jumps_Count").ToString();
         m_airJumpCountText.text = "Air-jumps: " + PlayerPrefs.GetInt("AirJumps_Count").ToString();
+    }
+
+    private void UpdateItemColors()
+    {
+        if (PlayerPrefs.HasKey("AirJump_Unlocked"))
+        {
+            m_airJumpItemImage.color = new Color32(255, 255, 255, 255);
+        }
+        else
+        {
+            m_airJumpItemImage.color = new Color32(0, 0, 0, 255);
+        }
+
+        if (PlayerPrefs.HasKey("Dash_Unlocked"))
+        {
+            m_dashItemImage.color = new Color32(255, 255, 255, 255);
+        }
+        else
+        {
+            m_dashItemImage.color = new Color32(0, 0, 0, 255);
+        }
+
+        if (PlayerPrefs.HasKey("WallJump_Unlocked"))
+        {
+            m_wallJumpItemImage.color = new Color32(255, 255, 255, 255);
+        }
+        else
+        {
+            m_wallJumpItemImage.color = new Color32(0, 0, 0, 255);
+        }
     }
 
     private void UpdateRelicColors()
@@ -204,6 +240,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void ResetAllStats()
     {
+        // Conserve the player's chosen settings
         int quality = PlayerPrefs.GetInt("Quality");
         float volume = PlayerPrefs.GetFloat("Volume");
         int speedrunning = PlayerPrefs.GetInt("Speedrunning");
@@ -221,6 +258,7 @@ public class MainMenuManager : MonoBehaviour
         m_difficultyDropdown.value = PlayerPrefs.GetInt("Difficulty");
         SetStatsInformation();
         UpdateRelicColors();
+        UpdateItemColors();
 
         PlayerPrefs.Save();
         Debug.Log("All stats got reset!");
