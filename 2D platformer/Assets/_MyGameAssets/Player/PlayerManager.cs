@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     [Header("Setup: ")]
+    public static PlayerManager instance;
     [SerializeField] private Rigidbody2D m_Rigidbody2D;
     [SerializeField] private TrailRenderer m_trailRenderer;
     [SerializeField] private Animator m_animator;
@@ -78,6 +79,7 @@ public class PlayerManager : MonoBehaviour
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
+        instance = this;
     }
 
     private void Start()
@@ -86,20 +88,7 @@ public class PlayerManager : MonoBehaviour
         m_canWallJump = true;
         m_lightPercentage = 1;
 
-        if (PlayerPrefs.HasKey("AirJump_Unlocked"))
-        {
-            m_isAirJumpUnlocked = true;
-        }
-
-        if (PlayerPrefs.HasKey("Dash_Unlocked"))
-        {
-            m_isDashUnlocked = true;
-        }
-
-        if (PlayerPrefs.HasKey("WallJump_Unlocked"))
-        {
-            m_isWallJumpUnlocked = true;
-        }
+        UpdatePlayerPowers();
 
         if (!PlayerPrefs.HasKey("Jumps_Count"))
         {
@@ -150,21 +139,6 @@ public class PlayerManager : MonoBehaviour
         if (collision.CompareTag("Checkpoint"))
         {
             m_isLightIncreasing = true;
-        }
-        else if (collision.CompareTag("Air-Jump Item"))
-        {
-            PlayerPrefs.SetInt("AirJump_Unlocked", 1);
-            m_isAirJumpUnlocked = true;
-        }
-        else if (collision.CompareTag("Dash Item"))
-        {
-            PlayerPrefs.SetInt("Dash_Unlocked", 1);
-            m_isDashUnlocked = true;
-        }
-        else if (collision.CompareTag("Wall-Jump Item"))
-        {
-            PlayerPrefs.SetInt("WallJump_Unlocked", 1);
-            m_isWallJumpUnlocked = true;
         }
     }
 
@@ -225,18 +199,18 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
+            // If you're not at 0%, ajust the player's light
             m_currentLightIntensity = Mathf.Lerp(m_minLightIntensity, m_maxLightIntensity, m_lightPercentage);
             m_playerLight.intensity = m_currentLightIntensity;
             m_currentLightOuterRadius = Mathf.Lerp(m_minLightOuterRadius, m_maxLightOuterRadius, m_lightPercentage);
             m_playerLight.pointLightOuterRadius = m_currentLightOuterRadius;
             m_lightSlider.value = m_lightPercentage;
-
         }
     }
 
     private void Move(float move)
     {
-        //only control the player if grounded or airControl is turned on, you're not dashing and you're playing the game
+        //only control the player if grounded or airControl is turned on, you're not dashing, and you're not in the process of wall jumping
         if ((m_isGrounded || m_isAirControlAllowed) && !m_isWallJumping &&!m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             // Move the character by finding the target velocity
@@ -399,5 +373,23 @@ public class PlayerManager : MonoBehaviour
     private bool IsTouchingWall()
     {
         return Physics2D.OverlapCircle(m_wallCheck.position, 0.2f, m_wallLayer);
+    }
+
+    public void UpdatePlayerPowers()
+    {
+        if (PlayerPrefs.HasKey("AirJump_Unlocked"))
+        {
+            m_isAirJumpUnlocked = true;
+        }
+
+        if (PlayerPrefs.HasKey("Dash_Unlocked"))
+        {
+            m_isDashUnlocked = true;
+        }
+
+        if (PlayerPrefs.HasKey("WallJump_Unlocked"))
+        {
+            m_isWallJumpUnlocked = true;
+        }
     }
 }
