@@ -44,6 +44,7 @@ public class MainMenuManager : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1.0f;
         m_mainScreen.SetActive(true);
         m_settingsScreen.SetActive(false);
         m_creditsScreen.SetActive(false);

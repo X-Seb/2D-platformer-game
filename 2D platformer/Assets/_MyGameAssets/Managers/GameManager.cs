@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1.0f;
         SetState(GameState.start);
         m_startScreen.SetActive(true);
         m_gameScreen.SetActive(false);

@@ -12,6 +12,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private TrailRenderer m_trailRenderer;
     [SerializeField] private Animator m_animator;
     [SerializeField] private LayerMask m_groundLayer; // A mask determining what is ground to the character
+    [SerializeField] private LayerMask m_movingPlatformLayer;
     [SerializeField] private Transform m_groundCheck;  // A position marking where to check if the player is grounded.
     [Header("Upgrading the player: ")]
     [SerializeField] private bool m_isDashUnlocked;
@@ -24,6 +25,7 @@ public class PlayerManager : MonoBehaviour
     [Range(0, 200)][SerializeField] private float m_playerMoveSpeed = 80f; // How fast the player can move.
     [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f; // How much to smooth out the movement
     [SerializeField] private bool m_isAirControlAllowed = false; // If the player can move horizontally while in the air.
+    [SerializeField] private Vector3 m_targetMoveVelocity = Vector3.zero;
     [Header("Jumping: ")]
     [Range(0, 50)][SerializeField] private float m_jumpForce = 25f; // Amount of force added when the player jumps.
     [Range(0, 50)][SerializeField] private float m_airJumpForce = 15f; // Amount of force added when the player jumps in the air.
@@ -35,6 +37,8 @@ public class PlayerManager : MonoBehaviour
     [Range(0, 50)][SerializeField] private float m_dashForce = 25f;
     [Range(0, 2)][SerializeField] private float m_dashDuration = 0.2f;
     [Range(0, 10)][SerializeField] private float m_dashingCooldownTime = 1.5f;
+    [SerializeField] private bool m_canDash = true;
+    [SerializeField] private bool m_isDashing = false;
     [Header("Wall sliding: ")]
     [SerializeField] private bool m_isWallSliding;
     [SerializeField] private float m_wallSlidingSpeed;
@@ -50,13 +54,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private bool m_isGrounded;  // Whether or not the player is grounded.
     [SerializeField] private const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
     [SerializeField] private bool m_isOnPlatform;
+    [SerializeField] private bool m_isOnWall;
     [SerializeField] private bool m_isFacingRight = true; // For determining which way the player is currently facing.
     [SerializeField] private int m_numberOfAirJumps = 0;
-    [SerializeField] private bool m_canDash = true;
-    [SerializeField] private bool m_isDashing = false;
     [SerializeField] private int m_numberOfDash = 0;
-    [SerializeField] private Vector3 m_targetMoveVelocity = Vector3.zero;
-    [SerializeField] private bool m_isLightIncreasing;
     [Header("Audio: ")]
     [SerializeField] private AudioSource m_playerAudioSource;
     [SerializeField] private AudioClip m_jumpAudioClip;
@@ -66,6 +67,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Player light: ")]
     [SerializeField] private Slider m_lightSlider;
     [SerializeField] private Light2D m_playerLight;
+    [SerializeField] private bool m_isLightIncreasing;
     [SerializeField] private float m_lightPercentage;
     [SerializeField] private float m_maxLightIntensity;
     [SerializeField] private float m_minLightIntensity;
@@ -116,7 +118,9 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        UpdateGrounded();
+        m_isOnWall = IsTouchingWall();
+        m_isOnPlatform = IsOnPlatform();
+        IsOnGround();
         Move(m_axisX * Time.fixedDeltaTime * m_playerMoveSpeed);
         TryToWallSlide();
 
@@ -128,12 +132,21 @@ public class PlayerManager : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Enemy") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             m_animator.SetBool("isDead", true);
             GameManager.instance.EndGame();
         }
-        else if (collision.gameObject.CompareTag("Platform"))
+        else if (collision.gameObject.CompareTag("Platform") && m_isOnPlatform)
+        {
+            gameObject.transform.parent = collision.transform;
+            m_isOnPlatform = true;
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Platform") && m_isOnPlatform)
         {
             gameObject.transform.parent = collision.transform;
             m_isOnPlatform = true;
@@ -235,29 +248,6 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void UpdateGrounded()
-    {
-        bool wasGrounded = m_isGrounded;
-        m_isGrounded = false;
-
-        // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_groundCheck.position, k_GroundedRadius, m_groundLayer);
-        for (int i = 0; i < colliders.Length; i++)
-        {
-            if (colliders[i].gameObject != gameObject)
-            {
-                m_isGrounded = true;
-                m_numberOfAirJumps = m_maxNumberOfAirJumps;
-                m_numberOfDash = m_maxNumberOfDash;
-
-                if (!wasGrounded && m_isGrounded)
-                {
-                    m_playerAudioSource.PlayOneShot(m_landAudioClip);
-                }
-            }
-        }
-    }
-
     public void TryToJump()
     {
         // Jump from the ground
@@ -291,7 +281,7 @@ public class PlayerManager : MonoBehaviour
 
     private void TryToWallSlide()
     {
-        if (m_isWallSlideUnlocked && IsTouchingWall() && !m_isGrounded && m_axisX != 0)
+        if (m_isWallSlideUnlocked && m_isOnWall && !m_isGrounded && m_axisX != 0)
         {
             m_isWallSliding = true;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, Mathf.Clamp(m_Rigidbody2D.velocity.y, -m_wallSlidingSpeed, float.MaxValue));
@@ -383,6 +373,34 @@ public class PlayerManager : MonoBehaviour
 
         m_canWallJump = true;
         m_isWallJumping = false;
+    }
+
+    private void IsOnGround()
+    {
+        bool wasGrounded = m_isGrounded;
+        m_isGrounded = false;
+
+        // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_groundCheck.position, k_GroundedRadius, m_groundLayer);
+        for (int i = 0; i < colliders.Length; i++)
+        {
+            if (colliders[i].gameObject != gameObject)
+            {
+                m_isGrounded = true;
+                m_numberOfAirJumps = m_maxNumberOfAirJumps;
+                m_numberOfDash = m_maxNumberOfDash;
+
+                if (!wasGrounded && m_isGrounded)
+                {
+                    m_playerAudioSource.PlayOneShot(m_landAudioClip);
+                }
+            }
+        }
+    }
+
+    private bool IsOnPlatform()
+    {
+        return Physics2D.OverlapCircle(m_groundCheck.position, 0.2f, m_movingPlatformLayer);
     }
 
     private bool IsTouchingWall()
