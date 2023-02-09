@@ -49,6 +49,7 @@ public class PlayerManager : MonoBehaviour
     [Header("Reference information: ")]
     [SerializeField] private bool m_isGrounded;  // Whether or not the player is grounded.
     [SerializeField] private const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
+    [SerializeField] private bool m_isOnPlatform;
     [SerializeField] private bool m_isFacingRight = true; // For determining which way the player is currently facing.
     [SerializeField] private int m_numberOfAirJumps = 0;
     [SerializeField] private bool m_canDash = true;
@@ -131,6 +132,20 @@ public class PlayerManager : MonoBehaviour
         {
             m_animator.SetBool("isDead", true);
             GameManager.instance.EndGame();
+        }
+        else if (collision.gameObject.CompareTag("Platform"))
+        {
+            gameObject.transform.parent = collision.transform;
+            m_isOnPlatform = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            m_isOnPlatform = false;
+            gameObject.transform.parent = null;
         }
     }
 
