@@ -93,6 +93,8 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
+        m_isOnWall = IsTouchingWall();
+        m_isOnPlatform = IsOnPlatform();
         m_axisX = InputManager.instance.ReturnAxisX();
         AnimatePlayer();
         AjustPlayerLight();
@@ -100,8 +102,6 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        m_isOnWall = IsTouchingWall();
-        m_isOnPlatform = IsOnPlatform();
         IsOnGround();
         TryToWallSlide();
         Move(m_axisX * Time.fixedDeltaTime * m_playerMoveSpeed);
