@@ -103,10 +103,10 @@ public class PlayerManager : MonoBehaviour
         m_isOnWall = IsTouchingWall();
         m_isOnPlatform = IsOnPlatform();
         IsOnGround();
-        Move(m_axisX * Time.fixedDeltaTime * m_playerMoveSpeed);
         TryToWallSlide();
+        Move(m_axisX * Time.fixedDeltaTime * m_playerMoveSpeed);
 
-        if (!m_isWallJumping)
+        if (!m_isWallJumping && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             TryToFlip();
         }
@@ -260,7 +260,7 @@ public class PlayerManager : MonoBehaviour
     private void Move(float move)
     {
         //only control the player if grounded or airControl is turned on, you're not dashing, and you're not in the process of wall jumping
-        if ((m_isGrounded || m_isAirControlAllowed) && !m_isWallJumping &&!m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if ((m_isGrounded || m_isAirControlAllowed) && !m_isWallSliding && !m_isWallJumping &&!m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
@@ -302,7 +302,7 @@ public class PlayerManager : MonoBehaviour
 
     private void TryToWallSlide()
     {
-        if (m_isWallSlideUnlocked && m_isOnWall && !m_isGrounded && m_axisX != 0)
+        if (m_isWallSlideUnlocked && m_isOnWall && !m_isGrounded && !m_isDashing && m_axisX != 0)
         {
             m_isWallSliding = true;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, Mathf.Clamp(m_Rigidbody2D.velocity.y, -m_wallSlidingSpeed, float.MaxValue));
