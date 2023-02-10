@@ -76,6 +76,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float m_increasingLightSpeed;
     [SerializeField] private float m_decreasingLightSpeedMedium;
     [SerializeField] private float m_decreasingLightSpeedHard;
+    [SerializeField] private float m_decreasingLightSpeedDead;
     [SerializeField] private float m_currentLightIntensity;
     [SerializeField] private float m_currentLightOuterRadius;
     
@@ -87,26 +88,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        m_animator.SetBool("isDead", false);
-        m_canWallJump = true;
-        m_lightPercentage = 1;
-
-        UpdatePlayerPowers();
-
-        if (!PlayerPrefs.HasKey("Jumps_Count"))
-        {
-            PlayerPrefs.SetInt("Jumps_Count", 0);
-        }
-
-        if (!PlayerPrefs.HasKey("Dashes_Count"))
-        {
-            PlayerPrefs.SetInt("Dashes_Count", 0);
-        }
-
-        if (!PlayerPrefs.HasKey("AirJumps_Count"))
-        {
-            PlayerPrefs.SetInt("AirJumps_Count", 0);
-        }
+        StartGame();
     }
 
     private void Update()
@@ -134,8 +116,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            m_animator.SetBool("isDead", true);
-            GameManager.instance.EndGame();
+            PlayerDied();
         }
         else if (collision.gameObject.CompareTag("Platform") && m_isOnPlatform)
         {
@@ -176,6 +157,38 @@ public class PlayerManager : MonoBehaviour
         {
             m_isLightIncreasing = false;
         }
+    }
+
+    public void StartGame()
+    {
+        GameManager.instance.SetState(GameManager.GameState.playing);
+        m_animator.SetBool("isDead", false);
+        m_canWallJump = true;
+        m_lightPercentage = 1;
+
+        UpdatePlayerPowers();
+
+        if (!PlayerPrefs.HasKey("Jumps_Count"))
+        {
+            PlayerPrefs.SetInt("Jumps_Count", 0);
+        }
+
+        if (!PlayerPrefs.HasKey("Dashes_Count"))
+        {
+            PlayerPrefs.SetInt("Dashes_Count", 0);
+        }
+
+        if (!PlayerPrefs.HasKey("AirJumps_Count"))
+        {
+            PlayerPrefs.SetInt("AirJumps_Count", 0);
+        }
+    }
+
+    private void PlayerDied()
+    {
+        GameManager.instance.SetState(GameManager.GameState.lose);
+        m_animator.SetBool("isDead", true);
+        GameManager.instance.EndGame();
     }
 
     private void AnimatePlayer()
@@ -219,11 +232,19 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
-        // If you're at 0% of light, you die
-        if (m_lightPercentage <= 0)
+        else if (m_lightPercentage >= 0 && GameManager.instance.GetState() == GameManager.GameState.lose)
         {
-            m_animator.SetBool("isDead", true);
-            GameManager.instance.EndGame();
+            m_lightPercentage -= Time.deltaTime * m_decreasingLightSpeedDead;
+            if (m_lightPercentage <= 0)
+            {
+                m_lightPercentage = 0;
+            }
+        }
+
+        // If you're at 0% of light, you die
+        if (m_lightPercentage <= 0 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            PlayerDied();
         }
         else
         {

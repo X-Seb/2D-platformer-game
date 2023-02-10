@@ -94,7 +94,9 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        SceneLoader.instance.LoadScene(1);
+        MovePlayer();
+        PlayerManager.instance.StartGame();
+        StartPlaying();
     }
 
     public void StartPlaying()
@@ -128,20 +130,9 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
-        if (PlayerPrefs.HasKey("Death_Count"))
-        {
-            PlayerPrefs.SetInt("Death_Count", PlayerPrefs.GetInt("Death_Count") + 1);
-        }
-        else
-        {
-            PlayerPrefs.SetInt("Death_Count", 1);
-        }
+        
 
-        PlayerPrefs.Save();
-        SetState(GameState.lose);
-        m_gameScreen.SetActive(false);
-        m_loseScreen.SetActive(true);
-        RelicManager.s_showRelics = true;
+
         StartCoroutine(EndGameTransition());
     }
 
@@ -183,8 +174,23 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator EndGameTransition()
     {
+        if (PlayerPrefs.HasKey("Death_Count"))
+        {
+            PlayerPrefs.SetInt("Death_Count", PlayerPrefs.GetInt("Death_Count") + 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("Death_Count", 1);
+        }
+
+        PlayerPrefs.Save();
+        SetState(GameState.lose);
+        m_gameScreen.SetActive(false);
+        m_loseScreen.SetActive(true);
+        RelicManager.s_showRelics = true;
+
         yield return new WaitForSeconds(1.5f);
 
-        SceneLoader.instance.LoadScene(1);
+        RestartLevel();
     }
 }
