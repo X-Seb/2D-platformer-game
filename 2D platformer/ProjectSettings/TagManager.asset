@@ -10,6 +10,11 @@ TagManager:
   - decoration
   - Enemy
   - Collectible
+  - Relic
+  - Checkpoint
+  - Air-Jump Item
+  - Dash Item
+  - Wall-Jump Item
   layers:
   - Default
   - TransparentFX
@@ -18,8 +23,8 @@ TagManager:
   - Water
   - UI
   - colliders
-  - 
-  - 
+  - Ground
+  - Platform
   - 
   - Decorations
   - 
@@ -62,12 +67,15 @@ TagManager:
   - name: Enemy
     uniqueID: 1389580113
     locked: 0
+  - name: Checkpoint
+    uniqueID: 373768511
+    locked: 0
   - name: Collectible
     uniqueID: 3020371547
     locked: 0
-  - name: Player
-    uniqueID: 468816705
-    locked: 0
   - name: Trail
     uniqueID: 1629975091
+    locked: 0
+  - name: Player
+    uniqueID: 468816705
     locked: 0

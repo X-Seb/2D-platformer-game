@@ -41,15 +41,8 @@ public class InputManager : MonoBehaviour
     {
         if (ctx.performed)
         {
+            GameManager.instance.SwitchPause();
             Debug.Log("Pause!");
-        }
-    }
-
-    public void Restart(InputAction.CallbackContext ctx)
-    {
-        if (ctx.performed)
-        {
-            Debug.Log("Restart the game!");
         }
     }
 
