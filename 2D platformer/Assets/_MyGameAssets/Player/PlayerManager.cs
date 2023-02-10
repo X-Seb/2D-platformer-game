@@ -161,11 +161,11 @@ public class PlayerManager : MonoBehaviour
 
     public void StartGame()
     {
-        GameManager.instance.SetState(GameManager.GameState.playing);
+        m_Rigidbody2D.velocity = new Vector2(0, 0);
+        GameManager.instance.SetState(GameManager.GameState.start);
         m_animator.SetBool("isDead", false);
         m_canWallJump = true;
         m_lightPercentage = 1;
-
         UpdatePlayerPowers();
 
         if (!PlayerPrefs.HasKey("Jumps_Count"))

@@ -130,9 +130,6 @@ public class GameManager : MonoBehaviour
 
     public void EndGame()
     {
-        
-
-
         StartCoroutine(EndGameTransition());
     }
 
@@ -191,6 +188,14 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(1.5f);
 
-        RestartLevel();
+        MovePlayer();
+        m_startScreen.SetActive(true);
+        m_gameScreen.SetActive(false);
+        m_pauseScreen.SetActive(false);
+        m_loseScreen.SetActive(false);
+        m_victoryScreen.SetActive(false);
+        m_itemScreen.SetActive(false);
+
+        PlayerManager.instance.StartGame();
     }
 }

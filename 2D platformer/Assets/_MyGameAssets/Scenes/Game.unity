@@ -9317,6 +9317,7 @@ MonoBehaviour:
   m_increasingLightSpeed: 0.2
   m_decreasingLightSpeedMedium: 0.004
   m_decreasingLightSpeedHard: 0.02
+  m_decreasingLightSpeedDead: 0.1
   m_currentLightIntensity: 0
   m_currentLightOuterRadius: 0
 --- !u!96 &1128061743
@@ -9514,6 +9515,7 @@ GameObject:
   - component: {fileID: 1193125529}
   - component: {fileID: 1193125531}
   - component: {fileID: 1193125530}
+  - component: {fileID: 1193125532}
   m_Layer: 0
   m_Name: Relic 1
   m_TagString: Relic
@@ -9529,7 +9531,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1193125528}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.00024, y: 16.50033, z: 0}
+  m_LocalPosition: {x: 21.00042, y: 3.00006, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9580,6 +9582,22 @@ MonoBehaviour:
   m_relicManager: {fileID: 908221988}
   m_relicID: 6
   m_relicAudioSource: {fileID: 1057173313}
+--- !u!114 &1193125532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1193125528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2aeb5a46c7f24a6a8f37795f9b38821, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0.5
+  m_displacement: {x: 0, y: 0.5, z: 0}
+  m_startPos: {x: 0, y: 0, z: 0}
+  m_endPos: {x: 0, y: 0, z: 0}
 --- !u!1 &1204455835
 GameObject:
   m_ObjectHideFlags: 0
@@ -34918,7 +34936,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 24300002, guid: 26a3c753b74a0484fbc347f5f8b3d8a6, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 58ceb12f5a5c3114089789a111f60758, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 6b08ccefe2c8c5e4fb69ec0c3d5d92df, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.33
   m_Pitch: 1
