@@ -15,6 +15,7 @@ TagManager:
   - Air-Jump Item
   - Dash Item
   - Wall-Jump Item
+  - Area
   layers:
   - Default
   - TransparentFX

@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_itemDescriptionText;
     [Header("Other: ")]
     [SerializeField] private GameState currentGameState;
+    [Header("Testing? ")]
+    [SerializeField] private bool m_isTesting;
 
     //This represents the possible game states
     public enum GameState
@@ -165,8 +167,16 @@ public class GameManager : MonoBehaviour
         {
             PlayerPrefs.SetInt("Last_Checkpoint", 1);
         }
-        int checkpoint = PlayerPrefs.GetInt("Last_Checkpoint");
-        m_player.transform.position = GameObject.Find("Checkpoint_" + checkpoint + "_SpawnPosition").transform.position;
+
+        if (m_isTesting)
+        {
+            m_player.transform.position = GameObject.Find("Testing_SpawnPosition").transform.position;
+        }
+        else
+        {
+            int checkpoint = PlayerPrefs.GetInt("Last_Checkpoint");
+            m_player.transform.position = GameObject.Find("Checkpoint_" + checkpoint + "_SpawnPosition").transform.position;
+        }
     }
 
     private IEnumerator EndGameTransition()
