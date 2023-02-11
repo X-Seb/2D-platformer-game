@@ -42,7 +42,8 @@ public class PlayerManager : MonoBehaviour
     [Header("Wall sliding: ")]
     [SerializeField] private bool m_isWallSliding;
     [SerializeField] private float m_wallSlidingSpeed;
-    [SerializeField] private Transform m_wallCheck;
+    [SerializeField] private Transform m_wallCheck1;
+    [SerializeField] private Transform m_wallCheck2;
     [SerializeField] private LayerMask m_wallLayer;
     [Header("Wall jumping: ")]
     [SerializeField] private bool m_isWallJumping;
@@ -426,7 +427,17 @@ public class PlayerManager : MonoBehaviour
 
     private bool IsTouchingWall()
     {
-        return Physics2D.OverlapCircle(m_wallCheck.position, 0.2f, m_wallLayer);
+        
+        bool isTouchingWall1 = Physics2D.OverlapCircle(m_wallCheck1.position, 0.2f, m_wallLayer);
+        bool isTouchingWall2 = Physics2D.OverlapCircle(m_wallCheck2.position, 0.2f, m_wallLayer);
+        if (isTouchingWall1 || isTouchingWall2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void UpdatePlayerPowers()
