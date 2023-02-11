@@ -166,7 +166,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("Last_Checkpoint", 1);
         }
         int checkpoint = PlayerPrefs.GetInt("Last_Checkpoint");
-        m_player.transform.position = GameObject.Find("Checkpoint_" + checkpoint).transform.position;
+        m_player.transform.position = GameObject.Find("Checkpoint_" + checkpoint + "_SpawnPosition").transform.position;
     }
 
     private IEnumerator EndGameTransition()
