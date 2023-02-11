@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameState currentGameState;
     [Header("Testing? ")]
     [SerializeField] private bool m_isTesting;
+    [SerializeField] private GameObject[] m_checkpoints;
 
     //This represents the possible game states
     public enum GameState
@@ -175,7 +176,7 @@ public class GameManager : MonoBehaviour
         else
         {
             int checkpoint = PlayerPrefs.GetInt("Last_Checkpoint");
-            m_player.transform.position = GameObject.Find("Checkpoint_" + checkpoint + "_SpawnPosition").transform.position;
+            m_player.transform.position = m_checkpoints[checkpoint].transform.position;
         }
     }
 
@@ -199,6 +200,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         MovePlayer();
+
+        yield return new WaitForSeconds(0.2f);
         m_startScreen.SetActive(true);
         m_gameScreen.SetActive(false);
         m_pauseScreen.SetActive(false);
