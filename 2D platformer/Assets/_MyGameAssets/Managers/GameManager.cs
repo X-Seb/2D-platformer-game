@@ -202,6 +202,7 @@ public class GameManager : MonoBehaviour
         MovePlayer();
 
         yield return new WaitForSeconds(0.2f);
+
         m_startScreen.SetActive(true);
         m_gameScreen.SetActive(false);
         m_pauseScreen.SetActive(false);

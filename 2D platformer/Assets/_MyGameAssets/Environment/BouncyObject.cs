@@ -14,12 +14,13 @@ public class BouncyObject : MonoBehaviour
         left,
         right
     }
-
+    
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Player"))
         {
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
+            //AudioSource audioSource = collision.gameObject.
 
             switch (direction)
             {
@@ -38,6 +39,8 @@ public class BouncyObject : MonoBehaviour
                 default:
                     break;
             }
+
+
             
         }
     }
