@@ -45,9 +45,14 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (m_lastCheckpoint == null)
+        if (PlayerPrefs.HasKey("Last_Checkpoint"))
+        {
+            m_lastCheckpoint = GameObject.Find(PlayerPrefs.GetString("Last_Checkpoint"));
+        }
+        else
         {
             m_lastCheckpoint = GameObject.Find("Starting_Checkpoint");
+            PlayerPrefs.SetString("Last_Checkpoint", m_lastCheckpoint.name);
         }
 
         Time.timeScale = 1.0f;
@@ -171,6 +176,7 @@ public class GameManager : MonoBehaviour
     public void SetLastCheckpoint(GameObject newCheckpoint)
     {
         m_lastCheckpoint = newCheckpoint;
+        PlayerPrefs.SetString("Last_Checkpoint", newCheckpoint.name);
     }
 
     private void MovePlayer()
