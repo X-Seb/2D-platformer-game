@@ -61,10 +61,12 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private int m_numberOfDash = 0;
     [Header("Audio: ")]
     [SerializeField] private AudioSource m_playerAudioSource;
+    [SerializeField] private AudioClip m_deathAudioClip;
     [SerializeField] private AudioClip m_jumpAudioClip;
     [SerializeField] private AudioClip m_landAudioClip;
     [SerializeField] private AudioClip m_airJumpAudioClip;
     [SerializeField] private AudioClip m_dashAudioClip;
+    [SerializeField] private AudioClip m_bouncyAudioClip;
     [Header("Player light: ")]
     [SerializeField] private Slider m_lightSlider;
     [SerializeField] private Light2D m_playerLight;
@@ -80,7 +82,12 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float m_decreasingLightSpeedDead;
     [SerializeField] private float m_currentLightIntensity;
     [SerializeField] private float m_currentLightOuterRadius;
-    
+
+    public enum SoundType
+    {
+        bouncy
+    }
+
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -188,6 +195,7 @@ public class PlayerManager : MonoBehaviour
     private void PlayerDied()
     {
         GameManager.instance.SetState(GameManager.GameState.lose);
+        m_playerAudioSource.PlayOneShot(m_deathAudioClip);
         m_animator.SetBool("isDead", true);
         GameManager.instance.EndGame();
     }
@@ -255,6 +263,18 @@ public class PlayerManager : MonoBehaviour
             m_currentLightOuterRadius = Mathf.Lerp(m_minLightOuterRadius, m_maxLightOuterRadius, m_lightPercentage);
             m_playerLight.pointLightOuterRadius = m_currentLightOuterRadius;
             m_lightSlider.value = m_lightPercentage;
+        }
+    }
+
+    public void PlaySound(SoundType soundType, float volume = 1.0f)
+    {
+        switch (soundType)
+        {
+            case SoundType.bouncy:
+                m_playerAudioSource.PlayOneShot(m_bouncyAudioClip, volume);
+                break;
+            default:
+                break;
         }
     }
 
@@ -382,6 +402,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         m_Rigidbody2D.velocity = new Vector2(m_wallJumpingDirection * m_wallJumpingPower.x, m_wallJumpingPower.y);
+        m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
 
         if (transform.localScale.x != m_wallJumpingDirection)
         {
@@ -412,9 +433,9 @@ public class PlayerManager : MonoBehaviour
                 m_numberOfAirJumps = m_maxNumberOfAirJumps;
                 m_numberOfDash = m_maxNumberOfDash;
 
-                if (!wasGrounded && m_isGrounded)
+                if (!wasGrounded && m_isGrounded && m_Rigidbody2D.velocity.y <= 0 && colliders[i].gameObject.GetComponent<BouncyObject>() == null)
                 {
-                    m_playerAudioSource.PlayOneShot(m_landAudioClip);
+                    m_playerAudioSource.PlayOneShot(m_landAudioClip, 0.6f);
                 }
             }
         }

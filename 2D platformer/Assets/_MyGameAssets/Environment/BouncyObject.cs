@@ -20,7 +20,7 @@ public class BouncyObject : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
-            //AudioSource audioSource = collision.gameObject.
+            PlayerManager.instance.PlaySound(PlayerManager.SoundType.bouncy);
 
             switch (direction)
             {
