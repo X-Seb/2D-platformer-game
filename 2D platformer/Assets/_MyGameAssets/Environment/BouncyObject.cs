@@ -17,7 +17,7 @@ public class BouncyObject : MonoBehaviour
     
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             Rigidbody2D rb = collision.gameObject.GetComponent<Rigidbody2D>();
             PlayerManager.instance.PlaySound(PlayerManager.SoundType.bouncy);

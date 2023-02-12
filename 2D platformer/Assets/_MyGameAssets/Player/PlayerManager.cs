@@ -433,7 +433,8 @@ public class PlayerManager : MonoBehaviour
                 m_numberOfAirJumps = m_maxNumberOfAirJumps;
                 m_numberOfDash = m_maxNumberOfDash;
 
-                if (!wasGrounded && m_isGrounded && m_Rigidbody2D.velocity.y <= 0 && colliders[i].gameObject.GetComponent<BouncyObject>() == null)
+                if (!wasGrounded && m_isGrounded && m_Rigidbody2D.velocity.y <= 0 &&
+                    colliders[i].gameObject.GetComponent<BouncyObject>() == null && GameManager.instance.GetState() == GameManager.GameState.playing)
                 {
                     m_playerAudioSource.PlayOneShot(m_landAudioClip, 0.6f);
                 }
