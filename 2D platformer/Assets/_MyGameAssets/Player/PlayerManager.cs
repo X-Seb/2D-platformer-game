@@ -326,7 +326,7 @@ public class PlayerManager : MonoBehaviour
         if (m_isWallSlideUnlocked && m_isOnWall && !m_isGrounded && !m_isDashing && m_axisX != 0)
         {
             m_isWallSliding = true;
-            m_Rigidbody2D.velocity = new Vector2(0, Mathf.Clamp(m_Rigidbody2D.velocity.y, -m_wallSlidingSpeed, float.MaxValue));
+            m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, Mathf.Clamp(m_Rigidbody2D.velocity.y, -m_wallSlidingSpeed, float.MaxValue));
         }
         else
         {
