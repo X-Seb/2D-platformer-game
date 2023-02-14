@@ -17,6 +17,7 @@ TagManager:
   - Wall-Jump Item
   - Area
   - Acid
+  - Tilemap Ground
   layers:
   - Default
   - TransparentFX
@@ -27,7 +28,7 @@ TagManager:
   - colliders
   - Ground
   - Platform
-  - 
+  - Tilemap Ground
   - Decorations
   - 
   - 
