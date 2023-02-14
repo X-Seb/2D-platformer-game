@@ -83,6 +83,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float m_decreasingLightSpeedDead;
     [SerializeField] private float m_currentLightIntensity;
     [SerializeField] private float m_currentLightOuterRadius;
+    [Header("Effects: ")]
+    [SerializeField] private TrailRenderer m_mainTrailRenderer;
+    [SerializeField] private bool m_isMainTrailEmmiting = false;
 
     public enum SoundType
     {
@@ -107,6 +110,17 @@ public class PlayerManager : MonoBehaviour
         m_axisX = InputManager.instance.ReturnAxisX();
         AnimatePlayer();
         AjustPlayerLight();
+
+        if (!m_isMainTrailEmmiting && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            m_mainTrailRenderer.emitting = true;
+            m_isMainTrailEmmiting = true;
+        }
+        else if (m_isMainTrailEmmiting && (GameManager.instance.GetState() != GameManager.GameState.playing || m_isDashing))
+        {
+            m_mainTrailRenderer.emitting = false;
+            m_isMainTrailEmmiting = false;
+        }
     }
 
     private void FixedUpdate()
@@ -158,7 +172,6 @@ public class PlayerManager : MonoBehaviour
         {
             m_isLightIncreasing = true;
         }
-
         else if (collision.CompareTag("Acid") && !m_isAcidImmunityUnlocked)
         {
             PlayerDied();

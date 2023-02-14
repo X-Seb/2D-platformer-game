@@ -14,6 +14,7 @@ public class OutOfBoundsManager : MonoBehaviour
             (collision.CompareTag("Acid") && collision.gameObject.isStatic))
         {
             collision.gameObject.SetActive(true);
+            Debug.Log("Just activated the " + gameObject.name);
         }
     }
 
@@ -27,6 +28,7 @@ public class OutOfBoundsManager : MonoBehaviour
             (collision.CompareTag("Acid") && collision.gameObject.isStatic))
         {
             collision.gameObject.SetActive(false);
+            Debug.Log("Just deactivated the " + gameObject.name);
         }
     }
 }
