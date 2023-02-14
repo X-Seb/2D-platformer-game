@@ -19,6 +19,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private bool m_isAirJumpUnlocked;
     [SerializeField] private bool m_isWallSlideUnlocked;
     [SerializeField] private bool m_isWallJumpUnlocked;
+    [SerializeField] private bool m_isAcidImmunityUnlocked;
     [Header("Input: ")]
     [SerializeField] private float m_axisX = 0f; // Either -1, 0, or 1
     [Header("Movement: ")]
@@ -156,6 +157,11 @@ public class PlayerManager : MonoBehaviour
         if (collision.CompareTag("Checkpoint"))
         {
             m_isLightIncreasing = true;
+        }
+
+        else if (collision.CompareTag("Acid") && !m_isAcidImmunityUnlocked)
+        {
+            PlayerDied();
         }
     }
 
@@ -326,7 +332,8 @@ public class PlayerManager : MonoBehaviour
         if (m_isWallSlideUnlocked && m_isOnWall && !m_isGrounded && !m_isDashing && m_axisX != 0)
         {
             m_isWallSliding = true;
-            m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, Mathf.Clamp(m_Rigidbody2D.velocity.y, -m_wallSlidingSpeed, float.MaxValue));
+            //TODO: Fix wall sliding!!!!
+            m_Rigidbody2D.velocity = new Vector2(0, Mathf.Clamp(m_Rigidbody2D.velocity.y, -m_wallSlidingSpeed, float.MaxValue));
         }
         else
         {

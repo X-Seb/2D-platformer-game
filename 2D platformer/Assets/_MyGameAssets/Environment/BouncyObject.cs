@@ -11,8 +11,6 @@ public class BouncyObject : MonoBehaviour
     [SerializeField] private float m_bounceForceX;
     [SerializeField] private float m_bounceForceY;
 
-
-
     enum Direction
     {
         up,
@@ -65,9 +63,6 @@ public class BouncyObject : MonoBehaviour
                 default:
                     break;
             }
-
-
-            
         }
     }
 }
