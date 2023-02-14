@@ -4,31 +4,29 @@ using UnityEngine;
 
 public class OutOfBoundsManager : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D collision)
+    [SerializeField] private string[] m_tagNames;
+    
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if ((collision.CompareTag("Platform") && collision.gameObject.isStatic) ||
-            (collision.CompareTag("Enemy") && collision.gameObject.isStatic) ||
-            (collision.CompareTag("Ground") && collision.gameObject.isStatic) ||
-            (collision.CompareTag("decoration") && collision.gameObject.isStatic) ||
-            (collision.CompareTag("Collectible") && collision.gameObject.isStatic) ||
-            (collision.CompareTag("Acid") && collision.gameObject.isStatic))
+        for (int i = 0; i < m_tagNames.Length; i++)
         {
-            collision.gameObject.SetActive(true);
-            Debug.Log("Just activated the " + gameObject.name);
+            if (collision.gameObject.CompareTag(m_tagNames[i]) && gameObject.isStatic)
+            {
+                collision.gameObject.SetActive(true);
+                Debug.Log("Just activated " + gameObject.name);
+            }
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    private void OnCollisionExit2D(Collision2D collision)
     {
-        if ((collision.CompareTag("Platform") && collision.gameObject.isStatic) ||
-            (collision.CompareTag("Enemy") && collision.gameObject.isStatic) ||
-            (collision.CompareTag("Ground") && collision.gameObject.isStatic) ||
-            (collision.CompareTag("decoration") && collision.gameObject.isStatic) ||
-            (collision.CompareTag("Collectible") && collision.gameObject.isStatic) ||
-            (collision.CompareTag("Acid") && collision.gameObject.isStatic))
+        for (int i = 0; i < m_tagNames.Length; i++)
         {
-            collision.gameObject.SetActive(false);
-            Debug.Log("Just deactivated the " + gameObject.name);
+            if (collision.gameObject.CompareTag(m_tagNames[i]) && gameObject.isStatic)
+            {
+                collision.gameObject.SetActive(false);
+                Debug.Log("Just deactivated " + gameObject.name);
+            }
         }
     }
 }

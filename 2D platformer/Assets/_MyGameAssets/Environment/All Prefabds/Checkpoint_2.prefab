@@ -52,7 +52,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cb4ab29cd87b47a1b698c304b57466d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_checkpointID: 2
 --- !u!61 &962443128333630158
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -274,7 +273,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 0
   MinDistance: 7
-  MaxDistance: 20
+  MaxDistance: 15
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0
@@ -492,7 +491,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 373768511
-  m_SortingLayer: 6
+  m_SortingLayer: 7
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300128, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

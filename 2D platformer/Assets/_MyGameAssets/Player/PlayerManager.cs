@@ -456,7 +456,7 @@ public class PlayerManager : MonoBehaviour
                 if (!wasGrounded && m_isGrounded && m_Rigidbody2D.velocity.y <= 0 &&
                     colliders[i].gameObject.GetComponent<BouncyObject>() == null && GameManager.instance.GetState() == GameManager.GameState.playing)
                 {
-                    m_playerAudioSource.PlayOneShot(m_landAudioClip, 0.6f);
+                    m_playerAudioSource.PlayOneShot(m_landAudioClip, 0.3f);
                 }
             }
         }
