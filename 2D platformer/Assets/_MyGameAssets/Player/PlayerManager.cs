@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -309,10 +310,13 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void TryToJump()
+    public void TryToJump(InputAction.CallbackContext ctx)
     {
+        float value = ctx.ReadValue<float>();
+        Debug.Log(value);
+        
         // Jump from the ground
-        if (m_isGrounded && !m_isDashing && !m_isWallSliding && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (ctx.performed && m_isGrounded && !m_isDashing && !m_isWallSliding && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             m_isGrounded = false;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_jumpForce);
@@ -322,7 +326,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         // Jump in mid-air
-        else if (m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) && !m_isGrounded && !m_isDashing && !m_isWallJumping && !m_isWallSliding
+        else if (ctx.performed && m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) && !m_isGrounded && !m_isDashing && !m_isWallJumping && !m_isWallSliding
             && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_airJumpForce);
@@ -333,10 +337,17 @@ public class PlayerManager : MonoBehaviour
         }
 
         // Jump while sliding down a wall
-        else if (m_isWallJumpUnlocked && m_canWallJump && m_isWallSliding && !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (ctx.performed && m_isWallJumpUnlocked && m_canWallJump && m_isWallSliding && !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             Debug.Log("The player wall-jumped!");
             StartCoroutine(WallJump());
+        }
+
+        else if (ctx.canceled && m_Rigidbody2D.velocity.y > 0)
+        {
+            // If player is currently jumping => slow down the player 
+            Debug.Log("Slow down the player.");
+            m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_Rigidbody2D.velocity.y * 0.4f);
         }
     }
 

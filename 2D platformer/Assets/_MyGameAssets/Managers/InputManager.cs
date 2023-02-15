@@ -18,10 +18,7 @@ public class InputManager : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext ctx)
     {
-        if (ctx.performed)
-        {
-            m_playerManager.TryToJump();
-        }
+        m_playerManager.TryToJump(ctx);
     }
 
     public void MovePlayer(InputAction.CallbackContext value)
