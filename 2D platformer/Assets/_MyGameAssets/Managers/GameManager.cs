@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [Header("Setup: ")]
     public static GameManager instance;
     [SerializeField] private GameObject m_player;
+    [SerializeField] private Rigidbody2D m_rb;
     [Header("UI Screens: ")]
     [SerializeField] private GameObject m_startScreen;
     [SerializeField] private GameObject m_pauseScreen;
@@ -36,6 +37,19 @@ public class GameManager : MonoBehaviour
         paused,
         lose,
         win
+    }
+
+    public enum Item
+    {
+        dashPotion,
+        airJumpPotion,
+        wallJumpPotion,
+        cloverRelic,
+        scrollRelic,
+        coinRelic,
+        crystalRelic,
+        bookRelic,
+        crownRelic,
     }
 
     private void Awake()
@@ -147,25 +161,25 @@ public class GameManager : MonoBehaviour
         StartCoroutine(EndGameTransition());
     }
 
-    public void CollectItem(string itemAbilityName)
+    public void CollectItem(string itemName)
     {
         currentGameState = GameState.unlockingAbility;
         m_gameScreen.SetActive(false);
         m_itemScreen.SetActive(true);
 
-        if (itemAbilityName == "Dash")
+        if (itemName == "Dash")
         {
             m_itemNameText.text = "Burst Potion";
             m_itemLoreText.text = "A mysterious potion that grants its user the ability to burst forward.";
             m_itemDescriptionText.text = "Press S, G, down arrow, or SHIFT to dash in the direction you're facing.";
         }
-        else if (itemAbilityName == "AirJump")
+        else if (itemName == "AirJump")
         {
             m_itemNameText.text = "Levitation Potion";
             m_itemLoreText.text = "A strange potion that grants its user the ability to jump a second time while in the air.";
             m_itemDescriptionText.text = "Press W, SPACE, or the up arrow to jump in midair.";
         }
-        else if (itemAbilityName == "WallJump")
+        else if (itemName == "WallJump")
         {
             m_itemNameText.text = "Sticky Potion";
             m_itemLoreText.text = "A smelly potion that grants its user the ability to jump off of walls they're holding on to.";
@@ -189,6 +203,8 @@ public class GameManager : MonoBehaviour
         {
             m_player.transform.position = m_lastCheckpoint.transform.position;
         }
+
+        m_rb.velocity = new Vector3(0,0,0);
     }
 
     private IEnumerator EndGameTransition()
