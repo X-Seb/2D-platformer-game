@@ -17,7 +17,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject m_loseScreen;
     [SerializeField] private GameObject m_victoryScreen;
     [SerializeField] private GameObject m_itemScreen;
-    [Header("item Screen UI elements: ")]
+    [Header("Item Screen UI elements: ")]
+    [SerializeField] private TextMeshProUGUI m_itemTopText;
     [SerializeField] private TextMeshProUGUI m_itemNameText;
     [SerializeField] private TextMeshProUGUI m_itemLoreText;
     [SerializeField] private TextMeshProUGUI m_itemDescriptionText;
@@ -33,7 +34,7 @@ public class GameManager : MonoBehaviour
     {
         start,
         playing,
-        unlockingAbility,
+        collectedItem,
         paused,
         lose,
         win
@@ -161,30 +162,17 @@ public class GameManager : MonoBehaviour
         StartCoroutine(EndGameTransition());
     }
 
-    public void CollectItem(string itemName)
+    public void CollectItem(CollectibleItem collectibleItem)
     {
-        currentGameState = GameState.unlockingAbility;
+        m_rb.velocity = new Vector3(0, 0, 0);
+        currentGameState = GameState.collectedItem;
         m_gameScreen.SetActive(false);
         m_itemScreen.SetActive(true);
 
-        if (itemName == "Dash")
-        {
-            m_itemNameText.text = "Burst Potion";
-            m_itemLoreText.text = "A mysterious potion that grants its user the ability to burst forward.";
-            m_itemDescriptionText.text = "Press S, G, down arrow, or SHIFT to dash in the direction you're facing.";
-        }
-        else if (itemName == "AirJump")
-        {
-            m_itemNameText.text = "Levitation Potion";
-            m_itemLoreText.text = "A strange potion that grants its user the ability to jump a second time while in the air.";
-            m_itemDescriptionText.text = "Press W, SPACE, or the up arrow to jump in midair.";
-        }
-        else if (itemName == "WallJump")
-        {
-            m_itemNameText.text = "Sticky Potion";
-            m_itemLoreText.text = "A smelly potion that grants its user the ability to jump off of walls they're holding on to.";
-            m_itemDescriptionText.text = "Pressing W, SPACE, or the up arrow while holding onto a wall will propell you off in the opposite direction.";
-        }
+        m_itemTopText.text = collectibleItem.topText;
+        m_itemNameText.text = collectibleItem.itemName;
+        m_itemLoreText.text = collectibleItem.loreText;
+        m_itemDescriptionText.text = collectibleItem.descriptionText;
     }
 
     public void SetLastCheckpoint(GameObject newCheckpoint)

@@ -6,14 +6,14 @@ public class RelicController : MonoBehaviour
 {
     [Header("Setup: ")]
     [SerializeField] private RelicManager m_relicManager;
-    [Tooltip("Make sure each relicID is unique1")]
-    [SerializeField] private int m_relicID;
+    [Tooltip("The relic: ")]
+    [SerializeField] private CollectibleItem m_relic;
     [Header("Audio: ")]
-    [SerializeField] private AudioSource m_relicAudioSource;
+    [SerializeField] private AudioSource m_itemAudioSource;
 
     private void Awake()
     {
-        if (PlayerPrefs.HasKey("Relic_" + m_relicID + "_Collected"))
+        if (PlayerPrefs.HasKey("Relic_" + m_relic.relicID + "_Collected"))
         {
             Destroy(gameObject);
         }
@@ -30,11 +30,13 @@ public class RelicController : MonoBehaviour
     private void RelicCollected()
     {
         m_relicManager.IncreaseRelicCount();
-        Debug.Log("Relic " + m_relicID + " collected!");
-        PlayerPrefs.SetInt("Relic_" + m_relicID + "_Collected", 1);
+        Debug.Log("Relic " + m_relic.relicID + " collected!");
+        PlayerPrefs.SetInt("Relic_" + m_relic.relicID + "_Collected", 1);
         PlayerPrefs.Save();
+
+        GameManager.instance.CollectItem(m_relic);
         m_relicManager.UpdateRelicColors();
-        m_relicAudioSource.Play();
+        m_itemAudioSource.Play();
         Destroy(gameObject);
     }
 }
