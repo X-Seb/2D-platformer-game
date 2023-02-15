@@ -172,7 +172,7 @@ public class PlayerManager : MonoBehaviour
         {
             m_isLightIncreasing = true;
         }
-        else if (collision.CompareTag("Acid") && !m_isAcidImmunityUnlocked)
+        else if (collision.CompareTag("Acid") && !m_isAcidImmunityUnlocked && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             PlayerDied();
         }

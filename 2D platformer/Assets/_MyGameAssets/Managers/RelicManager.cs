@@ -27,6 +27,7 @@ public class RelicManager : MonoBehaviour
     private void Start()
     {
         UpdateRelicColors();
+        s_showRelics = false; // This will become true instantly if the player is spawned in a checkpoint box
     }
 
     private void Update()
