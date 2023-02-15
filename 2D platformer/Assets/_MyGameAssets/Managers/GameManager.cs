@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     [Header("Setup: ")]
     public static GameManager instance;
     [SerializeField] private GameObject m_player;
+    [SerializeField] private Rigidbody2D m_rb;
     [Header("UI Screens: ")]
     [SerializeField] private GameObject m_startScreen;
     [SerializeField] private GameObject m_pauseScreen;
@@ -16,22 +17,40 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject m_loseScreen;
     [SerializeField] private GameObject m_victoryScreen;
     [SerializeField] private GameObject m_itemScreen;
-    [Header("item Screen UI elements: ")]
+    [Header("Item Screen UI elements: ")]
+    [SerializeField] private TextMeshProUGUI m_itemTopText;
     [SerializeField] private TextMeshProUGUI m_itemNameText;
     [SerializeField] private TextMeshProUGUI m_itemLoreText;
     [SerializeField] private TextMeshProUGUI m_itemDescriptionText;
     [Header("Other: ")]
     [SerializeField] private GameState currentGameState;
+    [Header("Testing? ")]
+    [SerializeField] private bool m_isTesting;
+    [Header("Last checkpoint: ")]
+    [SerializeField] private GameObject m_lastCheckpoint;
 
     //This represents the possible game states
     public enum GameState
     {
         start,
         playing,
-        unlockingAbility,
+        collectedItem,
         paused,
         lose,
         win
+    }
+
+    public enum Item
+    {
+        dashPotion,
+        airJumpPotion,
+        wallJumpPotion,
+        cloverRelic,
+        scrollRelic,
+        coinRelic,
+        crystalRelic,
+        bookRelic,
+        crownRelic,
     }
 
     private void Awake()
@@ -41,6 +60,16 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        if (PlayerPrefs.HasKey("Last_Checkpoint"))
+        {
+            m_lastCheckpoint = GameObject.Find(PlayerPrefs.GetString("Last_Checkpoint"));
+        }
+        else
+        {
+            m_lastCheckpoint = GameObject.Find("Starting_Checkpoint");
+            PlayerPrefs.SetString("Last_Checkpoint", m_lastCheckpoint.name);
+        }
+
         Time.timeScale = 1.0f;
         SetState(GameState.start);
         m_startScreen.SetActive(true);
@@ -133,40 +162,37 @@ public class GameManager : MonoBehaviour
         StartCoroutine(EndGameTransition());
     }
 
-    public void CollectItem(string itemAbilityName)
+    public void CollectItem(CollectibleItem collectibleItem)
     {
-        currentGameState = GameState.unlockingAbility;
+        m_rb.velocity = new Vector3(0, 0, 0);
+        currentGameState = GameState.collectedItem;
         m_gameScreen.SetActive(false);
         m_itemScreen.SetActive(true);
 
-        if (itemAbilityName == "Dash")
-        {
-            m_itemNameText.text = "Burst Potion";
-            m_itemLoreText.text = "A mysterious potion that grants its user the ability to burst forward.";
-            m_itemDescriptionText.text = "Press S, G, down arrow, or SHIFT to dash in the direction you're facing.";
-        }
-        else if (itemAbilityName == "AirJump")
-        {
-            m_itemNameText.text = "Levitation Potion";
-            m_itemLoreText.text = "A strange potion that grants its user the ability to jump a second time while in the air.";
-            m_itemDescriptionText.text = "Press W, SPACE, or the up arrow to jump in midair.";
-        }
-        else if (itemAbilityName == "WallJump")
-        {
-            m_itemNameText.text = "Sticky Potion";
-            m_itemLoreText.text = "A smelly potion that grants its user the ability to jump off of walls they're holding on to.";
-            m_itemDescriptionText.text = "Pressing W, SPACE, or the up arrow while holding onto a wall will propell you off in the opposite direction.";
-        }
+        m_itemTopText.text = collectibleItem.topText;
+        m_itemNameText.text = collectibleItem.itemName;
+        m_itemLoreText.text = collectibleItem.loreText;
+        m_itemDescriptionText.text = collectibleItem.descriptionText;
+    }
+
+    public void SetLastCheckpoint(GameObject newCheckpoint)
+    {
+        m_lastCheckpoint = newCheckpoint;
+        PlayerPrefs.SetString("Last_Checkpoint", newCheckpoint.name);
     }
 
     private void MovePlayer()
     {
-        if (!PlayerPrefs.HasKey("Last_Checkpoint"))
+        if (m_isTesting)
         {
-            PlayerPrefs.SetInt("Last_Checkpoint", 1);
+            m_player.transform.position = GameObject.Find("Testing_SpawnPosition").transform.position;
         }
-        int checkpoint = PlayerPrefs.GetInt("Last_Checkpoint");
-        m_player.transform.position = GameObject.Find("Checkpoint_" + checkpoint).transform.position;
+        else
+        {
+            m_player.transform.position = m_lastCheckpoint.transform.position;
+        }
+
+        m_rb.velocity = new Vector3(0,0,0);
     }
 
     private IEnumerator EndGameTransition()
@@ -189,6 +215,9 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         MovePlayer();
+
+        yield return new WaitForSeconds(0.2f);
+        
         m_startScreen.SetActive(true);
         m_gameScreen.SetActive(false);
         m_pauseScreen.SetActive(false);

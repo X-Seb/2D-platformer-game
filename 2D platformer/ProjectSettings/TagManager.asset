@@ -15,6 +15,9 @@ TagManager:
   - Air-Jump Item
   - Dash Item
   - Wall-Jump Item
+  - Area
+  - Acid
+  - Tilemap Ground
   layers:
   - Default
   - TransparentFX
@@ -25,7 +28,7 @@ TagManager:
   - colliders
   - Ground
   - Platform
-  - 
+  - Tilemap Ground
   - Decorations
   - 
   - 
@@ -57,6 +60,9 @@ TagManager:
     locked: 0
   - name: Decoration
     uniqueID: 606993801
+    locked: 0
+  - name: Acid
+    uniqueID: 1138489861
     locked: 0
   - name: Ground
     uniqueID: 2733218403

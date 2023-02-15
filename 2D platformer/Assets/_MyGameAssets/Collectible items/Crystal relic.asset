@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e015aa6e181e848a5b37c2f0ba112a98, type: 3}
+  m_Name: Crystal relic
+  m_EditorClassIdentifier: 
+  itemName: Pulsing Crystal
+  itemType: 0
+  abilityName: 
+  relicID: 4
+  topText: You found a
+  loreText: As you approach it, you can feel it's powerful energy pulling you closer.
+    Fascinated by it, you take it along with you.
+  descriptionText: You can still feel its strange vibrations from within your pouch.

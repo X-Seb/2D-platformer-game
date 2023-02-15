@@ -19,6 +19,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private bool m_isAirJumpUnlocked;
     [SerializeField] private bool m_isWallSlideUnlocked;
     [SerializeField] private bool m_isWallJumpUnlocked;
+    [SerializeField] private bool m_isAcidImmunityUnlocked;
     [Header("Input: ")]
     [SerializeField] private float m_axisX = 0f; // Either -1, 0, or 1
     [Header("Movement: ")]
@@ -42,7 +43,8 @@ public class PlayerManager : MonoBehaviour
     [Header("Wall sliding: ")]
     [SerializeField] private bool m_isWallSliding;
     [SerializeField] private float m_wallSlidingSpeed;
-    [SerializeField] private Transform m_wallCheck;
+    [SerializeField] private Transform m_wallCheck1;
+    [SerializeField] private Transform m_wallCheck2;
     [SerializeField] private LayerMask m_wallLayer;
     [Header("Wall jumping: ")]
     [SerializeField] private bool m_isWallJumping;
@@ -60,10 +62,12 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private int m_numberOfDash = 0;
     [Header("Audio: ")]
     [SerializeField] private AudioSource m_playerAudioSource;
+    [SerializeField] private AudioClip m_deathAudioClip;
     [SerializeField] private AudioClip m_jumpAudioClip;
     [SerializeField] private AudioClip m_landAudioClip;
     [SerializeField] private AudioClip m_airJumpAudioClip;
     [SerializeField] private AudioClip m_dashAudioClip;
+    [SerializeField] private AudioClip m_bouncyAudioClip;
     [Header("Player light: ")]
     [SerializeField] private Slider m_lightSlider;
     [SerializeField] private Light2D m_playerLight;
@@ -79,7 +83,15 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float m_decreasingLightSpeedDead;
     [SerializeField] private float m_currentLightIntensity;
     [SerializeField] private float m_currentLightOuterRadius;
-    
+    [Header("Effects: ")]
+    [SerializeField] private TrailRenderer m_mainTrailRenderer;
+    [SerializeField] private bool m_isMainTrailEmmiting = false;
+
+    public enum SoundType
+    {
+        bouncy
+    }
+
     private void Awake()
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
@@ -93,15 +105,26 @@ public class PlayerManager : MonoBehaviour
 
     private void Update()
     {
+        m_isOnWall = IsTouchingWall();
+        m_isOnPlatform = IsOnPlatform();
         m_axisX = InputManager.instance.ReturnAxisX();
         AnimatePlayer();
         AjustPlayerLight();
+
+        if (!m_isMainTrailEmmiting && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            m_mainTrailRenderer.emitting = true;
+            m_isMainTrailEmmiting = true;
+        }
+        else if (m_isMainTrailEmmiting && (GameManager.instance.GetState() != GameManager.GameState.playing || m_isDashing))
+        {
+            m_mainTrailRenderer.emitting = false;
+            m_isMainTrailEmmiting = false;
+        }
     }
 
     private void FixedUpdate()
     {
-        m_isOnWall = IsTouchingWall();
-        m_isOnPlatform = IsOnPlatform();
         IsOnGround();
         TryToWallSlide();
         Move(m_axisX * Time.fixedDeltaTime * m_playerMoveSpeed);
@@ -149,6 +172,10 @@ public class PlayerManager : MonoBehaviour
         {
             m_isLightIncreasing = true;
         }
+        else if (collision.CompareTag("Acid") && !m_isAcidImmunityUnlocked && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            PlayerDied();
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -187,6 +214,7 @@ public class PlayerManager : MonoBehaviour
     private void PlayerDied()
     {
         GameManager.instance.SetState(GameManager.GameState.lose);
+        m_playerAudioSource.PlayOneShot(m_deathAudioClip);
         m_animator.SetBool("isDead", true);
         GameManager.instance.EndGame();
     }
@@ -257,6 +285,18 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    public void PlaySound(SoundType soundType, float volume = 1.0f)
+    {
+        switch (soundType)
+        {
+            case SoundType.bouncy:
+                m_playerAudioSource.PlayOneShot(m_bouncyAudioClip, volume);
+                break;
+            default:
+                break;
+        }
+    }
+
     private void Move(float move)
     {
         //only control the player if grounded or airControl is turned on, you're not dashing, and you're not in the process of wall jumping
@@ -305,7 +345,8 @@ public class PlayerManager : MonoBehaviour
         if (m_isWallSlideUnlocked && m_isOnWall && !m_isGrounded && !m_isDashing && m_axisX != 0)
         {
             m_isWallSliding = true;
-            m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, Mathf.Clamp(m_Rigidbody2D.velocity.y, -m_wallSlidingSpeed, float.MaxValue));
+            //TODO: Fix wall sliding!!!!
+            m_Rigidbody2D.velocity = new Vector2(0, Mathf.Clamp(m_Rigidbody2D.velocity.y, -m_wallSlidingSpeed, float.MaxValue));
         }
         else
         {
@@ -381,6 +422,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         m_Rigidbody2D.velocity = new Vector2(m_wallJumpingDirection * m_wallJumpingPower.x, m_wallJumpingPower.y);
+        m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
 
         if (transform.localScale.x != m_wallJumpingDirection)
         {
@@ -411,9 +453,10 @@ public class PlayerManager : MonoBehaviour
                 m_numberOfAirJumps = m_maxNumberOfAirJumps;
                 m_numberOfDash = m_maxNumberOfDash;
 
-                if (!wasGrounded && m_isGrounded)
+                if (!wasGrounded && m_isGrounded && m_Rigidbody2D.velocity.y <= 0 &&
+                    colliders[i].gameObject.GetComponent<BouncyObject>() == null && GameManager.instance.GetState() == GameManager.GameState.playing)
                 {
-                    m_playerAudioSource.PlayOneShot(m_landAudioClip);
+                    m_playerAudioSource.PlayOneShot(m_landAudioClip, 0.3f);
                 }
             }
         }
@@ -426,7 +469,17 @@ public class PlayerManager : MonoBehaviour
 
     private bool IsTouchingWall()
     {
-        return Physics2D.OverlapCircle(m_wallCheck.position, 0.2f, m_wallLayer);
+        
+        bool isTouchingWall1 = Physics2D.OverlapCircle(m_wallCheck1.position, 0.2f, m_wallLayer);
+        bool isTouchingWall2 = Physics2D.OverlapCircle(m_wallCheck2.position, 0.2f, m_wallLayer);
+        if (isTouchingWall1 || isTouchingWall2)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void UpdatePlayerPowers()
