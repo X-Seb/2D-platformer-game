@@ -140,7 +140,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            PlayerDied();
+            PlayerDied(GameManager.CauseOfDeath.enemy);
         }
         else if (collision.gameObject.CompareTag("Platform") && m_isOnPlatform)
         {
@@ -175,7 +175,7 @@ public class PlayerManager : MonoBehaviour
         }
         else if (collision.CompareTag("Acid") && !m_isAcidImmunityUnlocked && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            PlayerDied();
+            PlayerDied(GameManager.CauseOfDeath.acid);
         }
     }
 
@@ -212,12 +212,12 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void PlayerDied()
+    private void PlayerDied(GameManager.CauseOfDeath causeOfDeath)
     {
         GameManager.instance.SetState(GameManager.GameState.lose);
         m_playerAudioSource.PlayOneShot(m_deathAudioClip);
         m_animator.SetBool("isDead", true);
-        GameManager.instance.EndGame();
+        GameManager.instance.EndGame(causeOfDeath);
     }
 
     private void AnimatePlayer()
@@ -273,7 +273,7 @@ public class PlayerManager : MonoBehaviour
         // If you're at 0% of light, you die
         if (m_lightPercentage <= 0 && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            PlayerDied();
+            PlayerDied(GameManager.CauseOfDeath.darkness);
         }
         else
         {

@@ -22,6 +22,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_itemNameText;
     [SerializeField] private TextMeshProUGUI m_itemLoreText;
     [SerializeField] private TextMeshProUGUI m_itemDescriptionText;
+    [Header("End screen UI elements: ")]
+    [SerializeField] private TextMeshProUGUI m_causeOfDeathText;
+    [SerializeField] private TextMeshProUGUI m_smallerText;
     [Header("Other: ")]
     [SerializeField] private GameState currentGameState;
     [Header("Testing? ")]
@@ -51,6 +54,13 @@ public class GameManager : MonoBehaviour
         crystalRelic,
         bookRelic,
         crownRelic,
+    }
+
+    public enum CauseOfDeath
+    {
+        darkness,
+        acid,
+        enemy
     }
 
     private void Awake()
@@ -157,9 +167,9 @@ public class GameManager : MonoBehaviour
         m_itemScreen.SetActive(false);
     }
 
-    public void EndGame()
+    public void EndGame(CauseOfDeath causeOfDeath)
     {
-        StartCoroutine(EndGameTransition());
+        StartCoroutine(EndGameTransition(causeOfDeath));
     }
 
     public void CollectItem(CollectibleItem collectibleItem)
@@ -195,7 +205,7 @@ public class GameManager : MonoBehaviour
         m_rb.velocity = new Vector3(0,0,0);
     }
 
-    private IEnumerator EndGameTransition()
+    private IEnumerator EndGameTransition(CauseOfDeath causeOfDeath)
     {
         if (PlayerPrefs.HasKey("Death_Count"))
         {
@@ -204,6 +214,22 @@ public class GameManager : MonoBehaviour
         else
         {
             PlayerPrefs.SetInt("Death_Count", 1);
+        }
+
+        if (causeOfDeath == CauseOfDeath.darkness)
+        {
+            m_causeOfDeathText.text = "Consumed by darkness.";
+            m_smallerText.text = "Next time, don't get lost in the dark.";
+        }
+        else if (causeOfDeath == CauseOfDeath.acid)
+        {
+            m_causeOfDeathText.text = "Burned by corrosive acid.";
+            m_smallerText.text = "Who knew corrosive acid could be dangerous?";
+        }
+        else if (causeOfDeath == CauseOfDeath.enemy)
+        {
+            m_causeOfDeathText.text = "Touched something pointy";
+            m_smallerText.text = "Stop doing that!";
         }
 
         PlayerPrefs.Save();

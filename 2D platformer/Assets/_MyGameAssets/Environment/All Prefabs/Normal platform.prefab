@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4220309492179550736}
   - component: {fileID: 147354882268622647}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sprite renderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -205,7 +205,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3556770842824954369}
   - component: {fileID: 7674432214814171719}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Normal platform
   m_TagString: Ground
   m_Icon: {fileID: 0}
