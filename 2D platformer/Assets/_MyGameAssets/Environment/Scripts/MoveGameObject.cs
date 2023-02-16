@@ -14,7 +14,7 @@ public class MoveGameObject : MonoBehaviour
     [SerializeField] private float m_calculatedSpeed;
     [Header("Rotation only: ")]
     [SerializeField] private Transform m_rotationCenter;
-    [SerializeField] private float m_calculatedRadius;
+    [SerializeField] private Vector3 m_rotationAxis;
     [SerializeField] private float m_calculatedAngularVelocity;
     [Header("Teleportation only: ")]
     [SerializeField] private GameObject m_emptyPlatform;
@@ -72,7 +72,8 @@ public class MoveGameObject : MonoBehaviour
 
         else if (m_typeOfMovement == TypeOfMovement.rotation)
         {
-            transform.RotateAround(m_rotationCenter.transform.position, Vector3.up, m_calculatedAngularVelocity * Time.deltaTime);
+            transform.RotateAround(m_rotationCenter.transform.position, m_rotationAxis, m_calculatedAngularVelocity * Time.deltaTime);
+            transform.rotation = Quaternion.identity;
         }
     }
 
