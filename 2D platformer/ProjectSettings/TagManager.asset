@@ -18,6 +18,7 @@ TagManager:
   - Area
   - Acid
   - Tilemap Ground
+  - Inside Of Object
   layers:
   - Default
   - TransparentFX

@@ -60,7 +60,8 @@ public class GameManager : MonoBehaviour
     {
         darkness,
         acid,
-        enemy
+        enemy,
+        insideObject
     }
 
     private void Awake()
@@ -230,6 +231,11 @@ public class GameManager : MonoBehaviour
         {
             m_causeOfDeathText.text = "Touched something pointy";
             m_smallerText.text = "Stop doing that!";
+        }
+        else if (causeOfDeath == CauseOfDeath.insideObject)
+        {
+            m_causeOfDeathText.text = "A platform spawned on you";
+            m_smallerText.text = "You're cut in half now.";
         }
 
         PlayerPrefs.Save();

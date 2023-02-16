@@ -147,6 +147,10 @@ public class PlayerManager : MonoBehaviour
             gameObject.transform.parent = collision.transform;
             m_isOnPlatform = true;
         }
+        else if (collision.gameObject.CompareTag("Inside Of Object") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            PlayerDied(GameManager.CauseOfDeath.insideObject);
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
