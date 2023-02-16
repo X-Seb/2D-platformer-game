@@ -18,6 +18,7 @@ public class MoveGameObject : MonoBehaviour
     [SerializeField] private float m_calculatedAngularVelocity;
     [Header("Teleportation only: ")]
     [SerializeField] private GameObject m_emptyPlatform;
+    private Transform m_targetTrans;
     [Header("Other: ")]
     [SerializeField] private Vector3 m_startPos;
     [SerializeField] private Vector3 m_endPos;
@@ -46,7 +47,8 @@ public class MoveGameObject : MonoBehaviour
 
         else if (m_typeOfMovement == TypeOfMovement.teleportation)
         {
-
+            m_targetTrans.position = m_emptyPlatform.transform.position;
+            StartCoroutine(Teleport());
         }
     }
 
@@ -72,5 +74,20 @@ public class MoveGameObject : MonoBehaviour
         {
             transform.RotateAround(m_rotationCenter.transform.position, Vector3.up, m_calculatedAngularVelocity * Time.deltaTime);
         }
+    }
+
+    private IEnumerator Teleport()
+    {
+        yield return new WaitForSeconds(m_timePerCycle * 0.5f);
+
+        transform.position = m_targetTrans.position;
+        m_emptyPlatform.transform.position = m_startPos;
+
+        yield return new WaitForSeconds(m_timePerCycle * 0.5f);
+
+        transform.position = m_startPos;
+        m_emptyPlatform.transform.position = m_targetTrans.position;
+
+        StartCoroutine(Teleport());
     }
 }
