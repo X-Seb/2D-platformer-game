@@ -242,7 +242,6 @@ public class GameManager : MonoBehaviour
         SetState(GameState.lose);
         m_gameScreen.SetActive(false);
         m_loseScreen.SetActive(true);
-        RelicManager.s_showRelics = true;
 
         yield return new WaitForSeconds(1.5f);
 
