@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5621813810190226159}
   - component: {fileID: 1574446306873205417}
   - component: {fileID: 5621813810190226152}
+  - component: {fileID: 1275130162538294409}
   m_Layer: 8
   m_Name: Moving normal platform
   m_TagString: Platform
@@ -85,6 +86,19 @@ MonoBehaviour:
   m_targetPos: {x: 0, y: 0, z: 0}
   m_startPos: {x: 0, y: 0, z: 0}
   m_endPos: {x: 0, y: 0, z: 0}
+--- !u!114 &1275130162538294409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908449641753017298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4eab81dc207462595733f0442e9e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_difficulty: 0
 --- !u!1 &6637567045735343544
 GameObject:
   m_ObjectHideFlags: 0
