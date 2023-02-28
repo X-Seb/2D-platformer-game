@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
         m_itemScreen.SetActive(false);
 
         MovePlayer();
+        StartCoroutine(StartingGameTransition(3.0f));
     }
 
     public void SetState(GameState newState)
@@ -208,6 +209,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator EndGameTransition(CauseOfDeath causeOfDeath)
     {
+        // Adjust the death count
         if (PlayerPrefs.HasKey("Death_Count"))
         {
             PlayerPrefs.SetInt("Death_Count", PlayerPrefs.GetInt("Death_Count") + 1);
@@ -217,6 +219,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("Death_Count", 1);
         }
 
+        // Display the right text on the death screen
         if (causeOfDeath == CauseOfDeath.darkness)
         {
             m_causeOfDeathText.text = "Consumed by darkness.";
@@ -243,19 +246,26 @@ public class GameManager : MonoBehaviour
         m_gameScreen.SetActive(false);
         m_loseScreen.SetActive(true);
 
+        // Watch yourself explode before going back to the last checkpoint
         yield return new WaitForSeconds(1.5f);
-
         MovePlayer();
 
+        // Activate the starting UI and the start playing in 1 second
         yield return new WaitForSeconds(0.2f);
-        
         m_startScreen.SetActive(true);
         m_gameScreen.SetActive(false);
         m_pauseScreen.SetActive(false);
         m_loseScreen.SetActive(false);
         m_victoryScreen.SetActive(false);
         m_itemScreen.SetActive(false);
+        StartCoroutine(StartingGameTransition(1.0f));
+    }
 
+    private IEnumerator StartingGameTransition(float seconds = 1.0f)
+    {
+        // Resets the player, waits for the time you inputed and then you can start playing
         PlayerManager.instance.StartGame();
+        yield return new WaitForSeconds(seconds);
+        StartPlaying();
     }
 }

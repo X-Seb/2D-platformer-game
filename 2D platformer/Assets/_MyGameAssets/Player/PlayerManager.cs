@@ -200,6 +200,7 @@ public class PlayerManager : MonoBehaviour
         m_lightPercentage = 1;
         UpdatePlayerPowers();
 
+        // Adjust player prefs if you've never played before
         if (!PlayerPrefs.HasKey("Jumps_Count"))
         {
             PlayerPrefs.SetInt("Jumps_Count", 0);
