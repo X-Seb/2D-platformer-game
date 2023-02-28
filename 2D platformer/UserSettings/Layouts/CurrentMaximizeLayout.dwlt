@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 0
-  controlID: 60050
+  controlID: 73148
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -435,9 +435,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 500.9855, y: 67.70273, z: -171.48465}
+    m_Target: {x: 297.49734, y: 16.331665, z: -1.3445517}
     speed: 2
-    m_Value: {x: 500.9855, y: 67.70273, z: -171.48465}
+    m_Value: {x: 297.2632, y: 16.421513, z: -1.3489025}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -488,9 +488,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 173.33409
+    m_Target: 47.906185
     speed: 2
-    m_Value: 173.33409
+    m_Value: 48.341255
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -544,7 +544,7 @@ MonoBehaviour:
     m_LastAppliedPresetName: Default
     m_SaveData: []
   m_SearchFilter:
-    m_NameFilter: cloud
+    m_NameFilter: 
     m_ClassNames: []
     m_AssetLabels: []
     m_AssetBundleNames: []
@@ -556,23 +556,23 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/_MyGameAssets/Environment/Parallax Forest Background
+    - Assets/Pixel Adventure 2/Assets/Enemies/Radish
     m_Globs: []
-    m_OriginalText: cloud
+    m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 85
   m_LastFolders:
-  - Assets/_MyGameAssets/Environment/Parallax Forest Background
+  - Assets/Pixel Adventure 2/Assets/Enemies/Radish
   m_LastFoldersGridSize: 85
   m_LastProjectPath: /Users/seb/Desktop/Unity/Unity Games/2D-platformer-game repo/2D
     platformer
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 460d0100
-    m_LastClickedID: 68934
-    m_ExpandedIDs: 000000004a82000084820000ca82000000ca9a3b
+    scrollPos: {x: 0, y: 67}
+    m_SelectedIDs: b6eb0000
+    m_LastClickedID: 60342
+    m_ExpandedIDs: 000000004a82000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -625,10 +625,10 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: c8b10300
-    m_LastClickedInstanceID: 242120
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: c623000086740000ca7400005cf2000036f10000a4f10000ecba00002aa60000ecb40000
+    m_ExpandedInstanceIDs: c623000086740000ca7400005cf2000036f10000a4f10000ecba00002aa60000ecb400003e180100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2394,7 +2394,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 60046
+  controlID: 73149
 --- !u!114 &18
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -2459,7 +2459,7 @@ MonoBehaviour:
     m_CachedPref: -305
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: 242408
+  m_LastInspectedObjectInstanceID: -1
   m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0
@@ -2542,9 +2542,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1055
-    y: 67
-    width: 456
+    x: 2690
+    y: 30
+    width: 741
     height: 435
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
@@ -2607,10 +2607,10 @@ MonoBehaviour:
     m_SaveData: []
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 688}
-      m_SelectedIDs: e8b20300
-      m_LastClickedID: 242408
-      m_ExpandedIDs: 28bcfdff2635feffb65dfeffd89afefffeaffeffb2c2feff3ed5feff9ad8feffb2f3feff18f4feff4c06ffffcc18ffff4c2effffba99ffffecacffff9eb0ffff02b1ffff34c3ffff92f4fffff8faffff32870000f6880000568d0000a68d0000ae940000ac9500009e630100566401006c64010078780100d87c010022fd0100e6fe0100460302009c0b0200f25f020006f4020012b10300c8b10300deb10300e8b2030072b5030078b50300c2b50300a8b7030098ba0300d6bc0300b8bf0300d0c00300f8c00300
+      scrollPos: {x: 0, y: 956}
+      m_SelectedIDs: a8b70300
+      m_LastClickedID: 243624
+      m_ExpandedIDs: 28bcfdff2635feffb65dfeffd89afefffeaffeffb2c2feff3ed5feff9ad8feffb2f3feff18f4feff4c06ffffcc18ffff4c2effffba99ffffecacffff9eb0ffff02b1ffff34c3ffff92f4fffff8faffff32870000f6880000568d0000a68d0000ae940000ac9500009e630100566401006c64010078780100d87c010022fd0100e6fe0100460302009c0b0200f25f020006f4020012b10300c8b10300deb10300e8b2030072b5030078b50300c2b50300a8b7030098ba0300d6bc0300b8bf0300d0c00300f8c0030024c1030030c10300
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -2626,7 +2626,7 @@ MonoBehaviour:
         m_IsRenaming: 0
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 0}
+        m_ClientGUIView: {fileID: 23}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -2654,10 +2654,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1055
-    y: 523
-    width: 456
-    height: 418
+    x: 2690
+    y: 486
+    width: 741
+    height: 553
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
