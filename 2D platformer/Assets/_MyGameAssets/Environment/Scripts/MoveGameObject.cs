@@ -22,7 +22,7 @@ public class MoveGameObject : MonoBehaviour
     [Header("Other: ")]
     [SerializeField] private Vector3 m_startPos;
     [SerializeField] private Vector3 m_endPos;
-
+    
     private enum TypeOfMovement
     {
         yoyo,
