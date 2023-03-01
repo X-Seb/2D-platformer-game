@@ -4926,7 +4926,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -4951,6 +4951,7 @@ MonoBehaviour:
   m_audioClip: {fileID: 8300000, guid: d1698dd553af8ef4d887bc83b9687173, type: 3}
   m_pfx: {fileID: 2004064509672759480}
   m_isMoving: 0
+  m_direction: {x: 0, y: 0, z: 0}
   m_displacement: {x: 0, y: 0, z: 0}
 --- !u!1 &8383186565025332058
 GameObject:

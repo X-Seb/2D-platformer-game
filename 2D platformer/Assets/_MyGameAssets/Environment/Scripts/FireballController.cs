@@ -21,9 +21,9 @@ public class FireballController : MonoBehaviour
     private void Start()
     {
         m_isMoving = true;
-        float angleX = Mathf.Sin(transform.localRotation.z);
-        float angleY = Mathf.Cos(transform.localRotation.z);
-        m_direction = new Vector3(angleX, angleY, 0);
+        //float angleX = Mathf.Sin(transform.localRotation.z);
+        //float angleY = Mathf.Cos(transform.localRotation.z);
+        //m_direction = new Vector3(0, 1, 0);
     }
 
     void Update()
@@ -35,21 +35,27 @@ public class FireballController : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.CompareTag("Player") || collision.CompareTag("Enemy") || (collision.CompareTag("Ground") && collision.GetComponent<ObjectSpawner>() == null))
+        if (collision.gameObject.CompareTag("Player") ||
+            collision.gameObject.CompareTag("Enemy") ||
+            collision.gameObject.CompareTag("Tilemap Ground") ||
+            collision.gameObject.CompareTag("Platform") ||
+            (collision.gameObject.CompareTag("Ground") && collision.gameObject.GetComponent<ObjectSpawner>() == null))
         {
             Collided();
         }
     }
 
-    public void SetSpeed(float speed)
+    public void Setup(Vector3 direction, float speed)
     {
-        m_speed = speed;
+        this.m_direction = direction;
+        this.m_speed = speed;
     }
 
     private IEnumerator Collided()
     {
+        Debug.Log("Fireball collided!");
         m_audioSource.PlayOneShot(m_audioClip, m_volume);
         m_pfx.Play();
         m_light.intensity = 0.0f;

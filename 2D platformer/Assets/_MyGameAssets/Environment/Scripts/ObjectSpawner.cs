@@ -9,7 +9,7 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private GameObject m_object;
     [SerializeField] private bool m_spawnOnAwake;
     [Tooltip("Only used for fireballs")]
-    [SerializeField] private bool m_setSpeed;
+    [SerializeField] private Vector3 m_direction;
     [SerializeField] private float m_speed;
     [Header("For reference only:")]
     [SerializeField] private bool m_isSpawning;
@@ -29,19 +29,14 @@ public class ObjectSpawner : MonoBehaviour
             m_isSpawning = true;
             StartCoroutine(SpawnObject(m_spawnInterval));
         }
-
-        if (m_setSpeed && m_object.GetComponent<FireballController>() != null)
-        {
-            m_object.GetComponent<FireballController>().SetSpeed(m_speed);
-        }
     }
 
     private IEnumerator SpawnObject(float time)
     {
-        Instantiate(m_object, m_spawnTrans.position, m_spawnTrans.rotation, m_parent.transform);
+        GameObject fireball = Instantiate(m_object, m_spawnTrans.position, m_spawnTrans.rotation, m_parent.transform);
+        fireball.GetComponent<FireballController>().Setup(m_direction, m_speed);
         m_audioSource.PlayOneShot(m_audioClip, m_volume);
         m_pfx.Play();
-        Debug.Log("Spawned new object!");
 
         yield return new WaitForSeconds(time);
         
