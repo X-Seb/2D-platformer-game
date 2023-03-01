@@ -14,7 +14,7 @@ public class AreaController : MonoBehaviour
     [SerializeField] private GameObject m_platforms;
     [SerializeField] private GameObject m_decorations;
 
-    private void Awake()
+    private void Start()
     {
         if (PlayerPrefs.GetInt("Area_" + m_areaID + "_Active") == 1 ||
             PlayerPrefs.GetString("Last_Checkpoint").Substring(0,1) == m_areaID.ToString())
