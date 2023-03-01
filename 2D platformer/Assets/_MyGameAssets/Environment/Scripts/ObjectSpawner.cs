@@ -8,6 +8,9 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private float m_spawnInterval;
     [SerializeField] private GameObject m_object;
     [SerializeField] private bool m_spawnOnAwake;
+    [Tooltip("Only used for fireballs")]
+    [SerializeField] private bool m_setSpeed;
+    [SerializeField] private float m_speed;
     [Header("For reference only:")]
     [SerializeField] private bool m_isSpawning;
     [Header("Effects:")]
@@ -24,7 +27,12 @@ public class ObjectSpawner : MonoBehaviour
         if (m_spawnOnAwake)
         {
             m_isSpawning = true;
-            SpawnObject(m_spawnInterval);
+            StartCoroutine(SpawnObject(m_spawnInterval));
+        }
+
+        if (m_setSpeed && m_object.GetComponent<FireballController>() != null)
+        {
+            m_object.GetComponent<FireballController>().SetSpeed(m_speed);
         }
     }
 

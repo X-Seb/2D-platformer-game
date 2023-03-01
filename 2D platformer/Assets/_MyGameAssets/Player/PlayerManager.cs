@@ -151,10 +151,6 @@ public class PlayerManager : MonoBehaviour
         {
             PlayerDied(GameManager.CauseOfDeath.insideObject);
         }
-        else if (collision.gameObject.CompareTag("Fire") && GameManager.instance.GetState() == GameManager.GameState.playing)
-        {
-            PlayerDied(GameManager.CauseOfDeath.fire);
-        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -184,6 +180,10 @@ public class PlayerManager : MonoBehaviour
         else if (collision.CompareTag("Acid") && !m_isAcidImmunityUnlocked && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             PlayerDied(GameManager.CauseOfDeath.acid);
+        }
+        else if (collision.CompareTag("Fire") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            PlayerDied(GameManager.CauseOfDeath.fire);
         }
     }
 
