@@ -61,7 +61,8 @@ public class GameManager : MonoBehaviour
         darkness,
         acid,
         enemy,
-        insideObject
+        insideObject,
+        fire
     }
 
     private void Awake()
@@ -239,6 +240,11 @@ public class GameManager : MonoBehaviour
         {
             m_causeOfDeathText.text = "A platform spawned on you";
             m_smallerText.text = "You're cut in half now.";
+        }
+        else if (causeOfDeath == CauseOfDeath.fire)
+        {
+            m_causeOfDeathText.text = "You got burned!";
+            m_smallerText.text = "That's hot!";
         }
 
         PlayerPrefs.Save();

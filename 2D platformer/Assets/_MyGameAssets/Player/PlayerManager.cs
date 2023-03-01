@@ -151,6 +151,10 @@ public class PlayerManager : MonoBehaviour
         {
             PlayerDied(GameManager.CauseOfDeath.insideObject);
         }
+        else if (collision.gameObject.CompareTag("Fire") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            PlayerDied(GameManager.CauseOfDeath.fire);
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -325,7 +329,6 @@ public class PlayerManager : MonoBehaviour
         {
             m_isGrounded = false;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_jumpForce);
-            Debug.Log("The player jumped!");
             PlayerPrefs.SetInt("Jumps_Count", PlayerPrefs.GetInt("Jumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_jumpAudioClip);
         }
@@ -336,7 +339,6 @@ public class PlayerManager : MonoBehaviour
         {
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_airJumpForce);
             m_numberOfAirJumps--;
-            Debug.Log("The player air-jumped!");
             PlayerPrefs.SetInt("AirJumps_Count", PlayerPrefs.GetInt("AirJumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
         }
@@ -344,14 +346,12 @@ public class PlayerManager : MonoBehaviour
         // Jump while sliding down a wall
         else if (ctx.performed && m_isWallJumpUnlocked && m_canWallJump && m_isWallSliding && !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            Debug.Log("The player wall-jumped!");
             StartCoroutine(WallJump());
         }
 
         else if (ctx.canceled && m_Rigidbody2D.velocity.y > 0)
         {
             // If player is currently jumping => slow down the player 
-            Debug.Log("Slow down the player.");
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_Rigidbody2D.velocity.y * 0.4f);
         }
     }
