@@ -8,12 +8,13 @@ public class FireballController : MonoBehaviour
     [Header("Important:")]
     [SerializeField] private float m_speed;
     [SerializeField] private float m_volume;
-    [Header("Effects:")]
+    [Header("Other stuff:")]
     [SerializeField] private Light2D m_light;
     [SerializeField] private AudioSource m_audioSource;
     [SerializeField] private AudioClip m_audioClip;
     [SerializeField] private SpriteRenderer m_spriteRenderer;
     [SerializeField] private ParticleSystem m_pfx;
+    [SerializeField] private CircleCollider2D m_collider;
     [Header("For reference only:")]
     [SerializeField] private bool m_isMoving;
     [SerializeField] private Vector3 m_direction;
@@ -54,11 +55,13 @@ public class FireballController : MonoBehaviour
     private IEnumerator Collided()
     {
         Debug.Log("Fireball collided!");
-        m_audioSource.PlayOneShot(m_audioClip, m_volume);
-        m_pfx.Play();
-        m_light.intensity = 0.0f;
         m_isMoving = false;
+        m_collider.enabled = false;
+        m_audioSource.PlayOneShot(m_audioClip, m_volume);
+        m_light.intensity = 0.0f;
         m_spriteRenderer.color = new Color(0, 0, 0, 0);
+
+        m_pfx.Play();
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }
