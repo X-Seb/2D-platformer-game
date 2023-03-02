@@ -27,7 +27,6 @@ public class MoveGameObject : MonoBehaviour
     {
         yoyo,
         rotation,
-        teleportation
     }
 
     private void Start()
@@ -43,12 +42,6 @@ public class MoveGameObject : MonoBehaviour
         else if (m_typeOfMovement == TypeOfMovement.rotation)
         {
             m_calculatedAngularVelocity = 360.0f / m_timePerCycle;
-        }
-
-        else if (m_typeOfMovement == TypeOfMovement.teleportation)
-        {
-            m_targetPos = m_emptyPlatform.transform.position;
-            StartCoroutine(Teleport());
         }
     }
 
@@ -75,22 +68,5 @@ public class MoveGameObject : MonoBehaviour
             transform.RotateAround(m_rotationCenter.transform.position, m_rotationAxis, m_calculatedAngularVelocity * Time.deltaTime);
             transform.rotation = Quaternion.identity;
         }
-    }
-
-    private IEnumerator Teleport()
-    {
-        yield return new WaitForSeconds(m_timePerCycle * 0.5f);
-        Debug.Log("Teleport to empty platform.");
-
-        transform.position = m_targetPos;
-        m_emptyPlatform.transform.position = m_startPos;
-
-        yield return new WaitForSeconds(m_timePerCycle * 0.5f);
-        Debug.Log("Teleport back to starting position");
-
-        transform.position = m_startPos;
-        m_emptyPlatform.transform.position = m_targetPos;
-
-        StartCoroutine(Teleport());
     }
 }
