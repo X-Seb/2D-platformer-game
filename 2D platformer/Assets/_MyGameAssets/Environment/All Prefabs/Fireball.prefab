@@ -4890,6 +4890,7 @@ GameObject:
   - component: {fileID: 8383186564984455767}
   - component: {fileID: 8383186564984455764}
   - component: {fileID: 8383186564984455765}
+  - component: {fileID: 7531080002956799036}
   m_Layer: 0
   m_Name: Fireball
   m_TagString: Fire
@@ -4949,10 +4950,32 @@ MonoBehaviour:
   m_light: {fileID: 8383186565645452777}
   m_audioSource: {fileID: 8383186565025332056}
   m_audioClip: {fileID: 8300000, guid: d1698dd553af8ef4d887bc83b9687173, type: 3}
+  m_spriteRenderer: {fileID: 8383186565793322939}
   m_pfx: {fileID: 2004064509672759480}
   m_isMoving: 0
   m_direction: {x: 0, y: 0, z: 0}
   m_displacement: {x: 0, y: 0, z: 0}
+--- !u!50 &7531080002956799036
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8383186564984455766}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1 &8383186565025332058
 GameObject:
   m_ObjectHideFlags: 0

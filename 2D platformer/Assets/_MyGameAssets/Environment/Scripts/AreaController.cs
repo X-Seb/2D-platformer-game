@@ -6,8 +6,6 @@ public class AreaController : MonoBehaviour
 {
     [Header("Each AreaID must be unique:")]
     [SerializeField] private int m_areaID;
-    [Header("Is the area active?")]
-    [SerializeField] private bool m_isActive;
     [Header("Setup:")]
     [SerializeField] private GameObject m_specialObjects;
     [SerializeField] private GameObject m_enemies;
@@ -19,7 +17,6 @@ public class AreaController : MonoBehaviour
         if (PlayerPrefs.GetInt("Area_" + m_areaID + "_Active") == 1 ||
             PlayerPrefs.GetString("Last_Checkpoint").Substring(0,1) == m_areaID.ToString())
         {
-            m_isActive = true;
             m_specialObjects.SetActive(true);
             m_enemies.SetActive(true);
             m_platforms.SetActive(true);
@@ -27,7 +24,6 @@ public class AreaController : MonoBehaviour
         }
         else
         {
-            m_isActive = false;
             m_specialObjects.SetActive(false);
             m_enemies.SetActive(false);
             m_platforms.SetActive(false);
@@ -40,7 +36,6 @@ public class AreaController : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             PlayerPrefs.SetInt("Area_" + m_areaID + "_Active", 1);
-            m_isActive = true;
             m_specialObjects.SetActive(true);
             m_enemies.SetActive(true);
             m_platforms.SetActive(true);
@@ -53,7 +48,6 @@ public class AreaController : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             PlayerPrefs.SetInt("Area_" + m_areaID + "_Active", 0);
-            m_isActive = false;
             m_specialObjects.SetActive(false);
             m_enemies.SetActive(false);
             m_platforms.SetActive(false);

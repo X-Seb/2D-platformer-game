@@ -12,6 +12,7 @@ public class FireballController : MonoBehaviour
     [SerializeField] private Light2D m_light;
     [SerializeField] private AudioSource m_audioSource;
     [SerializeField] private AudioClip m_audioClip;
+    [SerializeField] private SpriteRenderer m_spriteRenderer;
     [SerializeField] private ParticleSystem m_pfx;
     [Header("For reference only:")]
     [SerializeField] private bool m_isMoving;
@@ -21,9 +22,6 @@ public class FireballController : MonoBehaviour
     private void Start()
     {
         m_isMoving = true;
-        //float angleX = Mathf.Sin(transform.localRotation.z);
-        //float angleY = Mathf.Cos(transform.localRotation.z);
-        //m_direction = new Vector3(0, 1, 0);
     }
 
     void Update()
@@ -43,7 +41,7 @@ public class FireballController : MonoBehaviour
             collision.gameObject.CompareTag("Platform") ||
             (collision.gameObject.CompareTag("Ground") && collision.gameObject.GetComponent<ObjectSpawner>() == null))
         {
-            Collided();
+            StartCoroutine(Collided());
         }
     }
 
@@ -60,6 +58,7 @@ public class FireballController : MonoBehaviour
         m_pfx.Play();
         m_light.intensity = 0.0f;
         m_isMoving = false;
+        m_spriteRenderer.color = new Color(0, 0, 0, 0);
         yield return new WaitForSeconds(1f);
         Destroy(gameObject);
     }

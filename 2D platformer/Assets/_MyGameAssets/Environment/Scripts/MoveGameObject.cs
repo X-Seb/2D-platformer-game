@@ -16,9 +16,6 @@ public class MoveGameObject : MonoBehaviour
     [SerializeField] private Transform m_rotationCenter;
     [SerializeField] private Vector3 m_rotationAxis;
     [SerializeField] private float m_calculatedAngularVelocity;
-    [Header("Teleportation only: ")]
-    [SerializeField] private GameObject m_emptyPlatform;
-    [SerializeField] private Vector3 m_targetPos;
     [Header("Other: ")]
     [SerializeField] private Vector3 m_startPos;
     [SerializeField] private Vector3 m_endPos;

@@ -151,6 +151,11 @@ public class PlayerManager : MonoBehaviour
         {
             PlayerDied(GameManager.CauseOfDeath.insideObject);
         }
+        else if (collision.gameObject.CompareTag("Fire") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            PlayerDied(GameManager.CauseOfDeath.fire);
+        }
+
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -180,10 +185,6 @@ public class PlayerManager : MonoBehaviour
         else if (collision.CompareTag("Acid") && !m_isAcidImmunityUnlocked && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             PlayerDied(GameManager.CauseOfDeath.acid);
-        }
-        else if (collision.CompareTag("Fire") && GameManager.instance.GetState() == GameManager.GameState.playing)
-        {
-            PlayerDied(GameManager.CauseOfDeath.fire);
         }
     }
 
@@ -322,7 +323,6 @@ public class PlayerManager : MonoBehaviour
     public void TryToJump(InputAction.CallbackContext ctx)
     {
         float value = ctx.ReadValue<float>();
-        Debug.Log(value);
         
         // Jump from the ground
         if (ctx.performed && m_isGrounded && !m_isDashing && !m_isWallSliding && GameManager.instance.GetState() == GameManager.GameState.playing)
@@ -331,7 +331,7 @@ public class PlayerManager : MonoBehaviour
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_jumpForce);
             PlayerPrefs.SetInt("Jumps_Count", PlayerPrefs.GetInt("Jumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_jumpAudioClip);
-            TeleportObject.PlayerJumped();
+            GameManager.instance.TeleportRedPlatforms();
         }
 
         // Jump in mid-air
@@ -342,7 +342,7 @@ public class PlayerManager : MonoBehaviour
             m_numberOfAirJumps--;
             PlayerPrefs.SetInt("AirJumps_Count", PlayerPrefs.GetInt("AirJumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
-            TeleportObject.PlayerJumped();
+            GameManager.instance.TeleportRedPlatforms();
         }
 
         // Jump while sliding down a wall

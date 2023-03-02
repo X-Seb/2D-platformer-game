@@ -29,8 +29,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameState currentGameState;
     [Header("Testing? ")]
     [SerializeField] private bool m_isTesting;
-    [Header("Last checkpoint: ")]
+    [Header("For reference only: ")]
     [SerializeField] private GameObject m_lastCheckpoint;
+    [SerializeField] private TeleportObject[] m_teleportingObjects;
 
     //This represents the possible game states
     public enum GameState
@@ -92,6 +93,10 @@ public class GameManager : MonoBehaviour
         m_itemScreen.SetActive(false);
 
         MovePlayer();
+
+        // Get all the teleporting objects
+        m_teleportingObjects = GameObject.FindObjectsOfType<TeleportObject>();
+
         StartCoroutine(StartingGameTransition(3.0f));
     }
 
@@ -206,6 +211,14 @@ public class GameManager : MonoBehaviour
         }
 
         m_rb.velocity = new Vector3(0,0,0);
+    }
+
+    public void TeleportRedPlatforms()
+    {
+        for (int i = 0; i < m_teleportingObjects.Length; i++)
+        {
+            m_teleportingObjects[i].JumpTeleport();
+        }
     }
 
     private IEnumerator EndGameTransition(CauseOfDeath causeOfDeath)

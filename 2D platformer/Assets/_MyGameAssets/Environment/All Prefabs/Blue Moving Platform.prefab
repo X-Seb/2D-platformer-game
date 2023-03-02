@@ -77,7 +77,7 @@ MonoBehaviour:
   m_typeOfMovement: 0
   m_timePerCycle: 0
   m_displacement: {x: 15, y: 0, z: 0}
-  m_isSmooth: 0
+  m_isSmooth: 1
   m_calculatedSpeed: 0
   m_rotationCenter: {fileID: 0}
   m_rotationAxis: {x: 0, y: 0, z: 0}

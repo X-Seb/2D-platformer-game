@@ -35,7 +35,15 @@ public class TeleportObject : MonoBehaviour
             m_targetPos = m_emptyPlatform.transform.position;
             StartCoroutine(Teleport());
         }
+    }
 
+    public void JumpTeleport()
+    {
+        if (m_type == TypeOfTeleportation.whenJump)
+        {
+            Debug.Log("Jump teleport!");
+            StartCoroutine(Teleport());
+        }
     }
 
     private IEnumerator Teleport()
