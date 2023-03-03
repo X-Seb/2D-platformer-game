@@ -17,6 +17,8 @@ public class MoveGameObject : MonoBehaviour
     [SerializeField] private Transform m_rotationCenter;
     [SerializeField] private Vector3 m_rotationAxis;
     [SerializeField] private float m_calculatedAngularVelocity;
+    [Header("One time only:")]
+    [SerializeField] private Vector3 m_displacement1;
     [SerializeField] private int m_direction;
     [Header("Other: ")]
     [SerializeField] private Vector3 m_startPos;
@@ -26,6 +28,7 @@ public class MoveGameObject : MonoBehaviour
     {
         yoyo,
         rotation,
+        oneTime
     }
 
     private void Start()
@@ -50,6 +53,10 @@ public class MoveGameObject : MonoBehaviour
             {
                 m_direction = 1;
             }
+        }
+        else if (m_typeOfMovement == TypeOfMovement.oneTime)
+        {
+
         }
     }
 

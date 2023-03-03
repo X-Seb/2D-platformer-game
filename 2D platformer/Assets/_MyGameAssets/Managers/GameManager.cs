@@ -213,11 +213,19 @@ public class GameManager : MonoBehaviour
         m_rb.velocity = new Vector3(0,0,0);
     }
 
-    public void TeleportRedPlatforms()
+    public void TeleportJumpPlatforms()
     {
         for (int i = 0; i < m_teleportingObjects.Length; i++)
         {
             m_teleportingObjects[i].JumpTeleport();
+        }
+    }
+
+    public void TeleportDashPlatforms()
+    {
+        for (int i = 0; i < m_teleportingObjects.Length; i++)
+        {
+            m_teleportingObjects[i].DashTeleport();
         }
     }
 

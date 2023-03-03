@@ -21,7 +21,8 @@ public class TeleportObject : MonoBehaviour
     enum TypeOfTeleportation
     {
         automatic,
-        whenJump
+        whenJump,
+        whenDash
     }
 
     void Start()
@@ -39,9 +40,18 @@ public class TeleportObject : MonoBehaviour
 
     public void JumpTeleport()
     {
-        if (m_type == TypeOfTeleportation.whenJump)
+        if (m_type == TypeOfTeleportation.whenJump && gameObject.activeInHierarchy)
         {
             Debug.Log("Jump teleport!");
+            StartCoroutine(Teleport());
+        }
+    }
+
+    public void DashTeleport()
+    {
+        if (m_type == TypeOfTeleportation.whenDash && gameObject.activeInHierarchy)
+        {
+            Debug.Log("Dash teleport!");
             StartCoroutine(Teleport());
         }
     }
