@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -139,13 +140,23 @@ public class PlayerManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            PlayerDied();
+            PlayerDied(GameManager.CauseOfDeath.enemy);
         }
         else if (collision.gameObject.CompareTag("Platform") && m_isOnPlatform)
         {
             gameObject.transform.parent = collision.transform;
+            m_Rigidbody2D.velocity = new Vector3(m_Rigidbody2D.velocity.x, 0, 0);
             m_isOnPlatform = true;
         }
+        else if (collision.gameObject.CompareTag("Inside Of Object") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            PlayerDied(GameManager.CauseOfDeath.insideObject);
+        }
+        else if (collision.gameObject.CompareTag("Fire") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            PlayerDied(GameManager.CauseOfDeath.fire);
+        }
+
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -174,7 +185,7 @@ public class PlayerManager : MonoBehaviour
         }
         else if (collision.CompareTag("Acid") && !m_isAcidImmunityUnlocked && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            PlayerDied();
+            PlayerDied(GameManager.CauseOfDeath.acid);
         }
     }
 
@@ -195,6 +206,7 @@ public class PlayerManager : MonoBehaviour
         m_lightPercentage = 1;
         UpdatePlayerPowers();
 
+        // Adjust player prefs if you've never played before
         if (!PlayerPrefs.HasKey("Jumps_Count"))
         {
             PlayerPrefs.SetInt("Jumps_Count", 0);
@@ -211,12 +223,12 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void PlayerDied()
+    private void PlayerDied(GameManager.CauseOfDeath causeOfDeath)
     {
         GameManager.instance.SetState(GameManager.GameState.lose);
         m_playerAudioSource.PlayOneShot(m_deathAudioClip);
         m_animator.SetBool("isDead", true);
-        GameManager.instance.EndGame();
+        GameManager.instance.EndGame(causeOfDeath);
     }
 
     private void AnimatePlayer()
@@ -272,7 +284,7 @@ public class PlayerManager : MonoBehaviour
         // If you're at 0% of light, you die
         if (m_lightPercentage <= 0 && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            PlayerDied();
+            PlayerDied(GameManager.CauseOfDeath.darkness);
         }
         else
         {
@@ -309,34 +321,41 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void TryToJump()
+    public void TryToJump(InputAction.CallbackContext ctx)
     {
+        float value = ctx.ReadValue<float>();
+        
         // Jump from the ground
-        if (m_isGrounded && !m_isDashing && !m_isWallSliding && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (ctx.performed && m_isGrounded && !m_isDashing && !m_isWallSliding && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             m_isGrounded = false;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_jumpForce);
-            Debug.Log("The player jumped!");
             PlayerPrefs.SetInt("Jumps_Count", PlayerPrefs.GetInt("Jumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_jumpAudioClip);
+            GameManager.instance.TeleportRedPlatforms();
         }
 
         // Jump in mid-air
-        else if (m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) && !m_isGrounded && !m_isDashing && !m_isWallJumping && !m_isWallSliding
+        else if (ctx.performed && m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) && !m_isGrounded && !m_isDashing && !m_isWallJumping && !m_isWallSliding
             && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_airJumpForce);
             m_numberOfAirJumps--;
-            Debug.Log("The player air-jumped!");
             PlayerPrefs.SetInt("AirJumps_Count", PlayerPrefs.GetInt("AirJumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
+            GameManager.instance.TeleportRedPlatforms();
         }
 
         // Jump while sliding down a wall
-        else if (m_isWallJumpUnlocked && m_canWallJump && m_isWallSliding && !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (ctx.performed && m_isWallJumpUnlocked && m_canWallJump && m_isWallSliding && !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            Debug.Log("The player wall-jumped!");
             StartCoroutine(WallJump());
+        }
+
+        else if (ctx.canceled && m_Rigidbody2D.velocity.y > 0)
+        {
+            // If player is currently jumping => slow down the player 
+            m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_Rigidbody2D.velocity.y * 0.4f);
         }
     }
 

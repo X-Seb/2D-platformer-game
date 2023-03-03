@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3895804312105616334}
   - component: {fileID: 3895804312105616332}
   - component: {fileID: 3895804312105616333}
+  - component: {fileID: -8857067114340732166}
   m_Layer: 8
   m_Name: Blue Moving Platform
   m_TagString: Platform
@@ -73,10 +74,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2aeb5a46c7f24a6a8f37795f9b38821, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  m_typeOfMovement: 0
+  m_timePerCycle: 0
   m_displacement: {x: 15, y: 0, z: 0}
+  m_isSmooth: 1
+  m_calculatedSpeed: 0
+  m_rotationCenter: {fileID: 0}
+  m_rotationAxis: {x: 0, y: 0, z: 0}
+  m_calculatedAngularVelocity: 0
+  m_emptyPlatform: {fileID: 0}
+  m_targetPos: {x: 0, y: 0, z: 0}
   m_startPos: {x: 0, y: 0, z: 0}
   m_endPos: {x: 0, y: 0, z: 0}
+--- !u!114 &-8857067114340732166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3895804312105616335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4eab81dc207462595733f0442e9e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_difficulty: 0
 --- !u!1 &3895804312588586868
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,7 +281,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -149490629
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ab30a5ba8bf22d24686375e484b073e9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

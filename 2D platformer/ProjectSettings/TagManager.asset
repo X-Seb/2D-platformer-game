@@ -18,6 +18,8 @@ TagManager:
   - Area
   - Acid
   - Tilemap Ground
+  - Inside Of Object
+  - Fire
   layers:
   - Default
   - TransparentFX

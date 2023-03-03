@@ -22,12 +22,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_itemNameText;
     [SerializeField] private TextMeshProUGUI m_itemLoreText;
     [SerializeField] private TextMeshProUGUI m_itemDescriptionText;
+    [Header("End screen UI elements: ")]
+    [SerializeField] private TextMeshProUGUI m_causeOfDeathText;
+    [SerializeField] private TextMeshProUGUI m_smallerText;
     [Header("Other: ")]
     [SerializeField] private GameState currentGameState;
     [Header("Testing? ")]
     [SerializeField] private bool m_isTesting;
-    [Header("Last checkpoint: ")]
+    [Header("For reference only: ")]
     [SerializeField] private GameObject m_lastCheckpoint;
+    [SerializeField] private TeleportObject[] m_teleportingObjects;
 
     //This represents the possible game states
     public enum GameState
@@ -51,6 +55,15 @@ public class GameManager : MonoBehaviour
         crystalRelic,
         bookRelic,
         crownRelic,
+    }
+
+    public enum CauseOfDeath
+    {
+        darkness,
+        acid,
+        enemy,
+        insideObject,
+        fire
     }
 
     private void Awake()
@@ -80,6 +93,11 @@ public class GameManager : MonoBehaviour
         m_itemScreen.SetActive(false);
 
         MovePlayer();
+
+        // Get all the teleporting objects
+        m_teleportingObjects = GameObject.FindObjectsOfType<TeleportObject>();
+
+        StartCoroutine(StartingGameTransition(3.0f));
     }
 
     public void SetState(GameState newState)
@@ -157,9 +175,9 @@ public class GameManager : MonoBehaviour
         m_itemScreen.SetActive(false);
     }
 
-    public void EndGame()
+    public void EndGame(CauseOfDeath causeOfDeath)
     {
-        StartCoroutine(EndGameTransition());
+        StartCoroutine(EndGameTransition(causeOfDeath));
     }
 
     public void CollectItem(CollectibleItem collectibleItem)
@@ -195,8 +213,17 @@ public class GameManager : MonoBehaviour
         m_rb.velocity = new Vector3(0,0,0);
     }
 
-    private IEnumerator EndGameTransition()
+    public void TeleportRedPlatforms()
     {
+        for (int i = 0; i < m_teleportingObjects.Length; i++)
+        {
+            m_teleportingObjects[i].JumpTeleport();
+        }
+    }
+
+    private IEnumerator EndGameTransition(CauseOfDeath causeOfDeath)
+    {
+        // Adjust the death count
         if (PlayerPrefs.HasKey("Death_Count"))
         {
             PlayerPrefs.SetInt("Death_Count", PlayerPrefs.GetInt("Death_Count") + 1);
@@ -206,25 +233,58 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("Death_Count", 1);
         }
 
+        // Display the right text on the death screen
+        if (causeOfDeath == CauseOfDeath.darkness)
+        {
+            m_causeOfDeathText.text = "Consumed by darkness.";
+            m_smallerText.text = "Next time, don't get lost in the dark.";
+        }
+        else if (causeOfDeath == CauseOfDeath.acid)
+        {
+            m_causeOfDeathText.text = "Melted by corrosive acid.";
+            m_smallerText.text = "Who knew corrosive acid could be dangerous?";
+        }
+        else if (causeOfDeath == CauseOfDeath.enemy)
+        {
+            m_causeOfDeathText.text = "Touched something pointy";
+            m_smallerText.text = "Stop doing that!";
+        }
+        else if (causeOfDeath == CauseOfDeath.insideObject)
+        {
+            m_causeOfDeathText.text = "A platform spawned on you";
+            m_smallerText.text = "You're cut in half now.";
+        }
+        else if (causeOfDeath == CauseOfDeath.fire)
+        {
+            m_causeOfDeathText.text = "You got burned!";
+            m_smallerText.text = "That's hot!";
+        }
+
         PlayerPrefs.Save();
         SetState(GameState.lose);
         m_gameScreen.SetActive(false);
         m_loseScreen.SetActive(true);
-        RelicManager.s_showRelics = true;
 
+        // Watch yourself explode before going back to the last checkpoint
         yield return new WaitForSeconds(1.5f);
-
         MovePlayer();
 
+        // Activate the starting UI and the start playing in 1 second
         yield return new WaitForSeconds(0.2f);
-        
         m_startScreen.SetActive(true);
         m_gameScreen.SetActive(false);
         m_pauseScreen.SetActive(false);
         m_loseScreen.SetActive(false);
         m_victoryScreen.SetActive(false);
         m_itemScreen.SetActive(false);
+        StartCoroutine(StartingGameTransition(1.0f));
+    }
 
+    private IEnumerator StartingGameTransition(float seconds = 1.0f)
+    {
+        // Resets the player, waits for the time you inputed and then you can start playing
         PlayerManager.instance.StartGame();
+        yield return new WaitForSeconds(seconds);
+        StartPlaying();
     }
 }
