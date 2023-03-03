@@ -145,6 +145,7 @@ public class PlayerManager : MonoBehaviour
         else if (collision.gameObject.CompareTag("Platform") && m_isOnPlatform)
         {
             gameObject.transform.parent = collision.transform;
+            m_Rigidbody2D.velocity = new Vector3(m_Rigidbody2D.velocity.x, 0, 0);
             m_isOnPlatform = true;
         }
         else if (collision.gameObject.CompareTag("Inside Of Object") && GameManager.instance.GetState() == GameManager.GameState.playing)

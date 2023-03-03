@@ -13,9 +13,11 @@ public class MoveGameObject : MonoBehaviour
     [SerializeField] private bool m_isSmooth;
     [SerializeField] private float m_calculatedSpeed;
     [Header("Rotation only: ")]
+    [SerializeField] private bool m_clockwise;
     [SerializeField] private Transform m_rotationCenter;
     [SerializeField] private Vector3 m_rotationAxis;
     [SerializeField] private float m_calculatedAngularVelocity;
+    [SerializeField] private int m_direction;
     [Header("Other: ")]
     [SerializeField] private Vector3 m_startPos;
     [SerializeField] private Vector3 m_endPos;
@@ -39,6 +41,15 @@ public class MoveGameObject : MonoBehaviour
         else if (m_typeOfMovement == TypeOfMovement.rotation)
         {
             m_calculatedAngularVelocity = 360.0f / m_timePerCycle;
+
+            if (m_clockwise)
+            {
+                m_direction = -1;
+            }
+            else
+            {
+                m_direction = 1;
+            }
         }
     }
 
@@ -62,7 +73,7 @@ public class MoveGameObject : MonoBehaviour
 
         else if (m_typeOfMovement == TypeOfMovement.rotation)
         {
-            transform.RotateAround(m_rotationCenter.transform.position, m_rotationAxis, m_calculatedAngularVelocity * Time.deltaTime);
+            transform.RotateAround(m_rotationCenter.transform.position, m_rotationAxis, m_calculatedAngularVelocity * Time.deltaTime * m_direction);
             transform.rotation = Quaternion.identity;
         }
     }

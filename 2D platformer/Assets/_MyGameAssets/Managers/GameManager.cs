@@ -241,7 +241,7 @@ public class GameManager : MonoBehaviour
         }
         else if (causeOfDeath == CauseOfDeath.acid)
         {
-            m_causeOfDeathText.text = "Burned by corrosive acid.";
+            m_causeOfDeathText.text = "Melted by corrosive acid.";
             m_smallerText.text = "Who knew corrosive acid could be dangerous?";
         }
         else if (causeOfDeath == CauseOfDeath.enemy)
