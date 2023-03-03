@@ -19,12 +19,7 @@ public class FireballController : MonoBehaviour
     [SerializeField] private bool m_isMoving;
     [SerializeField] private Vector3 m_direction;
     [SerializeField] private Vector3 m_displacement;
-
-    private void Start()
-    {
-        m_isMoving = true;
-    }
-
+    
     void Update()
     {
         if (m_isMoving)
@@ -50,7 +45,15 @@ public class FireballController : MonoBehaviour
     {
         this.m_direction = direction;
         this.m_speed = speed;
+
+        // Reset the fireball to it's original state
+        this.m_isMoving = true;
+        gameObject.SetActive(true);
+        m_collider.enabled = true;
+        m_light.intensity = 1.0f;
+        m_spriteRenderer.color = new Color(255, 255, 255, 255);
     }
+
 
     private IEnumerator Collided()
     {
