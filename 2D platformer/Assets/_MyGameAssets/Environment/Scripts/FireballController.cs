@@ -60,9 +60,10 @@ public class FireballController : MonoBehaviour
         m_audioSource.PlayOneShot(m_audioClip, m_volume);
         m_light.intensity = 0.0f;
         m_spriteRenderer.color = new Color(0, 0, 0, 0);
-
         m_pfx.Play();
-        yield return new WaitForSeconds(1f);
-        Destroy(gameObject);
+
+        // Wait before returning it to the pool of objects
+        yield return new WaitForSeconds(1.0f);
+        gameObject.SetActive(false);
     }
 }

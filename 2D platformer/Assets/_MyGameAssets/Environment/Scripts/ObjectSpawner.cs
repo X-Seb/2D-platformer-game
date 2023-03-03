@@ -20,7 +20,6 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private ParticleSystem m_pfx;
     [Header("Setup")]
     [SerializeField] private Transform m_spawnTrans;
-    [SerializeField] private GameObject m_parent;
 
     void Start()
     {
@@ -33,10 +32,16 @@ public class ObjectSpawner : MonoBehaviour
 
     private IEnumerator SpawnObject(float time)
     {
-        GameObject fireball = Instantiate(m_object, m_spawnTrans.position, m_spawnTrans.rotation, m_parent.transform);
-        fireball.GetComponent<FireballController>().Setup(m_direction, m_speed);
-        m_audioSource.PlayOneShot(m_audioClip, m_volume);
-        m_pfx.Play();
+        GameObject fireball = ObjectPooler.instance.GetObject();
+        if (fireball != null)
+        {
+            fireball.SetActive(true);
+            fireball.gameObject.transform.position = m_spawnTrans.position;
+            fireball.gameObject.transform.rotation = m_spawnTrans.rotation;
+            fireball.GetComponent<FireballController>().Setup(m_direction, m_speed);
+            m_audioSource.PlayOneShot(m_audioClip, m_volume);
+            m_pfx.Play();
+        }
 
         yield return new WaitForSeconds(time);
         
