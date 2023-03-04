@@ -84,4 +84,9 @@ public class MoveGameObject : MonoBehaviour
             transform.rotation = Quaternion.identity;
         }
     }
+
+    public void SetCycleTime(float time)
+    {
+        m_timePerCycle = time;
+    }
 }

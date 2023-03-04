@@ -204,8 +204,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4496282154825452647}
-  - component: {fileID: 7330522640728259617}
+  - component: {fileID: 9077644035877854832}
   - component: {fileID: 4496282154825452640}
+  - component: {fileID: 7330522640728259617}
   m_Layer: 8
   m_Name: Rotating platform
   m_TagString: Platform
@@ -230,6 +231,48 @@ Transform:
   m_Father: {fileID: 8448208559326044154}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9077644035877854832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7646722689941529946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4eab81dc207462595733f0442e9e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_difficulty: 0
+  m_changeCycleTime: 0
+  m_easyCycleTime: 0
+  m_mediumCycleTime: 0
+  m_hardCycleTime: 0
+--- !u!114 &4496282154825452640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7646722689941529946}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2aeb5a46c7f24a6a8f37795f9b38821, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_typeOfMovement: 1
+  m_timePerCycle: 5
+  m_displacement: {x: 0, y: 0, z: 0}
+  m_isSmooth: 0
+  m_calculatedSpeed: 0
+  m_clockwise: 0
+  m_rotationCenter: {fileID: 8448208559326044154}
+  m_rotationAxis: {x: 0, y: 0, z: 1}
+  m_calculatedAngularVelocity: 0
+  m_displacement1: {x: 0, y: 0, z: 0}
+  m_direction: 0
+  m_startPos: {x: 0, y: 0, z: 0}
+  m_endPos: {x: 0, y: 0, z: 0}
 --- !u!61 &7330522640728259617
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -256,28 +299,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 3, y: 0.5}
   m_EdgeRadius: 0
---- !u!114 &4496282154825452640
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7646722689941529946}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2aeb5a46c7f24a6a8f37795f9b38821, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_typeOfMovement: 1
-  m_timePerCycle: 5
-  m_displacement: {x: 0, y: 0, z: 0}
-  m_isSmooth: 0
-  m_calculatedSpeed: 0
-  m_rotationCenter: {fileID: 8448208559326044154}
-  m_rotationAxis: {x: 0, y: 0, z: 1}
-  m_calculatedAngularVelocity: 0
-  m_startPos: {x: 0, y: 0, z: 0}
-  m_endPos: {x: 0, y: 0, z: 0}
 --- !u!1 &8448208559326044153
 GameObject:
   m_ObjectHideFlags: 0

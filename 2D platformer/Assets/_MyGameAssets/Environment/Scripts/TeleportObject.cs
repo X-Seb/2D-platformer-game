@@ -37,6 +37,11 @@ public class TeleportObject : MonoBehaviour
         }
     }
 
+    public void SetCycleTime(float time)
+    {
+        m_timePerCycle = time;
+    }
+
     public void JumpTeleport()
     {
         if (m_type == TypeOfTeleportation.whenJump && gameObject.activeInHierarchy)
