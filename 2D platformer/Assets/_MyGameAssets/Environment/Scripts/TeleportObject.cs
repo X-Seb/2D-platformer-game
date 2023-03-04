@@ -16,7 +16,7 @@ public class TeleportObject : MonoBehaviour
     [Header("For reference only")]
     [SerializeField] private Vector3 m_targetPos;
     [SerializeField] private Vector3 m_startPos;
-    [SerializeField] private bool m_isAtOriginalPos;
+    [SerializeField] private bool m_isAtOriginalPos = true;
 
     enum TypeOfTeleportation
     {
@@ -25,9 +25,8 @@ public class TeleportObject : MonoBehaviour
         whenDash
     }
 
-    void Start()
+    private void OnEnable()
     {
-        m_isAtOriginalPos = true;
         m_startPos = transform.position;
         m_targetPos = m_emptyPlatform.transform.position;
 

@@ -11,7 +11,7 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private Vector3 m_direction;
     [SerializeField] private Quaternion m_rotation;
     [Header("For reference only:")]
-    [SerializeField] private bool m_isSpawning;
+    [SerializeField] private bool m_isSpawning = false;
     [Header("Effects:")]
     [SerializeField] private AudioSource m_audioSource;
     [SerializeField] private float m_volume;
@@ -27,6 +27,20 @@ public class ObjectSpawner : MonoBehaviour
             m_isSpawning = true;
             StartCoroutine(SpawnObject(m_spawnInterval));
         }
+    }
+
+    private void OnEnable()
+    {
+        if (m_spawnOnAwake)
+        {
+            m_isSpawning = true;
+            StartCoroutine(SpawnObject(m_spawnInterval));
+        }
+    }
+
+    private void OnDisable()
+    {
+        m_isSpawning = false;
     }
 
     private IEnumerator SpawnObject(float time)
