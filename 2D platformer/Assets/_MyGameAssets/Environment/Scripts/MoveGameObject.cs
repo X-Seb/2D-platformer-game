@@ -28,7 +28,7 @@ public class MoveGameObject : MonoBehaviour
     {
         yoyo,
         rotation,
-        oneTime
+        onCommand
     }
 
     private void Start()
@@ -54,7 +54,7 @@ public class MoveGameObject : MonoBehaviour
                 m_direction = 1;
             }
         }
-        else if (m_typeOfMovement == TypeOfMovement.oneTime)
+        else if (m_typeOfMovement == TypeOfMovement.onCommand)
         {
 
         }

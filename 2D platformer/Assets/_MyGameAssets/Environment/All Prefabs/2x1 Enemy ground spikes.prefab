@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 961537935268277389}
   - component: {fileID: 961537935268277390}
   - component: {fileID: 2399948084616819880}
+  - component: {fileID: 6202358082542723971}
   m_Layer: 0
   m_Name: 2x1 Enemy ground spikes
   m_TagString: Enemy
@@ -72,13 +73,13 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1389580113
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300228, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 0
+  m_DrawMode: 2
   m_Size: {x: 1.03125, y: 0.34375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
@@ -105,9 +106,25 @@ BoxCollider2D:
     oldSize: {x: 1.03125, y: 0.34375}
     newSize: {x: 1.03125, y: 0.34375}
     adaptiveTilingThreshold: 0.5
-    drawMode: 0
+    drawMode: 2
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 0.9346585, y: 0.30137777}
   m_EdgeRadius: 0
+--- !u!114 &6202358082542723971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 961537935268277391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67de61bb6259a48efaf8e5680fcffa73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_length: 0
+  m_height: 0
+  m_spriteRenderer: {fileID: 961537935268277390}
+  m_collider: {fileID: 2399948084616819880}

@@ -5030,7 +5030,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 65
   DopplerLevel: 0
   MinDistance: 5
   MaxDistance: 20

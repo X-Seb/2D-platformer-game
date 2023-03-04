@@ -4945,7 +4945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7663a9ec4b72a484993af5570782788c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_speed: 4
+  m_speed: 5
   m_volume: 1
   m_light: {fileID: 8383186565645452777}
   m_audioSource: {fileID: 8383186565025332056}
@@ -5027,10 +5027,10 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 164
+  Priority: 110
   DopplerLevel: 0
   MinDistance: 1
-  MaxDistance: 15
+  MaxDistance: 20
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0

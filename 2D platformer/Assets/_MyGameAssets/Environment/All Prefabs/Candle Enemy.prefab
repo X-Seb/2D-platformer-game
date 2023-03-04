@@ -82,17 +82,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_spawnInterval: 3
-  m_object: {fileID: 8383186564984455766, guid: 0036b32c8db5d4144a2d11d3fcddf109, type: 3}
+  m_speed: 8
   m_spawnOnAwake: 1
   m_direction: {x: -1, y: 0, z: 0}
-  m_speed: 8
+  m_rotation: {x: 0, y: 0, z: 0, w: 0}
   m_isSpawning: 0
   m_audioSource: {fileID: 1449029537013838692}
   m_volume: 1
   m_audioClip: {fileID: 8300000, guid: fe79a296241334099b9622427a36a916, type: 3}
   m_pfx: {fileID: 1449029536636644261}
   m_spawnTrans: {fileID: 1449029537088007013}
-  m_parent: {fileID: 1449029536418632135}
 --- !u!1 &1449029536240433590
 GameObject:
   m_ObjectHideFlags: 0
@@ -14749,7 +14748,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 143
+  Priority: 75
   DopplerLevel: 0
   MinDistance: 3
   MaxDistance: 15
