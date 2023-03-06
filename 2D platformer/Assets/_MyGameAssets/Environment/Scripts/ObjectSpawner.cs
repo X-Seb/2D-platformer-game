@@ -20,15 +20,6 @@ public class ObjectSpawner : MonoBehaviour
     [Header("Setup")]
     [SerializeField] private Transform m_spawnTrans;
 
-    void Start()
-    {
-        if (m_spawnOnAwake)
-        {
-            m_isSpawning = true;
-            StartCoroutine(SpawnObject(m_spawnInterval));
-        }
-    }
-
     private void OnEnable()
     {
         if (m_spawnOnAwake)
@@ -51,6 +42,7 @@ public class ObjectSpawner : MonoBehaviour
     private IEnumerator SpawnObject(float time)
     {
         GameObject fireball = ObjectPooler.instance.GetObject();
+
         if (fireball != null)
         {
             fireball.SetActive(true);

@@ -20,6 +20,7 @@ TagManager:
   - Tilemap Ground
   - Inside Of Object
   - Fire
+  - Interactable Object
   layers:
   - Default
   - TransparentFX
@@ -74,6 +75,9 @@ TagManager:
     locked: 0
   - name: Enemy
     uniqueID: 1389580113
+    locked: 0
+  - name: Object
+    uniqueID: 2196517349
     locked: 0
   - name: Checkpoint
     uniqueID: 373768511

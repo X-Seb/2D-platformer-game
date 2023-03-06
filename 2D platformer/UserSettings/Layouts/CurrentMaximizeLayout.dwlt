@@ -24,7 +24,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 0
-  controlID: 421
+  controlID: 27947
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -435,9 +435,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 569.5733, y: -95.5455, z: 701.525}
+    m_Target: {x: 8.430366, y: -2.5732048, z: -0.6146259}
     speed: 2
-    m_Value: {x: 569.5733, y: -95.5455, z: 701.525}
+    m_Value: {x: 8.430366, y: -2.5732048, z: -0.6146259}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -480,7 +480,7 @@ MonoBehaviour:
       m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 0.4}
       m_Pivot: {x: 0, y: 0, z: 0}
       m_Size: {x: 0.50001, y: 0.50001}
-    m_ShowGrid: 1
+    m_ShowGrid: 0
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
@@ -488,9 +488,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 57.092064
+    m_Target: 52.632763
     speed: 2
-    m_Value: 57.092064
+    m_Value: 52.632763
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -556,13 +556,13 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/_MyGameAssets/Environment/All Prefabs
+    - Assets/_MyGameAssets/Scenes
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 85
   m_LastFolders:
-  - Assets/_MyGameAssets/Environment/All Prefabs
+  - Assets/_MyGameAssets/Scenes
   m_LastFoldersGridSize: 85
   m_LastProjectPath: /Users/seb/Desktop/Unity/Unity Games/2D-platformer-game repo/2D
     platformer
@@ -570,9 +570,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: f8060100
-    m_LastClickedID: 67320
-    m_ExpandedIDs: 0000000000980000029800000498000006980000089800000a9800000c9800000e98000010980000129800001498000016980000189800001a98000000ca9a3b
+    m_SelectedIDs: c89a0000
+    m_LastClickedID: 39624
+    m_ExpandedIDs: 0000000000980000029800000498000006980000089800000a9800000c9800000e98000010980000129800001498000016980000189800001a980000c89a000050d3000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -600,7 +600,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000000980000029800000498000006980000089800000a9800000c9800000e98000010980000129800001498000016980000189800001a980000
+    m_ExpandedIDs: 0000000000980000029800000498000006980000089800000a9800000c9800000e98000010980000129800001498000016980000189800001a980000c89a000050d3000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -625,8 +625,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 60befeff3ebefeff1cbefeff
-    m_LastClickedInstanceID: -82404
+    m_SelectedInstanceIDs: c8e50000
+    m_LastClickedInstanceID: 58824
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c623000086740000ca7400005cf2000036f10000a4f10000ecba00002aa60000ecb4000048380100
     m_RenameOverlay:
@@ -676,10 +676,10 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 1512
-    y: 30
-    width: 959
-    height: 1009
+    x: 0
+    y: 67
+    width: 1011
+    height: 874
   m_ViewDataDictionary: {fileID: 0}
   m_OverlayCanvas:
     m_LastAppliedPresetName: Default
@@ -2397,7 +2397,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 200}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 417
+  controlID: 27920
 --- !u!114 &17
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -2583,7 +2583,7 @@ MonoBehaviour:
     m_SaveData: []
   m_LockTracker:
     m_IsLocked: 0
-  m_LastSelectedObjectID: 32456
+  m_LastSelectedObjectID: 487506
 --- !u!114 &23
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -2594,7 +2594,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: GridPaintPaletteWindow
+  m_Name: SceneHierarchyWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -2603,14 +2603,14 @@ MonoBehaviour:
     y: 431
     width: 500
     height: 464
-  m_MinSize: {x: 241, y: 221}
+  m_MinSize: {x: 201, y: 221}
   m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 25}
+  m_ActualView: {fileID: 24}
   m_Panes:
   - {fileID: 24}
   - {fileID: 25}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &24
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -2641,24 +2641,24 @@ MonoBehaviour:
     m_SaveData: []
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 64}
+      scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: e6effefff8faffffd8750000b07a00001c7e0000e0870000e8870000228800002a88000032880000381f0300442b0300f62c0300e03b0300104a0300804e0300884e0300
+      m_ExpandedIDs: 6209fcffb032fcffb062fcff4666fcff0e8efcff6ebbfcffbcf0fcff4422fdffb655fdff2c5cfdffa8d4fdffb0d4fdff183ffeffe6effeff5edffffff8faffffd8750000b07a00001a7d00001c7e0000e08700001e880000228800002a88000032880000381f0300442b0300f62c0300e03b0300104a0300804e0300884e030094c3060036c406007c01070042020700ca110700561407005e1407000a1d0700d01d07005c250700582d07005e380700b0400700c8530700f4580700666a0700926f070022970700c4970700b4a00700b0b20700c4b207008eb3070096b307007eb7070024e40700c6e40700
       m_RenameOverlay:
         m_UserAcceptedRename: 0
-        m_Name: Light 2D
-        m_OriginalName: Light 2D
+        m_Name: 
+        m_OriginalName: 
         m_EditFieldRect:
           serializedVersion: 2
           x: 0
           y: 0
           width: 0
           height: 0
-        m_UserData: 216912
+        m_UserData: 0
         m_IsWaitingForDelay: 0
         m_IsRenaming: 0
-        m_OriginalEventType: 0
+        m_OriginalEventType: 11
         m_IsRenamingFilename: 0
         m_ClientGUIView: {fileID: 23}
       m_SearchString: 

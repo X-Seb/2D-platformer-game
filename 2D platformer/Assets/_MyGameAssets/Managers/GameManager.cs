@@ -69,19 +69,20 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
 
-    private void Start()
-    {
         if (PlayerPrefs.HasKey("Last_Checkpoint"))
         {
             m_lastCheckpoint = GameObject.Find(PlayerPrefs.GetString("Last_Checkpoint"));
         }
         else
         {
-            m_lastCheckpoint = GameObject.Find("Starting_Checkpoint");
+            m_lastCheckpoint = GameObject.Find("1_StartingCheckpoint");
             PlayerPrefs.SetString("Last_Checkpoint", m_lastCheckpoint.name);
         }
+    }
+
+    private void Start()
+    {
 
         Time.timeScale = 1.0f;
         SetState(GameState.start);

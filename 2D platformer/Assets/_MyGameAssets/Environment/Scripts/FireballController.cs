@@ -57,7 +57,6 @@ public class FireballController : MonoBehaviour
 
     private IEnumerator Collided()
     {
-        Debug.Log("Fireball collided!");
         m_isMoving = false;
         m_collider.enabled = false;
         m_audioSource.PlayOneShot(m_audioClip, m_volume);
