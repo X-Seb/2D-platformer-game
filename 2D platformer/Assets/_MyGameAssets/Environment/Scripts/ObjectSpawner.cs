@@ -43,6 +43,11 @@ public class ObjectSpawner : MonoBehaviour
         m_isSpawning = false;
     }
 
+    public void SetSpawnInterval(float time)
+    {
+        m_spawnInterval = time;
+    }
+
     private IEnumerator SpawnObject(float time)
     {
         GameObject fireball = ObjectPooler.instance.GetObject();

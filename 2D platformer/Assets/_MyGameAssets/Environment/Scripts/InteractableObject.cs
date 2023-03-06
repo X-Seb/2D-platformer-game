@@ -5,8 +5,6 @@ using UnityEngine;
 public class InteractableObject : MonoBehaviour
 {
     [SerializeField] Type m_type;
-    [SerializeField]
-
 
     private enum Type
     {
@@ -19,7 +17,7 @@ public class InteractableObject : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            // move the other object.
+            Debug.Log("Player triggered: " + gameObject.name);
         }
     }
 }

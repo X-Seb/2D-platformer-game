@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1449029536225400993}
-  - component: {fileID: 1449029536225401006}
+  - component: {fileID: 614121200410934743}
   - component: {fileID: 1449029536225401007}
+  - component: {fileID: 1449029536225401006}
   m_Layer: 0
   m_Name: Candle Enemy
   m_TagString: Ground
@@ -43,6 +44,46 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &614121200410934743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449029536225400992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4eab81dc207462595733f0442e9e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_difficulty: 0
+  m_changeCycleTime: 0
+  m_easyCycleTime: 1
+  m_mediumCycleTime: 1
+  m_hardCycleTime: 1
+--- !u!114 &1449029536225401007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449029536225400992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c910929b288a5443bbee3eebda170380, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_spawnInterval: 3
+  m_speed: 8
+  m_spawnOnAwake: 1
+  m_direction: {x: -1, y: 0, z: 0}
+  m_rotation: {x: 0, y: 0, z: 0, w: 0}
+  m_isSpawning: 0
+  m_audioSource: {fileID: 1449029537013838692}
+  m_volume: 1
+  m_audioClip: {fileID: 8300000, guid: fe79a296241334099b9622427a36a916, type: 3}
+  m_pfx: {fileID: 1449029536636644261}
+  m_spawnTrans: {fileID: 1449029537088007013}
 --- !u!61 &1449029536225401006
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -69,29 +110,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.2, y: 1.6}
   m_EdgeRadius: 0
---- !u!114 &1449029536225401007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1449029536225400992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c910929b288a5443bbee3eebda170380, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_spawnInterval: 3
-  m_speed: 8
-  m_spawnOnAwake: 1
-  m_direction: {x: -1, y: 0, z: 0}
-  m_rotation: {x: 0, y: 0, z: 0, w: 0}
-  m_isSpawning: 0
-  m_audioSource: {fileID: 1449029537013838692}
-  m_volume: 1
-  m_audioClip: {fileID: 8300000, guid: fe79a296241334099b9622427a36a916, type: 3}
-  m_pfx: {fileID: 1449029536636644261}
-  m_spawnTrans: {fileID: 1449029537088007013}
 --- !u!1 &1449029536240433590
 GameObject:
   m_ObjectHideFlags: 0

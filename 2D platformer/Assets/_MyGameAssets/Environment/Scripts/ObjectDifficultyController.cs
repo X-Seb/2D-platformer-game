@@ -7,15 +7,12 @@ public class ObjectDifficultyController : MonoBehaviour
 {
     [Header("The game object will be destroyed if you're playing at a different difficulty.")]
     [SerializeField] private Difficulty m_difficulty;
-    [Header("For cycle time of moving/teleporting objects can also be changed")]
+    [Header("For cycle time of moving/teleporting/spawning objects can also be changed")]
     [SerializeField] private bool m_changeCycleTime;
     [SerializeField] private float m_easyCycleTime;
     [SerializeField] private float m_mediumCycleTime;
     [SerializeField] private float m_hardCycleTime;
     private int difficulty;
-    //[Header("The speed of the object can also be changed.")]
-    //[SerializeField] private bool m_changeSpeed;
-    //[SerializeField] 
 
     private enum Difficulty
     {
@@ -93,6 +90,25 @@ public class ObjectDifficultyController : MonoBehaviour
             {
                 teleportObject.SetCycleTime(m_easyCycleTime);
             }
+        }
+        else if (gameObject.GetComponent<ObjectSpawner>() != null)
+        {
+            ObjectSpawner objectSpawner = gameObject.GetComponent<ObjectSpawner>();
+
+            if (difficulty == 0)
+            {
+                objectSpawner.SetSpawnInterval(m_hardCycleTime);
+            }
+            else if (difficulty == 1)
+            {
+                objectSpawner.SetSpawnInterval(m_mediumCycleTime);
+            }
+            else if (difficulty == 2)
+            {
+                objectSpawner.SetSpawnInterval(m_easyCycleTime);
+            }
+
+
         }
     }
 }
