@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject m_lastCheckpoint;
     [SerializeField] private TeleportObject[] m_teleportingObjects;
 
-    //This represents the possible game states
+    #region enums
     public enum GameState
     {
         start,
@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
         insideObject,
         fire
     }
+    #endregion
 
     private void Awake()
     {
@@ -296,4 +297,20 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         StartPlaying();
     }
+
+    #region Editor stuff
+
+    public void SwitchTesting()
+    {
+        if (m_isTesting)
+        {
+            m_isTesting = false;
+        }
+        else
+        {
+            m_isTesting = true;
+        }
+    }
+
+    #endregion
 }

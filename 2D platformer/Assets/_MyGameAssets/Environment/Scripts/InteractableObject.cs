@@ -9,14 +9,17 @@ public class InteractableObject : MonoBehaviour
     [Header("Events: ")]
     [SerializeField] private UnityEvent m_activateEvent;
     [SerializeField] private UnityEvent m_disableEvent;
-    [Header("Set info: ")]
+    [Header("Essential info: ")]
     [SerializeField] Type m_type;
     [Header("For timer only: ")]
     [SerializeField] private float m_waitTime;
     [Header("For reference only: ")]
     [SerializeField] private bool m_isActivated;
+    [SerializeField] private bool m_justActivated;
     [SerializeField] private bool m_isWaiting;
     [Header("Setup: ")]
+    [SerializeField] private Color m_onColor;
+    [SerializeField] private Color m_offColor;
     [SerializeField] private SpriteRenderer m_spriteRenderer;
     [SerializeField] private Sprite m_onSprite;
     [SerializeField] private Sprite m_offSprite;
@@ -47,6 +50,23 @@ public class InteractableObject : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        if (PlayerPrefs.HasKey(gameObject.name + "_Activated") && PlayerPrefs.GetInt(gameObject.name + "_Activated") == 1)
+        {
+            m_isActivated = true;
+            m_spriteRenderer.sprite = m_onSprite;
+            m_light.color = m_onColor;
+            m_activateEvent.Invoke();
+        }
+        else
+        {
+            m_isActivated = false;
+            m_spriteRenderer.sprite = m_offSprite;
+            m_light.color = m_offColor;
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
@@ -57,7 +77,7 @@ public class InteractableObject : MonoBehaviour
             }
             else if (m_type == Type.onOff)
             {
-                if (m_isActivated)
+                if (m_isActivated && !m_justActivated)
                 {
                     Deactivate();
                 }
@@ -82,9 +102,11 @@ public class InteractableObject : MonoBehaviour
         m_spriteRenderer.sprite = m_onSprite;
         m_audioSource.PlayOneShot(m_onAudioClip, m_volume);
         m_pfx.Play();
-        m_light.color = new Color(0, 230, 0, 255);
+        m_light.color = m_onColor;
+
         m_activateEvent.Invoke();
         m_isActivated = true;
+        PlayerPrefs.SetInt(gameObject.name + "_Activated", 1);
     }
 
     private void Deactivate()
@@ -92,9 +114,18 @@ public class InteractableObject : MonoBehaviour
         m_spriteRenderer.sprite = m_offSprite;
         m_audioSource.PlayOneShot(m_offAudioClip, m_volume);
         m_pfx.Play();
-        m_light.color = new Color(230, 0, 0, 255);
+        m_light.color = m_offColor;
+
         m_disableEvent.Invoke();
         m_isActivated = false;
+        PlayerPrefs.SetInt(gameObject.name + "_Activated", 1);
+    }
+
+    private IEnumerator StartDelay()
+    {
+        m_justActivated = true;
+        yield return new WaitForSeconds(0.5f);
+        m_justActivated = false;
     }
 
     private IEnumerator StartTimer()
