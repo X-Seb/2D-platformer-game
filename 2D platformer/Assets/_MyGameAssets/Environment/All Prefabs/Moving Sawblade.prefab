@@ -282,6 +282,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_difficulty: 0
+  m_changeCycleTime: 0
+  m_easyCycleTime: 0
+  m_mediumCycleTime: 0
+  m_hardCycleTime: 0
 --- !u!114 &3156628627393717356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -299,9 +303,11 @@ MonoBehaviour:
   m_displacement: {x: 0, y: 7, z: 0}
   m_isSmooth: 1
   m_calculatedSpeed: 0
+  m_clockwise: 0
   m_rotationCenter: {fileID: 0}
   m_rotationAxis: {x: 0, y: 0, z: 0}
   m_calculatedAngularVelocity: 0
+  m_displacement1: {x: 0, y: 0, z: 0}
   m_startPos: {x: 0, y: 0, z: 0}
   m_endPos: {x: 0, y: 0, z: 0}
 --- !u!1 &5661640260250123550
@@ -348,7 +354,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 67d89f2dd34e04a5b9d8de569a048bc7, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 1
   Mute: 0

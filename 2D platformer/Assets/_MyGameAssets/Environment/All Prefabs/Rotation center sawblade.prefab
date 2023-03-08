@@ -292,7 +292,6 @@ MonoBehaviour:
   m_rotationAxis: {x: 0, y: 0, z: 1}
   m_calculatedAngularVelocity: 0
   m_displacement1: {x: 0, y: 0, z: 0}
-  m_direction: 0
   m_startPos: {x: 0, y: 0, z: 0}
   m_endPos: {x: 0, y: 0, z: 0}
 --- !u!58 &1292446797407685337
@@ -355,7 +354,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 67d89f2dd34e04a5b9d8de569a048bc7, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 1
   Mute: 0

@@ -20,6 +20,7 @@ public class TriggerObject : MonoBehaviour
     {
         if (gameObject.transform.localScale == m_zero)
         {
+            Debug.Log("Destroyed " + gameObject.name);
             Destroy(gameObject);
         }
         else if (m_isShrinking)
@@ -28,6 +29,11 @@ public class TriggerObject : MonoBehaviour
             m_yScale -= m_decreasingSpeed * Time.deltaTime;
             gameObject.transform.localScale = new Vector3(m_xScale, m_yScale, 1);
         }
+    }
+
+    public void DestroyObject()
+    {
+        Destroy(gameObject);
     }
 
     public void ShrinkDestroy(float speed)
