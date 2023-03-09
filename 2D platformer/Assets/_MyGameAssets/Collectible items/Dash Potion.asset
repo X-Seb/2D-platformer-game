@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Burst Potion
   itemType: 1
+  collectedSFX: {fileID: 8300000, guid: 4253ea676060e49dd9488f73d692ea2a, type: 3}
   abilityName: Dash
   relicID: 0
+  keyID: 0
   topText: You drank the
   loreText: A mysterious potion that grants its user the ability to burst forward.
   descriptionText: Press S, G, down arrow, or SHIFT to dash in the direction you're

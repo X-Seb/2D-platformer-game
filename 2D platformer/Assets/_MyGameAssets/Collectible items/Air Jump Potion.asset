@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Levitation Potion
   itemType: 1
+  collectedSFX: {fileID: 8300000, guid: 4253ea676060e49dd9488f73d692ea2a, type: 3}
   abilityName: AirJump
   relicID: 0
+  keyID: 0
   topText: You drank the
   loreText: A strange potion that grants its user the ability to jump a second time
     while in the air.

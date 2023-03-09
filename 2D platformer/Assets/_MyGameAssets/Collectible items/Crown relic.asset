@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Old Crown
   itemType: 0
+  collectedSFX: {fileID: 8300000, guid: 61e73f3e692c640eb9f9c7ee724ac862, type: 3}
   abilityName: 
   relicID: 0
+  keyID: 0
   topText: You found an
   loreText: Despite its age, it still shines. It's probably worth something... Right?
     You pack it along with your other stuff.

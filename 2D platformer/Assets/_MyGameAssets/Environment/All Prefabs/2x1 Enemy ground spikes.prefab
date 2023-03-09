@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 961537935268277389}
   - component: {fileID: 961537935268277390}
   - component: {fileID: 2399948084616819880}
-  - component: {fileID: 6202358082542723971}
   m_Layer: 0
   m_Name: 2x1 Enemy ground spikes
   m_TagString: Enemy
@@ -112,19 +111,3 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9346585, y: 0.30137777}
   m_EdgeRadius: 0
---- !u!114 &6202358082542723971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 961537935268277391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67de61bb6259a48efaf8e5680fcffa73, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_length: 0
-  m_height: 0
-  m_spriteRenderer: {fileID: 961537935268277390}
-  m_collider: {fileID: 2399948084616819880}

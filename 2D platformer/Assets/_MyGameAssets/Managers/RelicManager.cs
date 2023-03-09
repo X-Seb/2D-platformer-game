@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class RelicManager : MonoBehaviour
 {
+    public static RelicManager instance;
     [Header("Important relic info: ")]
     [SerializeField] private int m_relicCount;
     [SerializeField] public static bool s_showRelics = false;
@@ -23,6 +24,11 @@ public class RelicManager : MonoBehaviour
     [SerializeField] private Image m_relic4Image;
     [SerializeField] private Image m_relic5Image;
     [SerializeField] private Image m_relic6Image;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     private void Start()
     {

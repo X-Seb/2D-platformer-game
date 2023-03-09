@@ -217,6 +217,7 @@ public class GameManager : MonoBehaviour
 
     public void TeleportJumpPlatforms()
     {
+        Debug.Log("Teleport all red platforms");
         for (int i = 0; i < m_teleportingObjects.Length; i++)
         {
             m_teleportingObjects[i].JumpTeleport();
@@ -225,6 +226,7 @@ public class GameManager : MonoBehaviour
 
     public void TeleportDashPlatforms()
     {
+        Debug.Log("Teleport all yellow platforms");
         for (int i = 0; i < m_teleportingObjects.Length; i++)
         {
             m_teleportingObjects[i].DashTeleport();
@@ -296,6 +298,19 @@ public class GameManager : MonoBehaviour
         PlayerManager.instance.StartGame();
         yield return new WaitForSeconds(seconds);
         StartPlaying();
+    }
+
+    public IEnumerator FadeAudio(AudioSource audioSource, float duration, float targetVolume)
+    {
+        float currentTime = 0;
+        float start = audioSource.volume;
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+            yield return null;
+        }
+        yield break;
     }
 
     #region Editor stuff

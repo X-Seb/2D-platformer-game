@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Big Shiny Coin
   itemType: 0
+  collectedSFX: {fileID: 8300000, guid: 4d8a9d2a4233e4398807206a01cbb9e4, type: 3}
   abilityName: 
   relicID: 3
+  keyID: 0
   topText: You found a
   loreText: After applying lots of force, you manage to turn it over and look at
     it's shiny surface. For some reason, you decide to take it along with you.

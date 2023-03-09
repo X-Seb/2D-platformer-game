@@ -25,10 +25,24 @@ public class TeleportObject : MonoBehaviour
         whenDash
     }
 
+    private void Start()
+    {
+        m_startPos = transform.position;
+        m_targetPos = m_emptyPlatform.transform.position;
+        m_isAtOriginalPos = true;
+
+        if (m_type == TypeOfTeleportation.automatic)
+        {
+            m_targetPos = m_emptyPlatform.transform.position;
+            StartCoroutine(Teleport());
+        }
+    }
+
     private void OnEnable()
     {
         m_startPos = transform.position;
         m_targetPos = m_emptyPlatform.transform.position;
+        m_isAtOriginalPos = true;
 
         if (m_type == TypeOfTeleportation.automatic)
         {
@@ -46,7 +60,6 @@ public class TeleportObject : MonoBehaviour
     {
         if (m_type == TypeOfTeleportation.whenJump && gameObject.activeInHierarchy)
         {
-            Debug.Log("Jump teleport!");
             StartCoroutine(Teleport());
         }
     }
@@ -55,7 +68,6 @@ public class TeleportObject : MonoBehaviour
     {
         if (m_type == TypeOfTeleportation.whenDash && gameObject.activeInHierarchy)
         {
-            Debug.Log("Dash teleport!");
             StartCoroutine(Teleport());
         }
     }

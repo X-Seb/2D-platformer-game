@@ -20,6 +20,15 @@ public class ObjectSpawner : MonoBehaviour
     [Header("Setup")]
     [SerializeField] private Transform m_spawnTrans;
 
+    private void Start()
+    {
+        if (m_spawnOnAwake)
+        {
+            m_isSpawning = true;
+            StartCoroutine(SpawnObject(m_spawnInterval));
+        }
+    }
+
     private void OnEnable()
     {
         if (m_spawnOnAwake)

@@ -341,7 +341,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3037624237188483943}
-  - component: {fileID: 3037624237188483941}
+  - component: {fileID: 6579024507261982404}
   - component: {fileID: 3037624237188483946}
   - component: {fileID: 3037624237188483940}
   m_Layer: 0
@@ -370,7 +370,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3037624237188483941
+--- !u!114 &6579024507261982404
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -379,13 +379,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3037624237188483942}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b254f6cb6a204044b15f01f41371135, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c067e47309a440ad8f981e761fa7e0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_potion: {fileID: 11400000, guid: 82187d69d99084f16b28022e2efec9ef, type: 2}
+  m_item: {fileID: 11400000, guid: 82187d69d99084f16b28022e2efec9ef, type: 2}
   m_audioSource: {fileID: 3037624236761904848}
-  m_audioClip: {fileID: 8300000, guid: 61e73f3e692c640eb9f9c7ee724ac862, type: 3}
-  m_volume: 0.809
+  m_volume: 0.766
   m_light: {fileID: 3037624236330767933}
   m_spriteRenderer: {fileID: 3037624235858907045}
   m_pfx: {fileID: 2728357521907391735}
@@ -412,7 +411,6 @@ MonoBehaviour:
   m_rotationAxis: {x: 0, y: 0, z: 0}
   m_calculatedAngularVelocity: 0
   m_displacement1: {x: 0, y: 0, z: 0}
-  m_direction: 0
   m_startPos: {x: 0, y: 0, z: 0}
   m_endPos: {x: 0, y: 0, z: 0}
 --- !u!61 &3037624237188483940
