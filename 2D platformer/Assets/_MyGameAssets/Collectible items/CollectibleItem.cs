@@ -8,7 +8,8 @@ public class CollectibleItem : ScriptableObject
     public enum itemCategory
     {
         relic,
-        potion
+        potion,
+        key
     }
 
     [Header("General ")]
