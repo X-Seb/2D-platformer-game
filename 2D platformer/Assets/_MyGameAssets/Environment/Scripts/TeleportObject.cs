@@ -16,19 +16,20 @@ public class TeleportObject : MonoBehaviour
     [Header("For reference only")]
     [SerializeField] private Vector3 m_targetPos;
     [SerializeField] private Vector3 m_startPos;
-    [SerializeField] private bool m_isAtOriginalPos;
+    [SerializeField] private bool m_isAtOriginalPos = true;
 
     enum TypeOfTeleportation
     {
         automatic,
-        whenJump
+        whenJump,
+        whenDash
     }
 
-    void Start()
+    private void Start()
     {
-        m_isAtOriginalPos = true;
         m_startPos = transform.position;
         m_targetPos = m_emptyPlatform.transform.position;
+        m_isAtOriginalPos = true;
 
         if (m_type == TypeOfTeleportation.automatic)
         {
@@ -37,11 +38,36 @@ public class TeleportObject : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        m_startPos = transform.position;
+        m_targetPos = m_emptyPlatform.transform.position;
+        m_isAtOriginalPos = true;
+
+        if (m_type == TypeOfTeleportation.automatic)
+        {
+            m_targetPos = m_emptyPlatform.transform.position;
+            StartCoroutine(Teleport());
+        }
+    }
+
+    public void SetCycleTime(float time)
+    {
+        m_timePerCycle = time;
+    }
+
     public void JumpTeleport()
     {
-        if (m_type == TypeOfTeleportation.whenJump)
+        if (m_type == TypeOfTeleportation.whenJump && gameObject.activeInHierarchy)
         {
-            Debug.Log("Jump teleport!");
+            StartCoroutine(Teleport());
+        }
+    }
+
+    public void DashTeleport()
+    {
+        if (m_type == TypeOfTeleportation.whenDash && gameObject.activeInHierarchy)
+        {
             StartCoroutine(Teleport());
         }
     }

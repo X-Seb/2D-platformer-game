@@ -225,8 +225,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1292446797407685338}
-  - component: {fileID: 1292446797407685337}
+  - component: {fileID: 2947014051744623683}
   - component: {fileID: 8409072974893722277}
+  - component: {fileID: 1292446797407685337}
   m_Layer: 0
   m_Name: Moving Sawblade
   m_TagString: Enemy
@@ -252,22 +253,23 @@ Transform:
   m_Father: {fileID: 4979525649716076792}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!58 &1292446797407685337
-CircleCollider2D:
+--- !u!114 &2947014051744623683
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1292446797407685339}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b4eab81dc207462595733f0442e9e4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_difficulty: 0
+  m_changeCycleTime: 0
+  m_easyCycleTime: 1
+  m_mediumCycleTime: 1
+  m_hardCycleTime: 1
 --- !u!114 &8409072974893722277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,9 +291,25 @@ MonoBehaviour:
   m_rotationCenter: {fileID: 4979525649716076792}
   m_rotationAxis: {x: 0, y: 0, z: 1}
   m_calculatedAngularVelocity: 0
-  m_direction: 0
+  m_displacement1: {x: 0, y: 0, z: 0}
   m_startPos: {x: 0, y: 0, z: 0}
   m_endPos: {x: 0, y: 0, z: 0}
+--- !u!58 &1292446797407685337
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292446797407685339}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1
 --- !u!1 &1292446797482111959
 GameObject:
   m_ObjectHideFlags: 0
@@ -336,7 +354,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 67d89f2dd34e04a5b9d8de569a048bc7, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -429,7 +447,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4979525649716076792}
-  - component: {fileID: 4979525649716076794}
   m_Layer: 8
   m_Name: Rotation center sawblade
   m_TagString: Untagged
@@ -453,16 +470,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4979525649716076794
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4979525649716076795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b4eab81dc207462595733f0442e9e4e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_difficulty: 0

@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject m_lastCheckpoint;
     [SerializeField] private TeleportObject[] m_teleportingObjects;
 
-    //This represents the possible game states
+    #region enums
     public enum GameState
     {
         start,
@@ -65,23 +65,25 @@ public class GameManager : MonoBehaviour
         insideObject,
         fire
     }
+    #endregion
 
     private void Awake()
     {
         instance = this;
-    }
 
-    private void Start()
-    {
         if (PlayerPrefs.HasKey("Last_Checkpoint"))
         {
             m_lastCheckpoint = GameObject.Find(PlayerPrefs.GetString("Last_Checkpoint"));
         }
         else
         {
-            m_lastCheckpoint = GameObject.Find("Starting_Checkpoint");
+            m_lastCheckpoint = GameObject.Find("1_StartingCheckpoint");
             PlayerPrefs.SetString("Last_Checkpoint", m_lastCheckpoint.name);
         }
+    }
+
+    private void Start()
+    {
 
         Time.timeScale = 1.0f;
         SetState(GameState.start);
@@ -213,11 +215,21 @@ public class GameManager : MonoBehaviour
         m_rb.velocity = new Vector3(0,0,0);
     }
 
-    public void TeleportRedPlatforms()
+    public void TeleportJumpPlatforms()
     {
+        Debug.Log("Teleport all red platforms");
         for (int i = 0; i < m_teleportingObjects.Length; i++)
         {
             m_teleportingObjects[i].JumpTeleport();
+        }
+    }
+
+    public void TeleportDashPlatforms()
+    {
+        Debug.Log("Teleport all yellow platforms");
+        for (int i = 0; i < m_teleportingObjects.Length; i++)
+        {
+            m_teleportingObjects[i].DashTeleport();
         }
     }
 
@@ -287,4 +299,33 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(seconds);
         StartPlaying();
     }
+
+    public IEnumerator FadeAudio(AudioSource audioSource, float duration, float targetVolume)
+    {
+        float currentTime = 0;
+        float start = audioSource.volume;
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+            yield return null;
+        }
+        yield break;
+    }
+
+    #region Editor stuff
+
+    public void SwitchTesting()
+    {
+        if (m_isTesting)
+        {
+            m_isTesting = false;
+        }
+        else
+        {
+            m_isTesting = true;
+        }
+    }
+
+    #endregion
 }

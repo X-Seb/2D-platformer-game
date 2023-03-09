@@ -12,6 +12,14 @@ public class AreaController : MonoBehaviour
     [SerializeField] private GameObject m_platforms;
     [SerializeField] private GameObject m_decorations;
 
+    private void Awake()
+    {
+        if (!PlayerPrefs.HasKey("Area_" + m_areaID + "_Active"))
+        {
+            PlayerPrefs.SetInt("Area_" + m_areaID + "_Active", 0);
+        }
+    }
+
     private void Start()
     {
         if (PlayerPrefs.GetInt("Area_" + m_areaID + "_Active") == 1 ||

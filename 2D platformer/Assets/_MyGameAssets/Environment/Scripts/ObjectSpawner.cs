@@ -6,13 +6,12 @@ public class ObjectSpawner : MonoBehaviour
 {
     [Header("Important:")]
     [SerializeField] private float m_spawnInterval;
-    [SerializeField] private GameObject m_object;
-    [SerializeField] private bool m_spawnOnAwake;
-    [Tooltip("Only used for fireballs")]
-    [SerializeField] private Vector3 m_direction;
     [SerializeField] private float m_speed;
+    [SerializeField] private bool m_spawnOnAwake;
+    [SerializeField] private Vector3 m_direction;
+    [SerializeField] private Quaternion m_rotation;
     [Header("For reference only:")]
-    [SerializeField] private bool m_isSpawning;
+    [SerializeField] private bool m_isSpawning = false;
     [Header("Effects:")]
     [SerializeField] private AudioSource m_audioSource;
     [SerializeField] private float m_volume;
@@ -20,9 +19,8 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private ParticleSystem m_pfx;
     [Header("Setup")]
     [SerializeField] private Transform m_spawnTrans;
-    [SerializeField] private GameObject m_parent;
 
-    void Start()
+    private void Start()
     {
         if (m_spawnOnAwake)
         {
@@ -31,12 +29,38 @@ public class ObjectSpawner : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        if (m_spawnOnAwake)
+        {
+            m_isSpawning = true;
+            StartCoroutine(SpawnObject(m_spawnInterval));
+        }
+    }
+
+    private void OnDisable()
+    {
+        m_isSpawning = false;
+    }
+
+    public void SetSpawnInterval(float time)
+    {
+        m_spawnInterval = time;
+    }
+
     private IEnumerator SpawnObject(float time)
     {
-        GameObject fireball = Instantiate(m_object, m_spawnTrans.position, m_spawnTrans.rotation, m_parent.transform);
-        fireball.GetComponent<FireballController>().Setup(m_direction, m_speed);
-        m_audioSource.PlayOneShot(m_audioClip, m_volume);
-        m_pfx.Play();
+        GameObject fireball = ObjectPooler.instance.GetObject();
+
+        if (fireball != null)
+        {
+            fireball.SetActive(true);
+            fireball.gameObject.transform.position = m_spawnTrans.position;
+            fireball.gameObject.transform.rotation = m_rotation;
+            fireball.GetComponent<FireballController>().Setup(m_direction, m_speed);
+            m_audioSource.PlayOneShot(m_audioClip, m_volume);
+            m_pfx.Play();
+        }
 
         yield return new WaitForSeconds(time);
         

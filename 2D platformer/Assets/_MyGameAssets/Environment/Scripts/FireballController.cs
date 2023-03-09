@@ -19,12 +19,7 @@ public class FireballController : MonoBehaviour
     [SerializeField] private bool m_isMoving;
     [SerializeField] private Vector3 m_direction;
     [SerializeField] private Vector3 m_displacement;
-
-    private void Start()
-    {
-        m_isMoving = true;
-    }
-
+    
     void Update()
     {
         if (m_isMoving)
@@ -50,19 +45,27 @@ public class FireballController : MonoBehaviour
     {
         this.m_direction = direction;
         this.m_speed = speed;
+
+        // Reset the fireball to it's original state
+        this.m_isMoving = true;
+        gameObject.SetActive(true);
+        m_collider.enabled = true;
+        m_light.intensity = 1.0f;
+        m_spriteRenderer.color = new Color(255, 255, 255, 255);
     }
+
 
     private IEnumerator Collided()
     {
-        Debug.Log("Fireball collided!");
         m_isMoving = false;
         m_collider.enabled = false;
         m_audioSource.PlayOneShot(m_audioClip, m_volume);
         m_light.intensity = 0.0f;
         m_spriteRenderer.color = new Color(0, 0, 0, 0);
-
         m_pfx.Play();
-        yield return new WaitForSeconds(1f);
-        Destroy(gameObject);
+
+        // Wait before returning it to the pool of objects
+        yield return new WaitForSeconds(1.0f);
+        gameObject.SetActive(false);
     }
 }

@@ -78,6 +78,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_difficulty: 0
+  m_changeCycleTime: 0
+  m_easyCycleTime: 0
+  m_mediumCycleTime: 0
+  m_hardCycleTime: 0
 --- !u!114 &2851525681279705274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,10 +459,10 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 137
+  Priority: 100
   DopplerLevel: 0
   MinDistance: 3
-  MaxDistance: 15
+  MaxDistance: 20
   Pan2D: 0
   rolloffMode: 1
   BypassEffects: 0

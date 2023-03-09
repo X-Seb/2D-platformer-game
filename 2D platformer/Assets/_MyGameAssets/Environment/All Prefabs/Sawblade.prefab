@@ -281,6 +281,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_difficulty: 0
+  m_changeCycleTime: 0
+  m_easyCycleTime: 0
+  m_mediumCycleTime: 0
+  m_hardCycleTime: 0
 --- !u!1 &3605741391971852467
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,13 +329,13 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 67d89f2dd34e04a5b9d8de569a048bc7, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.7
   m_Pitch: 1
   Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 164
+  Priority: 135
   DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 15

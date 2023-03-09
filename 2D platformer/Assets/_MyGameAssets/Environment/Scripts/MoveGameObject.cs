@@ -14,10 +14,13 @@ public class MoveGameObject : MonoBehaviour
     [SerializeField] private float m_calculatedSpeed;
     [Header("Rotation only: ")]
     [SerializeField] private bool m_clockwise;
+    private int m_direction;
     [SerializeField] private Transform m_rotationCenter;
     [SerializeField] private Vector3 m_rotationAxis;
     [SerializeField] private float m_calculatedAngularVelocity;
-    [SerializeField] private int m_direction;
+    [Header("One time only:")]
+    [SerializeField] private Vector3 m_displacement1;
+    private bool m_shouldMove;
     [Header("Other: ")]
     [SerializeField] private Vector3 m_startPos;
     [SerializeField] private Vector3 m_endPos;
@@ -26,6 +29,7 @@ public class MoveGameObject : MonoBehaviour
     {
         yoyo,
         rotation,
+        onCommand
     }
 
     private void Start()
@@ -50,6 +54,10 @@ public class MoveGameObject : MonoBehaviour
             {
                 m_direction = 1;
             }
+        }
+        else if (m_typeOfMovement == TypeOfMovement.onCommand)
+        {
+
         }
     }
 
@@ -76,5 +84,15 @@ public class MoveGameObject : MonoBehaviour
             transform.RotateAround(m_rotationCenter.transform.position, m_rotationAxis, m_calculatedAngularVelocity * Time.deltaTime * m_direction);
             transform.rotation = Quaternion.identity;
         }
+    }
+
+    public void MoveTo()
+    {
+
+    }
+
+    public void SetCycleTime(float time)
+    {
+        m_timePerCycle = time;
     }
 }

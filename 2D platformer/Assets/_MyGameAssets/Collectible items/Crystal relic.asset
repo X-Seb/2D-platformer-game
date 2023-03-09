@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Pulsing Crystal
   itemType: 0
+  collectedSFX: {fileID: 8300000, guid: 61e73f3e692c640eb9f9c7ee724ac862, type: 3}
   abilityName: 
   relicID: 4
+  keyID: 0
   topText: You found a
   loreText: As you approach it, you can feel it's powerful energy pulling you closer.
     Fascinated by it, you take it along with you.

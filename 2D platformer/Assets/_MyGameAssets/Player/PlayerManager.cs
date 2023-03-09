@@ -27,6 +27,7 @@ public class PlayerManager : MonoBehaviour
     [Range(0, 200)][SerializeField] private float m_playerMoveSpeed = 80f; // How fast the player can move.
     [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f; // How much to smooth out the movement
     [SerializeField] private bool m_isAirControlAllowed = false; // If the player can move horizontally while in the air.
+    [SerializeField] private float m_maxFallVelocity;
     [SerializeField] private Vector3 m_targetMoveVelocity = Vector3.zero;
     [Header("Jumping: ")]
     [Range(0, 50)][SerializeField] private float m_jumpForce = 25f; // Amount of force added when the player jumps.
@@ -121,6 +122,11 @@ public class PlayerManager : MonoBehaviour
         {
             m_mainTrailRenderer.emitting = false;
             m_isMainTrailEmmiting = false;
+        }
+
+        if (m_Rigidbody2D.velocity.y < m_maxFallVelocity)
+        {
+            m_Rigidbody2D.velocity = new Vector3(m_Rigidbody2D.velocity.x, m_maxFallVelocity, 0);
         }
     }
 
@@ -332,7 +338,7 @@ public class PlayerManager : MonoBehaviour
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_jumpForce);
             PlayerPrefs.SetInt("Jumps_Count", PlayerPrefs.GetInt("Jumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_jumpAudioClip);
-            GameManager.instance.TeleportRedPlatforms();
+            GameManager.instance.TeleportJumpPlatforms();
         }
 
         // Jump in mid-air
@@ -343,7 +349,7 @@ public class PlayerManager : MonoBehaviour
             m_numberOfAirJumps--;
             PlayerPrefs.SetInt("AirJumps_Count", PlayerPrefs.GetInt("AirJumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
-            GameManager.instance.TeleportRedPlatforms();
+            GameManager.instance.TeleportJumpPlatforms();
         }
 
         // Jump while sliding down a wall
@@ -403,6 +409,9 @@ public class PlayerManager : MonoBehaviour
         m_canDash = false;
         m_isDashing = true;
         m_animator.SetBool("isDashing", true);
+
+        // Teleport the dash platforms:
+        GameManager.instance.TeleportDashPlatforms();
 
         //Remove gravity for now
         float originalGravity = m_Rigidbody2D.gravityScale;
