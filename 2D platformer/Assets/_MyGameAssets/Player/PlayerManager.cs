@@ -56,7 +56,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private Vector2 m_wallJumpingPower = new Vector2(8.0f, 16.0f);
     [Header("Reference information: ")]
     [SerializeField] private bool m_isGrounded;  // Whether or not the player is grounded.
-    [SerializeField] private const float k_GroundedRadius = .2f; // Radius of the overlap circle to determine if grounded
+    [SerializeField] private const float k_GroundedRadius = 0.4f; // Radius of the overlap circle to determine if grounded
     [SerializeField] private bool m_isOnPlatform;
     [SerializeField] private bool m_isOnWall;
     [SerializeField] private bool m_isFacingRight = true; // For determining which way the player is currently facing.
@@ -492,7 +492,7 @@ public class PlayerManager : MonoBehaviour
 
     private bool IsOnPlatform()
     {
-        return Physics2D.OverlapCircle(m_groundCheck.position, 0.2f, m_movingPlatformLayer);
+        return Physics2D.OverlapCircle(m_groundCheck.position, k_GroundedRadius, m_movingPlatformLayer);
     }
 
     private bool IsTouchingWall()
