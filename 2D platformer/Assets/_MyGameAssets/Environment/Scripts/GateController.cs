@@ -72,7 +72,6 @@ public class GateController : MonoBehaviour
         //m_pfx.Play();
 
         PlayerPrefs.SetInt("Gate_" + m_gateID + "_Unlocked", 1);
-        Debug.Log("Gate " + m_gateID + " opened!");
         yield return null;
     }
 }
