@@ -33,7 +33,6 @@ public class TeleportObject : MonoBehaviour
 
         if (m_type == TypeOfTeleportation.automatic)
         {
-            m_targetPos = m_emptyPlatform.transform.position;
             StartCoroutine(Teleport());
         }
     }
@@ -46,7 +45,6 @@ public class TeleportObject : MonoBehaviour
 
         if (m_type == TypeOfTeleportation.automatic)
         {
-            m_targetPos = m_emptyPlatform.transform.position;
             StartCoroutine(Teleport());
         }
     }
