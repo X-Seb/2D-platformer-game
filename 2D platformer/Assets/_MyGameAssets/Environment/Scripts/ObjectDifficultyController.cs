@@ -51,13 +51,19 @@ public class ObjectDifficultyController : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        SetCycleTime();
+    }
+
     private void OnEnable()
     {
-        if (!m_changeCycleTime)
-        {
-            return;
-        }
-        else if (gameObject.GetComponent<MoveGameObject>() != null)
+        SetCycleTime();
+    }
+
+    private void SetCycleTime()
+    {
+        if (m_changeCycleTime && gameObject.GetComponent<MoveGameObject>() != null)
         {
             MoveGameObject moveGameObject = gameObject.GetComponent<MoveGameObject>();
 
@@ -74,7 +80,7 @@ public class ObjectDifficultyController : MonoBehaviour
                 moveGameObject.SetCycleTime(m_easyCycleTime);
             }
         }
-        else if (gameObject.GetComponent<TeleportObject>() != null)
+        else if (m_changeCycleTime && gameObject.GetComponent<TeleportObject>() != null)
         {
             TeleportObject teleportObject = gameObject.GetComponent<TeleportObject>();
 
@@ -91,7 +97,7 @@ public class ObjectDifficultyController : MonoBehaviour
                 teleportObject.SetCycleTime(m_easyCycleTime);
             }
         }
-        else if (gameObject.GetComponent<ObjectSpawner>() != null)
+        else if (m_changeCycleTime && gameObject.GetComponent<ObjectSpawner>() != null)
         {
             ObjectSpawner objectSpawner = gameObject.GetComponent<ObjectSpawner>();
 
@@ -107,8 +113,6 @@ public class ObjectDifficultyController : MonoBehaviour
             {
                 objectSpawner.SetSpawnInterval(m_easyCycleTime);
             }
-
-
         }
     }
 }

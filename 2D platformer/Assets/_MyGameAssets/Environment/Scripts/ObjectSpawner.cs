@@ -55,8 +55,7 @@ public class ObjectSpawner : MonoBehaviour
         if (fireball != null)
         {
             fireball.SetActive(true);
-            fireball.gameObject.transform.position = m_spawnTrans.position;
-            fireball.gameObject.transform.rotation = m_rotation;
+            fireball.transform.SetPositionAndRotation(m_spawnTrans.position, m_rotation);
             fireball.GetComponent<FireballController>().Setup(m_direction, m_speed);
             m_audioSource.PlayOneShot(m_audioClip, m_volume);
             m_pfx.Play();

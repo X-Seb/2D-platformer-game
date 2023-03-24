@@ -13,10 +13,7 @@ public class ObjectPooler : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
 
-    void Start()
-    {
         GameObject tmp;
         m_objects = new List<GameObject>();
 
