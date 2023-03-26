@@ -49,15 +49,7 @@ public class ObjectDifficultyController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
 
-    private void Start()
-    {
-        SetCycleTime();
-    }
-
-    private void OnEnable()
-    {
         SetCycleTime();
     }
 
