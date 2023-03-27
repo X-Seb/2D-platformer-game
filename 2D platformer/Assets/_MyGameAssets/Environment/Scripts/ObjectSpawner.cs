@@ -19,9 +19,12 @@ public class ObjectSpawner : MonoBehaviour
     [SerializeField] private ParticleSystem m_pfx;
     [Header("Setup")]
     [SerializeField] private Transform m_spawnTrans;
+    private bool m_isReady = false;
 
     private void Start()
     {
+        m_isReady = true;
+
         if (m_spawnOnAwake)
         {
             m_isSpawning = true;
@@ -31,7 +34,8 @@ public class ObjectSpawner : MonoBehaviour
 
     private void OnEnable()
     {
-        if (m_spawnOnAwake)
+        Debug.Log("OnEnabled called from: " + gameObject.name);
+        if (m_spawnOnAwake && m_isReady)
         {
             m_isSpawning = true;
             StartCoroutine(SpawnObject(m_spawnInterval));
@@ -50,6 +54,7 @@ public class ObjectSpawner : MonoBehaviour
 
     private IEnumerator SpawnObject(float time)
     {
+        Debug.Log("Going to create a fireball");
         GameObject fireball = ObjectPooler.instance.GetObject();
 
         if (fireball != null)

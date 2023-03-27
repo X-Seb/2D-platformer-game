@@ -13,6 +13,11 @@ public class ObjectPooler : MonoBehaviour
     private void Awake()
     {
         instance = this;
+    }
+
+    private void Start()
+    {
+        Debug.Log("Create fireballs");
 
         GameObject tmp;
         m_objects = new List<GameObject>();
@@ -22,6 +27,7 @@ public class ObjectPooler : MonoBehaviour
             tmp = Instantiate(m_object, Vector3.zero, Quaternion.identity, gameObject.transform);
             tmp.SetActive(false);
             m_objects.Add(tmp);
+            Debug.Log("Created a fireball");
         }
     }
 
