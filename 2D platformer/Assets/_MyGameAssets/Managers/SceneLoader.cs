@@ -7,6 +7,8 @@ using TMPro;
 public class SceneLoader : MonoBehaviour
 {
     public static SceneLoader instance;
+    [Header("Loading method:")]
+    [SerializeField] private bool m_loadAsync;
     [Header("UI stuff: ")]
     [SerializeField] private GameObject m_loadingCanva;
     [SerializeField] private GameObject m_loadingScreen;
@@ -84,23 +86,19 @@ public class SceneLoader : MonoBehaviour
 
         }
 
+        if (m_loadAsync)
+        {
+
+        }
+        else
+        {
+            yield return new WaitForSecondsRealtime(0.5f);
+            SceneManager.LoadScene(sceneBuildIndex);
+            TryToGetVariables();
+        }
+
         //Wait before loading the scene
-        yield return new WaitForSecondsRealtime(0.5f);
-        SceneManager.LoadScene(sceneBuildIndex);
         TryToGetVariables();
-
-        if (SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            
-        }
-        else if (SceneManager.GetActiveScene().buildIndex == 1)
-        {
-
-        }
-        else if (SceneManager.GetActiveScene().buildIndex == 2)
-        {
-
-        }
 
         // Deactivate the loading Screen
         m_loadingCanva.SetActive(false);
