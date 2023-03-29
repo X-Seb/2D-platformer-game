@@ -89,6 +89,17 @@
                 },
                 {
                     "name": "",
+                    "id": "e1fe7420-4b65-449d-b194-54dc9cdf3d10",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "57171e0d-3b16-4771-a008-b0505c00475b",
                     "path": "<Keyboard>/s",
                     "interactions": "",
@@ -144,6 +155,17 @@
                 },
                 {
                     "name": "",
+                    "id": "4b695fd6-74a4-4c56-a8bd-582d2ea4b13b",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Dash",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "d2c4b09c-55c8-4ec6-9257-1f0febd2f817",
                     "path": "<Keyboard>/p",
                     "interactions": "",
@@ -190,6 +212,28 @@
                     "name": "",
                     "id": "393be43c-ec06-41a8-bd65-266b390045ea",
                     "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ee301180-0ca5-4a00-9d95-c5c88174947a",
+                    "path": "*/{Cancel}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "47b3c970-7db2-4e97-84e7-a8f8282254e6",
+                    "path": "*/{Back}",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
