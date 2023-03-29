@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class TriggerObject : MonoBehaviour
 {
-    private float m_decreasingSpeed;
-    private bool m_isShrinking;
-    private Vector3 m_zero = new Vector3(0, 0, 1);
+    [Header("Effects:")]
+    [SerializeField] private AudioSource m_audioSource;
+    [SerializeField] private float m_volume;
+    [SerializeField] private AudioClip m_audioClip;
+    [SerializeField] private ParticleSystem m_pfx;
+    private float m_decreasingSpeedX;
+    private float m_decreasingSpeedY;
     private float m_xScale;
     private float m_yScale;
 
@@ -16,39 +20,34 @@ public class TriggerObject : MonoBehaviour
         m_yScale = gameObject.transform.localScale.y;
     }
 
-    private void Update()
-    {
-        if (gameObject.transform.localScale == m_zero)
-        {
-            Debug.Log("Destroyed " + gameObject.name);
-            Destroy(gameObject);
-        }
-        else if (m_isShrinking)
-        {
-            m_xScale -= m_decreasingSpeed * Time.deltaTime;
-            m_yScale -= m_decreasingSpeed * Time.deltaTime;
-            gameObject.transform.localScale = new Vector3(m_xScale, m_yScale, 1);
-        }
-    }
-
     public void DestroyObject()
     {
         Destroy(gameObject);
     }
 
-    public void ShrinkDestroy(float speed)
+    public void ShrinkDestroy(float time)
     {
-        m_decreasingSpeed = speed;
-        m_isShrinking = true;
+        StartCoroutine(ShrinkDestroyC(time));
     }
-
-    public void MoveTo()
+    
+    private IEnumerator ShrinkDestroyC(float time)
     {
-        
-    }
+        m_decreasingSpeedX = gameObject.transform.localScale.x / time;
+        m_decreasingSpeedY = gameObject.transform.localScale.y / time;
 
-    public void MoveBack()
-    {
+        while (gameObject.transform.localScale.x > 0)
+        {
+            m_xScale -= m_decreasingSpeedX * Time.deltaTime;
+            m_yScale -= m_decreasingSpeedY * Time.deltaTime;
+            gameObject.transform.localScale = new Vector3(m_xScale, m_yScale, 1);
+            yield return new WaitForEndOfFrame();
+        }
 
+        // Play effects before destroying the object:
+
+
+
+        yield return new WaitForSeconds(2);
+        Destroy(gameObject);
     }
 }
