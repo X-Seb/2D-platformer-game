@@ -68,5 +68,7 @@ public class FireballController : MonoBehaviour
         // Wait before returning it to the pool of objects
         yield return new WaitForSeconds(1.0f);
         gameObject.SetActive(false);
+        transform.position = new Vector3(0, 0, 0);
+        transform.rotation = Quaternion.identity;
     }
 }

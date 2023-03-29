@@ -15,10 +15,10 @@ MonoBehaviour:
   itemName: Sticky Potion
   itemType: 1
   collectedSFX: {fileID: 8300000, guid: 4253ea676060e49dd9488f73d692ea2a, type: 3}
-  abilityName: Wall Jump
+  abilityName: WallJump
   relicID: 0
   keyID: 0
   topText: You drank the
   loreText: A smelly potion that grants its user the ability to jump off of walls.
-  descriptionText: Pressing W, SPACE, or the up arrow while holding onto a wall will
-    propell you off in the opposite direction.
+  descriptionText: Pressing W, SPACE, or the up arrow while holding on to a wall
+    will propell you off in the opposite direction.

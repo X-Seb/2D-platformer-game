@@ -358,6 +358,14 @@ public class PlayerManager : MonoBehaviour
             StartCoroutine(WallJump());
         }
 
+        // Jump from a wall, but use a air-jump (before you unlock wall-jump)
+        else if (ctx.performed && m_canWallJump && m_isWallSliding &&
+            m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) &&
+            !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            StartCoroutine(WallJump());
+        }
+
         else if (ctx.canceled && m_Rigidbody2D.velocity.y > 0)
         {
             // If player is currently jumping => slow down the player 
@@ -458,6 +466,11 @@ public class PlayerManager : MonoBehaviour
             Vector3 localScale = transform.localScale;
             localScale.x *= -1f;
             transform.localScale = localScale;
+        }
+
+        if (!m_isWallJumpUnlocked)
+        {
+            m_numberOfAirJumps--;
         }
 
         yield return new WaitForSeconds(m_wallJumpingDuration);
