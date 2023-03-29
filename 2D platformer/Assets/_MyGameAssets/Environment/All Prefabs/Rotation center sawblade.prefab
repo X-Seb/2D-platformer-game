@@ -216,6 +216,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1292446797407685339
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,7 +361,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 164
+  Priority: 120
   DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 15

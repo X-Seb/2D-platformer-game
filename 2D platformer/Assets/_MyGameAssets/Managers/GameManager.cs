@@ -217,7 +217,6 @@ public class GameManager : MonoBehaviour
 
     public void TeleportJumpPlatforms()
     {
-        Debug.Log("Teleport all red platforms");
         for (int i = 0; i < m_teleportingObjects.Length; i++)
         {
             m_teleportingObjects[i].JumpTeleport();
@@ -226,7 +225,6 @@ public class GameManager : MonoBehaviour
 
     public void TeleportDashPlatforms()
     {
-        Debug.Log("Teleport all yellow platforms");
         for (int i = 0; i < m_teleportingObjects.Length; i++)
         {
             m_teleportingObjects[i].DashTeleport();
