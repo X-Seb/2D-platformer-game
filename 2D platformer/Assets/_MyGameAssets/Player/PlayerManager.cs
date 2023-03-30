@@ -88,6 +88,8 @@ public class PlayerManager : MonoBehaviour
     [Header("Effects: ")]
     [SerializeField] private TrailRenderer m_mainTrailRenderer;
     [SerializeField] private bool m_isMainTrailEmmiting = false;
+    [Header("Events: ")]
+    [SerializeField] UnityEvent m_dashRegainedEvent;
 
     public enum SoundType
     {
@@ -98,6 +100,11 @@ public class PlayerManager : MonoBehaviour
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         instance = this;
+
+        if (m_dashRegainedEvent == null)
+        {
+            m_dashRegainedEvent = new UnityEvent();
+        }
     }
 
     private void Start()
@@ -440,6 +447,7 @@ public class PlayerManager : MonoBehaviour
         // Wait for the cooldown to finish before allowing you to dash again
         yield return new WaitForSeconds(m_dashingCooldownTime);
         m_canDash = true;
+        m_dashRegainedEvent.Invoke();
     }
 
     private IEnumerator WallJump()
