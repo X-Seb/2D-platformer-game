@@ -4,25 +4,25 @@ using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 public class PlayerManager : MonoBehaviour
 {
-    [Header("Setup: ")]
     public static PlayerManager instance;
+    [Header("Setup: ")]
     [SerializeField] private Rigidbody2D m_Rigidbody2D;
     [SerializeField] private TrailRenderer m_trailRenderer;
+    [SerializeField] private TrailRenderer m_mainTrailRenderer;
     [SerializeField] private Animator m_animator;
-    [SerializeField] private LayerMask m_groundLayer; // A mask determining what is ground to the character
+    [SerializeField] private LayerMask m_groundLayer;
     [SerializeField] private LayerMask m_movingPlatformLayer;
-    [SerializeField] private Transform m_groundCheck;  // A position marking where to check if the player is grounded.
+    [SerializeField] private Transform m_groundCheck;
     [Header("Upgrading the player: ")]
     [SerializeField] private bool m_isDashUnlocked;
     [SerializeField] private bool m_isAirJumpUnlocked;
     [SerializeField] private bool m_isWallSlideUnlocked;
     [SerializeField] private bool m_isWallJumpUnlocked;
     [SerializeField] private bool m_isAcidImmunityUnlocked;
-    [Header("Input: ")]
-    [SerializeField] private float m_axisX = 0f; // Either -1, 0, or 1
     [Header("Movement: ")]
     [Range(0, 200)][SerializeField] private float m_playerMoveSpeed = 80f; // How fast the player can move.
     [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f; // How much to smooth out the movement
@@ -62,6 +62,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private bool m_isFacingRight = true; // For determining which way the player is currently facing.
     [SerializeField] private int m_numberOfAirJumps = 0;
     [SerializeField] private int m_numberOfDash = 0;
+    [SerializeField] private float m_axisX = 0f; // Either -1, 0, or 1
     [Header("Audio: ")]
     [SerializeField] private AudioSource m_playerAudioSource;
     [SerializeField] private AudioClip m_deathAudioClip;
@@ -86,10 +87,14 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float m_currentLightIntensity;
     [SerializeField] private float m_currentLightOuterRadius;
     [Header("Effects: ")]
-    [SerializeField] private TrailRenderer m_mainTrailRenderer;
     [SerializeField] private bool m_isMainTrailEmmiting = false;
+    [SerializeField] private Color m_pinkTrailColor;
     [Header("Events: ")]
+    [SerializeField] UnityEvent[] m_unityEvents;
     [SerializeField] UnityEvent m_dashRegainedEvent;
+    [SerializeField] UnityEvent m_dashEvent;
+    [SerializeField] UnityEvent m_airJumpEvent;
+    [SerializeField] UnityEvent m_groundedRegainedEvent;
 
     public enum SoundType
     {
@@ -100,6 +105,14 @@ public class PlayerManager : MonoBehaviour
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         instance = this;
+
+        for (int i = 0; i < m_unityEvents.Length; i++)
+        {
+            if (m_unityEvents[i] == null)
+            {
+                m_unityEvents[i] = new UnityEvent();
+            }
+        }
 
         if (m_dashRegainedEvent == null)
         {
@@ -119,6 +132,7 @@ public class PlayerManager : MonoBehaviour
         m_axisX = InputManager.instance.ReturnAxisX();
         AnimatePlayer();
         AjustPlayerLight();
+        AdjustTrailColor();
 
         if (!m_isMainTrailEmmiting && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
@@ -310,6 +324,17 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void AdjustTrailColor()
+    {
+        if (m_canDash && m_numberOfDash >= 1)
+        {
+            Debug.Log("Dash regained!");
+            m_mainTrailRenderer.startColor = m_pinkTrailColor;
+            m_mainTrailRenderer.endColor = m_pinkTrailColor;
+            m_dashEvent.Invoke();
+        }
+    }
+
     public void PlaySound(SoundType soundType, float volume = 1.0f)
     {
         switch (soundType)
@@ -357,6 +382,7 @@ public class PlayerManager : MonoBehaviour
             PlayerPrefs.SetInt("AirJumps_Count", PlayerPrefs.GetInt("AirJumps_Count") + 1);
             m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
             GameManager.instance.TeleportJumpPlatforms();
+            m_airJumpEvent.Invoke();
         }
 
         // Jump while sliding down a wall
@@ -421,6 +447,9 @@ public class PlayerManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("Dashes_Count", PlayerPrefs.GetInt("Dashes_Count") + 1);
 
+        m_mainTrailRenderer.startColor = new Color(1, 1, 1);
+        m_mainTrailRenderer.endColor = new Color(1, 1, 1);
+
         m_canDash = false;
         m_isDashing = true;
         m_animator.SetBool("isDashing", true);
@@ -436,6 +465,7 @@ public class PlayerManager : MonoBehaviour
         m_Rigidbody2D.velocity = new Vector2(transform.localScale.x * m_dashForce, 0f);
         m_trailRenderer.emitting = true;
         m_playerAudioSource.PlayOneShot(m_dashAudioClip);
+        m_dashEvent.Invoke();
 
         //Wait for the player to finish dashing
         yield return new WaitForSeconds(m_dashDuration);
@@ -447,7 +477,7 @@ public class PlayerManager : MonoBehaviour
         // Wait for the cooldown to finish before allowing you to dash again
         yield return new WaitForSeconds(m_dashingCooldownTime);
         m_canDash = true;
-        m_dashRegainedEvent.Invoke();
+        AdjustTrailColor();
     }
 
     private IEnumerator WallJump()
@@ -506,6 +536,8 @@ public class PlayerManager : MonoBehaviour
                     colliders[i].gameObject.GetComponent<BouncyObject>() == null && GameManager.instance.GetState() == GameManager.GameState.playing)
                 {
                     m_playerAudioSource.PlayOneShot(m_landAudioClip, 0.3f);
+                    AdjustTrailColor();
+                    m_groundedRegainedEvent.Invoke();
                 }
             }
         }
