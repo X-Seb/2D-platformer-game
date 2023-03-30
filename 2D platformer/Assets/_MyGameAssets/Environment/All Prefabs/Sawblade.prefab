@@ -228,6 +228,7 @@ GameObject:
   - component: {fileID: 3605741391930923454}
   - component: {fileID: 3605741391930923453}
   - component: {fileID: 4353705098522415088}
+  - component: {fileID: 2183096661472068649}
   m_Layer: 0
   m_Name: Sawblade
   m_TagString: Enemy
@@ -286,6 +287,27 @@ MonoBehaviour:
   m_easyCycleTime: 0
   m_mediumCycleTime: 0
   m_hardCycleTime: 0
+--- !u!95 &2183096661472068649
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3605741391930923455}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 88bcb10db07b0431ca8b3c379d7b9015, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3605741391971852467
 GameObject:
   m_ObjectHideFlags: 0
