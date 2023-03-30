@@ -25,18 +25,6 @@ public class TeleportObject : MonoBehaviour
         whenDash
     }
 
-    //private void Start()
-    //{
-    //    m_startPos = transform.position;
-    //    m_targetPos = m_emptyPlatform.transform.position;
-    //    m_isAtOriginalPos = true;
-
-    //    if (m_type == TypeOfTeleportation.automatic)
-    //    {
-    //        StartCoroutine(Teleport());
-    //    }
-    //}
-
     private void OnEnable()
     {
         m_startPos = transform.position;
