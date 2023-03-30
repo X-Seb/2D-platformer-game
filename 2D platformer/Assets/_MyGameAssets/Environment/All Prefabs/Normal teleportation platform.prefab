@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2897790635054873026}
   - component: {fileID: 2851525681279705275}
   - component: {fileID: 2851525681279705274}
+  - component: {fileID: 6909919851762592449}
   m_Layer: 7
   m_Name: Normal teleportation platform
   m_TagString: Ground
@@ -103,6 +104,27 @@ MonoBehaviour:
   m_targetPos: {x: 0, y: 0, z: 0}
   m_startPos: {x: 0, y: 0, z: 0}
   m_isAtOriginalPos: 0
+--- !u!95 &6909919851762592449
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2851525681279705273}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d8ea0548e5ea543608e74ef96871fcef, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5974919887288531044
 GameObject:
   m_ObjectHideFlags: 0
