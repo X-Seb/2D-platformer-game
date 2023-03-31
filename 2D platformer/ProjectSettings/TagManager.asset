@@ -85,7 +85,7 @@ TagManager:
   - name: Collectible
     uniqueID: 3020371547
     locked: 0
-  - name: Trail
+  - name: Effects
     uniqueID: 1629975091
     locked: 0
   - name: Player

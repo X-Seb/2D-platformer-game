@@ -90,11 +90,14 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private bool m_isMainTrailEmmiting = false;
     [SerializeField] private Color m_pinkTrailColor;
     [Header("Events: ")]
-    [SerializeField] UnityEvent[] m_unityEvents;
-    [SerializeField] UnityEvent m_dashRegainedEvent;
-    [SerializeField] UnityEvent m_dashEvent;
-    [SerializeField] UnityEvent m_airJumpEvent;
-    [SerializeField] UnityEvent m_groundedRegainedEvent;
+    [SerializeField] private UnityEvent[] m_unityEvents;
+    [SerializeField] private UnityEvent m_dashRegainedEvent;
+    [SerializeField] private UnityEvent m_dashEvent;
+    [SerializeField] private UnityEvent m_jumpEvent;
+    [SerializeField] private UnityEvent m_airJumpEvent;
+    [SerializeField] private UnityEvent m_wallJumpEvent;
+    [SerializeField] private UnityEvent m_groundedRegainedEvent;
+    [SerializeField] private UnityEvent m_diedEvent;
 
     public enum SoundType
     {
@@ -113,11 +116,6 @@ public class PlayerManager : MonoBehaviour
                 m_unityEvents[i] = new UnityEvent();
             }
         }
-
-        if (m_dashRegainedEvent == null)
-        {
-            m_dashRegainedEvent = new UnityEvent();
-        }
     }
 
     private void Start()
@@ -132,7 +130,6 @@ public class PlayerManager : MonoBehaviour
         m_axisX = InputManager.instance.ReturnAxisX();
         AnimatePlayer();
         AjustPlayerLight();
-        AdjustTrailColor();
 
         if (!m_isMainTrailEmmiting && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
@@ -253,9 +250,10 @@ public class PlayerManager : MonoBehaviour
     private void PlayerDied(GameManager.CauseOfDeath causeOfDeath)
     {
         GameManager.instance.SetState(GameManager.GameState.lose);
-        m_playerAudioSource.PlayOneShot(m_deathAudioClip);
+        //m_playerAudioSource.PlayOneShot(m_deathAudioClip);
         m_animator.SetBool("isDead", true);
         GameManager.instance.EndGame(causeOfDeath);
+        m_diedEvent.Invoke();
     }
 
     private void AnimatePlayer()
@@ -326,12 +324,12 @@ public class PlayerManager : MonoBehaviour
 
     private void AdjustTrailColor()
     {
-        if (m_canDash && m_numberOfDash >= 1)
+        if (m_canDash && m_isDashUnlocked && (m_numberOfDash >= 1 || m_isInfiniteDashAllowed) && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             Debug.Log("Dash regained!");
             m_mainTrailRenderer.startColor = m_pinkTrailColor;
             m_mainTrailRenderer.endColor = m_pinkTrailColor;
-            m_dashEvent.Invoke();
+            m_dashRegainedEvent.Invoke();
         }
     }
 
@@ -369,8 +367,9 @@ public class PlayerManager : MonoBehaviour
             m_isGrounded = false;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_jumpForce);
             PlayerPrefs.SetInt("Jumps_Count", PlayerPrefs.GetInt("Jumps_Count") + 1);
-            m_playerAudioSource.PlayOneShot(m_jumpAudioClip);
+            //m_playerAudioSource.PlayOneShot(m_jumpAudioClip);
             GameManager.instance.TeleportJumpPlatforms();
+            m_jumpEvent.Invoke();
         }
 
         // Jump in mid-air
@@ -380,7 +379,7 @@ public class PlayerManager : MonoBehaviour
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_airJumpForce);
             m_numberOfAirJumps--;
             PlayerPrefs.SetInt("AirJumps_Count", PlayerPrefs.GetInt("AirJumps_Count") + 1);
-            m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
+            //m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
             GameManager.instance.TeleportJumpPlatforms();
             m_airJumpEvent.Invoke();
         }
@@ -496,7 +495,8 @@ public class PlayerManager : MonoBehaviour
         }
 
         m_Rigidbody2D.velocity = new Vector2(m_wallJumpingDirection * m_wallJumpingPower.x, m_wallJumpingPower.y);
-        m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
+        //m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
+        m_wallJumpEvent.Invoke();
 
         if (transform.localScale.x != m_wallJumpingDirection)
         {
@@ -536,7 +536,7 @@ public class PlayerManager : MonoBehaviour
                     colliders[i].gameObject.GetComponent<BouncyObject>() == null && GameManager.instance.GetState() == GameManager.GameState.playing)
                 {
                     m_playerAudioSource.PlayOneShot(m_landAudioClip, 0.3f);
-                    AdjustTrailColor();
+                    //AdjustTrailColor();
                     m_groundedRegainedEvent.Invoke();
                 }
             }
