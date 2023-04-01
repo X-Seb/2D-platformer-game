@@ -4,7 +4,6 @@ using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-using DG.Tweening;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -96,6 +95,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private UnityEvent m_jumpEvent;
     [SerializeField] private UnityEvent m_airJumpEvent;
     [SerializeField] private UnityEvent m_wallJumpEvent;
+    [SerializeField] private UnityEvent m_airJumpRegainedEvent;
     [SerializeField] private UnityEvent m_groundedRegainedEvent;
     [SerializeField] private UnityEvent m_diedEvent;
 
@@ -229,6 +229,7 @@ public class PlayerManager : MonoBehaviour
         m_canWallJump = true;
         m_lightPercentage = 1;
         UpdatePlayerPowers();
+        AdjustTrailColor();
 
         // Adjust player prefs if you've never played before
         if (!PlayerPrefs.HasKey("Jumps_Count"))
@@ -535,9 +536,8 @@ public class PlayerManager : MonoBehaviour
                 if (!wasGrounded && m_isGrounded && m_Rigidbody2D.velocity.y <= 0 &&
                     colliders[i].gameObject.GetComponent<BouncyObject>() == null && GameManager.instance.GetState() == GameManager.GameState.playing)
                 {
-                    m_playerAudioSource.PlayOneShot(m_landAudioClip, 0.3f);
-                    //AdjustTrailColor();
                     m_groundedRegainedEvent.Invoke();
+                    m_airJumpRegainedEvent.Invoke();
                 }
             }
         }

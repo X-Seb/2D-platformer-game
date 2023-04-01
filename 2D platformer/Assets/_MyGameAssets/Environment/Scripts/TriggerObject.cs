@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using DG.Tweening;
 
 public class TriggerObject : MonoBehaviour
 {
@@ -9,6 +11,7 @@ public class TriggerObject : MonoBehaviour
     [SerializeField] private float m_volume;
     [SerializeField] private AudioClip m_audioClip;
     [SerializeField] private ParticleSystem m_pfx;
+    [SerializeField] private Light2D m_light;
     private float m_decreasingSpeedX;
     private float m_decreasingSpeedY;
     private float m_xScale;
@@ -22,12 +25,15 @@ public class TriggerObject : MonoBehaviour
 
     public void DestroyObject()
     {
+        gameObject.transform.DOKill();
         Destroy(gameObject);
     }
 
     public void ShrinkDestroy(float time)
     {
-        StartCoroutine(ShrinkDestroyC(time));
+        //StartCoroutine(ShrinkDestroyC(time));
+        gameObject.transform.DOScale(0, time).OnComplete(() => DestroyObject());
+        //m_light.intensity = DO
     }
     
     private IEnumerator ShrinkDestroyC(float time)
