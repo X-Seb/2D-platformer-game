@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager instance;
     [Header("Setup: ")]
     [SerializeField] private Rigidbody2D m_Rigidbody2D;
+    [SerializeField] private SpriteRenderer m_spriteRenderer;
     [SerializeField] private TrailRenderer m_trailRenderer;
     [SerializeField] private TrailRenderer m_mainTrailRenderer;
     [SerializeField] private Animator m_animator;
@@ -88,8 +89,8 @@ public class PlayerManager : MonoBehaviour
     [Header("Effects: ")]
     [SerializeField] private bool m_isMainTrailEmmiting = false;
     [SerializeField] private Color m_pinkTrailColor;
+    [SerializeField] private Color m_playerAirJumpColor;
     [Header("Events: ")]
-    [SerializeField] private UnityEvent[] m_unityEvents;
     [SerializeField] private UnityEvent m_dashRegainedEvent;
     [SerializeField] private UnityEvent m_dashEvent;
     [SerializeField] private UnityEvent m_jumpEvent;
@@ -108,14 +109,6 @@ public class PlayerManager : MonoBehaviour
     {
         m_Rigidbody2D = GetComponent<Rigidbody2D>();
         instance = this;
-
-        for (int i = 0; i < m_unityEvents.Length; i++)
-        {
-            if (m_unityEvents[i] == null)
-            {
-                m_unityEvents[i] = new UnityEvent();
-            }
-        }
     }
 
     private void Start()
@@ -230,6 +223,7 @@ public class PlayerManager : MonoBehaviour
         m_lightPercentage = 1;
         UpdatePlayerPowers();
         AdjustTrailColor();
+        AdjustPlayerColor();
 
         // Adjust player prefs if you've never played before
         if (!PlayerPrefs.HasKey("Jumps_Count"))
@@ -334,6 +328,18 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    private void AdjustPlayerColor()
+    {
+        if (m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps >= 1))
+        {
+            m_spriteRenderer.color = m_playerAirJumpColor;
+        }
+        else
+        {
+            m_spriteRenderer.color = new Color(1, 1, 1);
+        }
+    }
+
     public void PlaySound(SoundType soundType, float volume = 1.0f)
     {
         switch (soundType)
@@ -382,6 +388,7 @@ public class PlayerManager : MonoBehaviour
             PlayerPrefs.SetInt("AirJumps_Count", PlayerPrefs.GetInt("AirJumps_Count") + 1);
             //m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
             GameManager.instance.TeleportJumpPlatforms();
+            AdjustPlayerColor();
             m_airJumpEvent.Invoke();
         }
 
@@ -510,6 +517,7 @@ public class PlayerManager : MonoBehaviour
         if (!m_isWallJumpUnlocked)
         {
             m_numberOfAirJumps--;
+            AdjustPlayerColor();
         }
 
         yield return new WaitForSeconds(m_wallJumpingDuration);
@@ -536,6 +544,7 @@ public class PlayerManager : MonoBehaviour
                 if (!wasGrounded && m_isGrounded && m_Rigidbody2D.velocity.y <= 0 &&
                     colliders[i].gameObject.GetComponent<BouncyObject>() == null && GameManager.instance.GetState() == GameManager.GameState.playing)
                 {
+                    AdjustPlayerColor();
                     m_groundedRegainedEvent.Invoke();
                     m_airJumpRegainedEvent.Invoke();
                 }
