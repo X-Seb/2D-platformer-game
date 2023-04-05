@@ -29,6 +29,19 @@ public class ObjectDifficultyController : MonoBehaviour
         difficulty = PlayerPrefs.GetInt("Difficulty");
         // Reminder: 2 is easy, 1 is medium, 0 is hard)
         // Destroy the game object if the current difficulty doesn't match the game objects difficulty
+        TryToDestroy();
+        SetCycleTime();
+        Debug.Log("Awake called in " + gameObject.name);
+    }
+
+    private void OnEnable()
+    {
+        difficulty = PlayerPrefs.GetInt("Difficulty");
+        SetCycleTime();
+    }
+
+    private void TryToDestroy()
+    {
         if (difficulty == 0 &&
             (m_difficulty == Difficulty.easyOrMedium ||
             m_difficulty == Difficulty.easy ||
@@ -49,8 +62,6 @@ public class ObjectDifficultyController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        SetCycleTime();
     }
 
     private void SetCycleTime()

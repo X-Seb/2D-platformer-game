@@ -81,8 +81,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float m_minLightOuterRadius;
     [SerializeField] private float m_maxLightOuterRadius;
     [SerializeField] private float m_increasingLightSpeed;
-    [SerializeField] private float m_decreasingLightSpeedMedium;
-    [SerializeField] private float m_decreasingLightSpeedHard;
+    [Range(0.001f, 0.1f)][SerializeField] private float m_decreasingLightSpeedEasy;
+    [Range(0.001f, 0.1f)][SerializeField] private float m_decreasingLightSpeedMedium;
+    [Range(0.001f, 0.1f)][SerializeField] private float m_decreasingLightSpeedHard;
     [SerializeField] private float m_decreasingLightSpeedDead;
     [SerializeField] private float m_currentLightIntensity;
     [SerializeField] private float m_currentLightOuterRadius;
@@ -272,6 +273,16 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
+        // Decrease light % if you're not gaining any light + you're on easy mode
+        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 0 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            m_lightPercentage -= Time.deltaTime * m_decreasingLightSpeedEasy;
+            if (m_lightPercentage <= 0)
+            {
+                m_lightPercentage = 0;
+            }
+        }
+
         // Decrease the light percentage if you're not gaining any light (reminder: 2 is easy, 1 is medium, 0 is hard)
         else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 1 && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
@@ -282,7 +293,7 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
-        // Decrease the light percentage if you're not gaining any + difficulty is set to hard
+        // Decrease the light percentage if you're not gaining any light + difficulty is set to hard
         else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 0 && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             m_lightPercentage -= Time.deltaTime * m_decreasingLightSpeedHard;

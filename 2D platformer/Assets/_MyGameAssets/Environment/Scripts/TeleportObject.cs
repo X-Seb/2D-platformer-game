@@ -60,6 +60,7 @@ public class TeleportObject : MonoBehaviour
 
     private IEnumerator Teleport()
     {
+        Debug.Log("Teleport called in " + gameObject.name);
         if (m_isAtOriginalPos)
         {
             // Teleport to other position
@@ -77,7 +78,9 @@ public class TeleportObject : MonoBehaviour
             m_isAtOriginalPos = true;
         }
 
-        yield return new WaitForSeconds(m_timePerCycle * 0.5f);
+        // I do this since sometimes changing the cycleTime happens after the coroutine is called
+        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds((m_timePerCycle * 0.5f) - 0.5f);
 
         if (m_type == TypeOfTeleportation.automatic)
         {
