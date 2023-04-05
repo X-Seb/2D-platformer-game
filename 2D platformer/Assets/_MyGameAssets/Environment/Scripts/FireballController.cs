@@ -9,6 +9,7 @@ public class FireballController : MonoBehaviour
     [SerializeField] private float m_speed;
     [SerializeField] private float m_volume;
     [Header("Other stuff:")]
+    [SerializeField] private Animator m_animator;
     [SerializeField] private Light2D m_light;
     [SerializeField] private AudioSource m_audioSource;
     [SerializeField] private AudioClip m_audioClip;
@@ -51,8 +52,7 @@ public class FireballController : MonoBehaviour
         this.m_isMoving = true;
         gameObject.SetActive(true);
         m_collider.enabled = true;
-        m_light.intensity = 1.0f;
-        m_spriteRenderer.color = new Color(255, 255, 255, 255);
+        m_animator.SetBool("isMoving", true);
     }
 
 
@@ -61,8 +61,7 @@ public class FireballController : MonoBehaviour
         m_isMoving = false;
         m_collider.enabled = false;
         m_audioSource.PlayOneShot(m_audioClip, m_volume);
-        m_light.intensity = 0.0f;
-        m_spriteRenderer.color = new Color(0, 0, 0, 0);
+        m_animator.SetBool("isMoving", false);
         m_pfx.Play();
 
         // Wait before returning it to the pool of objects

@@ -4948,6 +4948,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_speed: 5
   m_volume: 1
+  m_animator: {fileID: 1597328830438641552}
   m_light: {fileID: 8383186565645452777}
   m_audioSource: {fileID: 8383186565025332056}
   m_audioClip: {fileID: 8300000, guid: d1698dd553af8ef4d887bc83b9687173, type: 3}
