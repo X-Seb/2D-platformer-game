@@ -332,11 +332,11 @@ public class PlayerManager : MonoBehaviour
     {
         if (m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps >= 1))
         {
-            m_spriteRenderer.color = m_playerAirJumpColor;
+            m_spriteRenderer.material.color = m_playerAirJumpColor;
         }
         else
         {
-            m_spriteRenderer.color = new Color(1, 1, 1);
+            m_spriteRenderer.material.color = new Color(1, 1, 1);
         }
     }
 
