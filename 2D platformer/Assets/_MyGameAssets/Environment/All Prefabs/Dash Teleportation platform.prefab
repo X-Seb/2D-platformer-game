@@ -98,7 +98,8 @@ MonoBehaviour:
   m_type: 2
   m_emptyPlatform: {fileID: 5081870912587339933}
   m_audioSource: {fileID: 5081870912737301046}
-  m_audioClip: {fileID: 8300000, guid: 560b59f7bba57425da9d11fb4794b676, type: 3}
+  m_teleportAudioClip: {fileID: 8300000, guid: 1d74880bed4586644a16a79a2d9dc8af, type: 3}
+  m_warningAudioClip: {fileID: 8300000, guid: e58d8bd078f188a4ba314e933b98528b, type: 3}
   m_volume: 1
   m_timePerCycle: 0
   m_targetPos: {x: 0, y: 0, z: 0}

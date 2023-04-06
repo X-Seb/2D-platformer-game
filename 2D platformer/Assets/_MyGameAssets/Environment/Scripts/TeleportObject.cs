@@ -9,7 +9,8 @@ public class TeleportObject : MonoBehaviour
     [SerializeField] private GameObject m_emptyPlatform;
     [Header("Effects:")]
     [SerializeField] private AudioSource m_audioSource;
-    [SerializeField] private AudioClip m_audioClip;
+    [SerializeField] private AudioClip m_teleportAudioClip;
+    [SerializeField] private AudioClip m_warningAudioClip;
     [SerializeField] private float m_volume;
     [Header("Automatic:")]
     [SerializeField] private float m_timePerCycle;
@@ -60,13 +61,12 @@ public class TeleportObject : MonoBehaviour
 
     private IEnumerator Teleport()
     {
-        Debug.Log("Teleport called in " + gameObject.name);
         if (m_isAtOriginalPos)
         {
             // Teleport to other position
             transform.position = m_targetPos;
             m_emptyPlatform.transform.position = m_startPos;
-            m_audioSource.PlayOneShot(m_audioClip, m_volume);
+            m_audioSource.PlayOneShot(m_teleportAudioClip, m_volume);
             m_isAtOriginalPos = false;
         }
         else
@@ -74,17 +74,27 @@ public class TeleportObject : MonoBehaviour
             // Teleport back to inital position
             transform.position = m_startPos;
             m_emptyPlatform.transform.position = m_targetPos;
-            m_audioSource.PlayOneShot(m_audioClip, m_volume);
+            m_audioSource.PlayOneShot(m_teleportAudioClip, m_volume);
             m_isAtOriginalPos = true;
         }
 
-        // I do this since sometimes changing the cycleTime happens after the coroutine is called
-        yield return new WaitForSeconds(0.5f);
-        yield return new WaitForSeconds((m_timePerCycle * 0.5f) - 0.5f);
-
         if (m_type == TypeOfTeleportation.automatic)
         {
+
+            // I do this since sometimes changing the cycleTime happens after the coroutine is called
+            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds((m_timePerCycle * 0.5f) - 0.9f);
+
+            m_audioSource.PlayOneShot(m_warningAudioClip, 0.8f);
+            yield return new WaitForSeconds(0.25f);
+            m_audioSource.PlayOneShot(m_warningAudioClip, 0.8f);
+            yield return new WaitForSeconds(0.25f);
+
             StartCoroutine(Teleport());
+        }
+        else
+        {
+            yield return null;
         }
     }
 }
