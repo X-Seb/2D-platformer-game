@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using TMPro;
+using DG.Tweening;
 
 //This class controls the entire game flow
 public class GameManager : MonoBehaviour
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TeleportObject[] m_teleportingObjects;
 
     #region enums
+
     public enum GameState
     {
         start,
@@ -189,6 +191,8 @@ public class GameManager : MonoBehaviour
         m_gameScreen.SetActive(false);
         m_itemScreen.SetActive(true);
 
+        //TODO fade out game UI and fade in item screen
+
         m_itemTopText.text = collectibleItem.topText;
         m_itemNameText.text = collectibleItem.itemName;
         m_itemLoreText.text = collectibleItem.loreText;
@@ -272,6 +276,9 @@ public class GameManager : MonoBehaviour
 
         PlayerPrefs.Save();
         SetState(GameState.lose);
+
+        // TODO fade out game screen and fade in lose screen
+
         m_gameScreen.SetActive(false);
         m_loseScreen.SetActive(true);
 
@@ -280,7 +287,7 @@ public class GameManager : MonoBehaviour
         MovePlayer();
 
         // Activate the starting UI and the start playing in 1 second
-        yield return new WaitForSeconds(0.2f);
+        //yield return new WaitForSeconds(0.2f);
         m_startScreen.SetActive(true);
         m_gameScreen.SetActive(false);
         m_pauseScreen.SetActive(false);
@@ -294,6 +301,9 @@ public class GameManager : MonoBehaviour
     {
         // Resets the player, waits for the time you inputed and then you can start playing
         PlayerManager.instance.StartGame();
+
+        //TODO fade in game UI
+
         yield return new WaitForSeconds(seconds);
         StartPlaying();
     }

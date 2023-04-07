@@ -59,7 +59,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private const float k_GroundedRadius = 0.4f; // Radius of the overlap circle to determine if grounded
     [SerializeField] private bool m_isOnPlatform;
     [SerializeField] private bool m_isOnWall;
-    [SerializeField] private bool m_isFacingRight = true; // For determining which way the player is currently facing.
+    [SerializeField] private bool m_isFacingRight = true;
+    [SerializeField] private bool m_isJumping;
     [SerializeField] private int m_numberOfAirJumps = 0;
     [SerializeField] private int m_numberOfDash = 0;
     [SerializeField] private float m_axisX = 0f; // Either -1, 0, or 1
@@ -125,6 +126,7 @@ public class PlayerManager : MonoBehaviour
         AnimatePlayer();
         AjustPlayerLight();
         AdjustTrailColor(false);
+        AdjustPlayerColor();
 
         if (!m_isMainTrailEmmiting && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
@@ -166,6 +168,7 @@ public class PlayerManager : MonoBehaviour
             gameObject.transform.parent = collision.transform;
             m_Rigidbody2D.velocity = new Vector3(m_Rigidbody2D.velocity.x, 0, 0);
             m_isOnPlatform = true;
+            //m_isJumping = false;
         }
         else if (collision.gameObject.CompareTag("Inside Of Object") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
@@ -175,7 +178,10 @@ public class PlayerManager : MonoBehaviour
         {
             PlayerDied(GameManager.CauseOfDeath.fire);
         }
-
+        else if (collision.gameObject.CompareTag("Ground") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            m_isJumping = false;
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
@@ -222,6 +228,7 @@ public class PlayerManager : MonoBehaviour
         GameManager.instance.SetState(GameManager.GameState.start);
         m_animator.SetBool("isDead", false);
         m_canWallJump = true;
+        m_isJumping = false;
         m_lightPercentage = 1;
         UpdatePlayerPowers();
         AdjustTrailColor(false);
@@ -389,9 +396,9 @@ public class PlayerManager : MonoBehaviour
             m_isGrounded = false;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_jumpForce);
             PlayerPrefs.SetInt("Jumps_Count", PlayerPrefs.GetInt("Jumps_Count") + 1);
-            //m_playerAudioSource.PlayOneShot(m_jumpAudioClip);
             GameManager.instance.TeleportJumpPlatforms();
             m_jumpEvent.Invoke();
+            m_isJumping = true;
         }
 
         // Jump in mid-air
@@ -401,10 +408,9 @@ public class PlayerManager : MonoBehaviour
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_airJumpForce);
             m_numberOfAirJumps--;
             PlayerPrefs.SetInt("AirJumps_Count", PlayerPrefs.GetInt("AirJumps_Count") + 1);
-            //m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
             GameManager.instance.TeleportJumpPlatforms();
-            AdjustPlayerColor();
             m_airJumpEvent.Invoke();
+            m_isJumping = true;
         }
 
         // Jump while sliding down a wall
@@ -421,7 +427,7 @@ public class PlayerManager : MonoBehaviour
             StartCoroutine(WallJump());
         }
 
-        else if (ctx.canceled && m_Rigidbody2D.velocity.y > 0)
+        else if (ctx.canceled && m_isJumping && m_Rigidbody2D.velocity.y > 0)
         {
             // If player is currently jumping => slow down the player 
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_Rigidbody2D.velocity.y * 0.4f);
@@ -518,8 +524,8 @@ public class PlayerManager : MonoBehaviour
         }
 
         m_Rigidbody2D.velocity = new Vector2(m_wallJumpingDirection * m_wallJumpingPower.x, m_wallJumpingPower.y);
-        //m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
         m_wallJumpEvent.Invoke();
+        m_isJumping = true;
 
         if (transform.localScale.x != m_wallJumpingDirection)
         {
@@ -532,7 +538,6 @@ public class PlayerManager : MonoBehaviour
         if (!m_isWallJumpUnlocked)
         {
             m_numberOfAirJumps--;
-            AdjustPlayerColor();
         }
 
         yield return new WaitForSeconds(m_wallJumpingDuration);
@@ -559,7 +564,7 @@ public class PlayerManager : MonoBehaviour
                 if (!wasGrounded && m_isGrounded && m_Rigidbody2D.velocity.y <= 0 &&
                     colliders[i].gameObject.GetComponent<BouncyObject>() == null && GameManager.instance.GetState() == GameManager.GameState.playing)
                 {
-                    AdjustPlayerColor();
+                    m_isJumping = false;
                     m_groundedRegainedEvent.Invoke();
                     m_airJumpRegainedEvent.Invoke();
                 }
