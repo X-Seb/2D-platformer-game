@@ -124,6 +124,7 @@ public class PlayerManager : MonoBehaviour
         m_axisX = InputManager.instance.ReturnAxisX();
         AnimatePlayer();
         AjustPlayerLight();
+        AdjustTrailColor(false);
 
         if (!m_isMainTrailEmmiting && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
@@ -223,7 +224,7 @@ public class PlayerManager : MonoBehaviour
         m_canWallJump = true;
         m_lightPercentage = 1;
         UpdatePlayerPowers();
-        AdjustTrailColor();
+        AdjustTrailColor(false);
         AdjustPlayerColor();
 
         // Adjust player prefs if you've never played before
@@ -328,14 +329,17 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    private void AdjustTrailColor()
+    private void AdjustTrailColor(bool playEffects = true)
     {
         if (m_canDash && m_isDashUnlocked && (m_numberOfDash >= 1 || m_isInfiniteDashAllowed) && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             Debug.Log("Dash regained!");
             m_mainTrailRenderer.startColor = m_pinkTrailColor;
             m_mainTrailRenderer.endColor = m_pinkTrailColor;
-            m_dashRegainedEvent.Invoke();
+            if (playEffects)
+            {
+                m_dashRegainedEvent.Invoke();
+            }
         }
     }
 
