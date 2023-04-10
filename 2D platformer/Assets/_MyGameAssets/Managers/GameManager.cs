@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 //This class controls the entire game flow
 public class GameManager : MonoBehaviour
@@ -316,6 +317,20 @@ public class GameManager : MonoBehaviour
         {
             currentTime += Time.deltaTime;
             audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
+            yield return null;
+        }
+        yield break;
+    }
+
+    public IEnumerator CameraZoom(Camera cam, float duration, float targetZoom)
+    {
+        float currentTime = 0;
+        float startZoom = cam.orthographicSize;
+
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+            cam.orthographicSize = Mathf.Lerp(startZoom, targetZoom, currentTime / duration);
             yield return null;
         }
         yield break;

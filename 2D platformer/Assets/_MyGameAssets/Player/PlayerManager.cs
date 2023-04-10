@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private LayerMask m_groundLayer;
     [SerializeField] private LayerMask m_movingPlatformLayer;
     [SerializeField] private Transform m_groundCheck;
+    [SerializeField] private Camera m_cam;
     [Header("Upgrading the player: ")]
     [SerializeField] private bool m_isDashUnlocked;
     [SerializeField] private bool m_isAirJumpUnlocked;
@@ -92,6 +94,12 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private bool m_isMainTrailEmmiting = false;
     [SerializeField] private Color m_pinkTrailColor;
     [SerializeField] private Color m_playerAirJumpColor;
+    [SerializeField] private float m_dashZoomAmount;
+    [SerializeField] private float m_zoomDuration;
+    [SerializeField] private float m_collisionDuration;
+    [SerializeField] private Vector3 m_collisionStrength;
+    [SerializeField] private int m_collisionVibrato;
+    [SerializeField] private float m_collisionRandomness;
     [Header("Events: ")]
     [SerializeField] private UnityEvent m_dashRegainedEvent;
     [SerializeField] private UnityEvent m_dashEvent;
@@ -254,10 +262,16 @@ public class PlayerManager : MonoBehaviour
     private void PlayerDied(GameManager.CauseOfDeath causeOfDeath)
     {
         GameManager.instance.SetState(GameManager.GameState.lose);
-        //m_playerAudioSource.PlayOneShot(m_deathAudioClip);
         m_animator.SetBool("isDead", true);
-        GameManager.instance.EndGame(causeOfDeath);
         m_diedEvent.Invoke();
+        m_cam.DOKill();
+        m_cam.DOOrthoSize(7, m_zoomDuration).SetEase(Ease.InCubic);
+        m_cam.DOShakeRotation(m_collisionDuration, m_collisionStrength, m_collisionVibrato, m_collisionRandomness, true).OnComplete(()=>
+        {
+            m_cam.DOOrthoSize(9, 0.7f).SetEase(Ease.InOutSine);
+        });
+
+        GameManager.instance.EndGame(causeOfDeath);
     }
 
     private void AnimatePlayer()
@@ -340,7 +354,6 @@ public class PlayerManager : MonoBehaviour
     {
         if (m_canDash && m_isDashUnlocked && (m_numberOfDash >= 1 || m_isInfiniteDashAllowed) && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            Debug.Log("Dash regained!");
             m_mainTrailRenderer.startColor = m_pinkTrailColor;
             m_mainTrailRenderer.endColor = m_pinkTrailColor;
             if (playEffects)
@@ -495,8 +508,14 @@ public class PlayerManager : MonoBehaviour
         m_playerAudioSource.PlayOneShot(m_dashAudioClip);
         m_dashEvent.Invoke();
 
-        //Wait for the player to finish dashing
+        // Will make you zoom in while you dash and zoom out soon after
+        m_cam.DOKill();
+        m_cam.DOOrthoSize(m_dashZoomAmount, m_dashDuration * 0.9f).OnComplete(() => {
+            m_cam.DOOrthoSize(9, 0.3f).OnComplete(() => m_cam.DOKill());
+        });
+
         yield return new WaitForSeconds(m_dashDuration);
+
         m_trailRenderer.emitting = false;
         m_Rigidbody2D.gravityScale = originalGravity;
         m_isDashing = false;
