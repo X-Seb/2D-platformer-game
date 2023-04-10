@@ -82,13 +82,13 @@ public class TeleportObject : MonoBehaviour
         {
 
             // I do this since sometimes changing the cycleTime happens after the coroutine is called
-            yield return new WaitForSeconds(0.4f);
+            yield return new WaitForSeconds(0.3f);
             yield return new WaitForSeconds((m_timePerCycle * 0.5f) - 0.9f);
 
             m_audioSource.PlayOneShot(m_warningAudioClip, 0.8f);
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.3f);
             m_audioSource.PlayOneShot(m_warningAudioClip, 0.8f);
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.3f);
 
             StartCoroutine(Teleport());
         }
