@@ -322,19 +322,7 @@ public class GameManager : MonoBehaviour
         yield break;
     }
 
-    public IEnumerator CameraZoom(Camera cam, float duration, float targetZoom)
-    {
-        float currentTime = 0;
-        float startZoom = cam.orthographicSize;
-
-        while (currentTime < duration)
-        {
-            currentTime += Time.deltaTime;
-            cam.orthographicSize = Mathf.Lerp(startZoom, targetZoom, currentTime / duration);
-            yield return null;
-        }
-        yield break;
-    }
+    
 
     #region Editor stuff
 

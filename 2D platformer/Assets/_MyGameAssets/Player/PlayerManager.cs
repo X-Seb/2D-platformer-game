@@ -266,7 +266,7 @@ public class PlayerManager : MonoBehaviour
         m_diedEvent.Invoke();
         m_cam.DOKill();
         m_cam.DOOrthoSize(7, m_zoomDuration).SetEase(Ease.InCubic);
-        m_cam.DOShakeRotation(m_collisionDuration, m_collisionStrength, m_collisionVibrato, m_collisionRandomness, true).OnComplete(()=>
+        m_cam.DOShakeRotation(m_collisionDuration, m_collisionStrength, m_collisionVibrato, m_collisionRandomness, true, ShakeRandomnessMode.Harmonic).OnComplete(()=>
         {
             m_cam.DOOrthoSize(9, 0.7f).SetEase(Ease.InOutSine);
         });
