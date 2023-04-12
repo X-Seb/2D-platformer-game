@@ -91,6 +91,8 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float m_currentLightIntensity;
     [SerializeField] private float m_currentLightOuterRadius;
     [Header("Effects: ")]
+    [SerializeField] private bool m_playDeathCamFX;
+    [SerializeField] private bool m_playDashCamFX;
     [SerializeField] private bool m_isMainTrailEmmiting = false;
     [SerializeField] private Color m_pinkTrailColor;
     [SerializeField] private Color m_playerAirJumpColor;
@@ -264,12 +266,16 @@ public class PlayerManager : MonoBehaviour
         GameManager.instance.SetState(GameManager.GameState.lose);
         m_animator.SetBool("isDead", true);
         m_diedEvent.Invoke();
-        m_cam.DOKill();
-        m_cam.DOOrthoSize(7, m_zoomDuration).SetEase(Ease.InCubic);
-        m_cam.DOShakeRotation(m_collisionDuration, m_collisionStrength, m_collisionVibrato, m_collisionRandomness, true, ShakeRandomnessMode.Harmonic).OnComplete(()=>
+
+        if (m_playDeathCamFX)
         {
-            m_cam.DOOrthoSize(9, 0.7f).SetEase(Ease.InOutSine);
-        });
+            m_cam.DOKill();
+            m_cam.DOOrthoSize(7, m_zoomDuration).SetEase(Ease.InCubic);
+            m_cam.DOShakeRotation(m_collisionDuration, m_collisionStrength, m_collisionVibrato, m_collisionRandomness, true, ShakeRandomnessMode.Harmonic).OnComplete(() =>
+            {
+                m_cam.DOOrthoSize(9, 0.7f).SetEase(Ease.InOutSine);
+            });
+        }
 
         GameManager.instance.EndGame(causeOfDeath);
     }
@@ -509,10 +515,13 @@ public class PlayerManager : MonoBehaviour
         m_dashEvent.Invoke();
 
         // Will make you zoom in while you dash and zoom out soon after
-        m_cam.DOKill();
-        m_cam.DOOrthoSize(m_dashZoomAmount, m_dashDuration * 0.9f).OnComplete(() => {
-            m_cam.DOOrthoSize(9, 0.3f).OnComplete(() => m_cam.DOKill());
-        });
+        if (m_playDashCamFX)
+        {
+            m_cam.DOKill();
+            m_cam.DOOrthoSize(m_dashZoomAmount, m_dashDuration * 0.9f).OnComplete(() => {
+                m_cam.DOOrthoSize(9, 0.3f);
+            });
+        }
 
         yield return new WaitForSeconds(m_dashDuration);
 

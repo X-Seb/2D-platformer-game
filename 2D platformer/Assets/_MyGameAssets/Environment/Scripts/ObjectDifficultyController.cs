@@ -31,7 +31,6 @@ public class ObjectDifficultyController : MonoBehaviour
         // Destroy the game object if the current difficulty doesn't match the game objects difficulty
         TryToDestroy();
         SetCycleTime();
-        Debug.Log("Awake called in " + gameObject.name);
     }
 
     private void OnEnable()
