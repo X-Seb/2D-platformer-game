@@ -21,6 +21,7 @@ TagManager:
   - Inside Of Object
   - Fire
   - Interactable Object
+  - FireOnCandle
   layers:
   - Default
   - TransparentFX
@@ -43,7 +44,7 @@ TagManager:
   - 
   - 
   - Player
-  - 
+  - Post_Processing
   - 
   - 
   - 
