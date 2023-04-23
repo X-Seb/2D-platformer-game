@@ -36,7 +36,7 @@ public class FireballController : MonoBehaviour
             collision.gameObject.CompareTag("Enemy") ||
             collision.gameObject.CompareTag("Tilemap Ground") ||
             collision.gameObject.CompareTag("Platform") ||
-            (collision.gameObject.CompareTag("Fire") && !collision.gameObject.isStatic)||
+            collision.gameObject.CompareTag("Fire") ||
             (collision.gameObject.CompareTag("Ground") && collision.gameObject.GetComponent<ObjectSpawner>() == null))
         {
             StartCoroutine(Collided());

@@ -184,7 +184,8 @@ public class PlayerManager : MonoBehaviour
         {
             PlayerDied(GameManager.CauseOfDeath.insideObject);
         }
-        else if (collision.gameObject.CompareTag("Fire") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if ((collision.gameObject.CompareTag("Fire") || collision.gameObject.CompareTag("FireOnCandle"))
+            && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             PlayerDied(GameManager.CauseOfDeath.fire);
         }

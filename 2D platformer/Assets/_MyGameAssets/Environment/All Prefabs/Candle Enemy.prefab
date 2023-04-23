@@ -14654,7 +14654,7 @@ GameObject:
   - component: {fileID: 1449029536746518460}
   m_Layer: 0
   m_Name: Fire Collider
-  m_TagString: Fire
+  m_TagString: FireOnCandle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
