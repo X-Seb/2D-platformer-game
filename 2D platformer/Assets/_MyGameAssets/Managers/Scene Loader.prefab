@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d2da1e0388894eb48a8d40d3cc3c345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_loadAsync: 0
   m_loadingCanva: {fileID: 369066003224516237}
   m_loadingScreen: {fileID: 369066004930451996}
   m_funnyText: {fileID: 767999765229040621}
@@ -80,7 +81,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &369066003224516238
 RectTransform:
   m_ObjectHideFlags: 0
@@ -137,10 +138,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 960, y: 600}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3

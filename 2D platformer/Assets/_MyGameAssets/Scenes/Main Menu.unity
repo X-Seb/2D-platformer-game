@@ -30625,6 +30625,14 @@ PrefabInstance:
       propertyPath: m_funnyTextOptions.Array.data[8]
       value: Stop trying so hard.
       objectReference: {fileID: 0}
+    - target: {fileID: 369066003224516232, guid: d994b28b470a34416a2470bd5872073b, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 369066003224516232, guid: d994b28b470a34416a2470bd5872073b, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 960
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d994b28b470a34416a2470bd5872073b, type: 3}
 --- !u!82 &777486963615369518
