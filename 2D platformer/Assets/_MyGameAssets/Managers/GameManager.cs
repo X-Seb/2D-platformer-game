@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
-using Unity.VisualScripting;
 
 //This class controls the entire game flow
 public class GameManager : MonoBehaviour
@@ -321,8 +320,6 @@ public class GameManager : MonoBehaviour
         }
         yield break;
     }
-
-    
 
     #region Editor stuff
 

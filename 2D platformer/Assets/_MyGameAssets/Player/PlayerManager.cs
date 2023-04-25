@@ -60,7 +60,6 @@ public class PlayerManager : MonoBehaviour
     [Header("Reference information: ")]
     [SerializeField] private bool m_isGrounded;  // Whether or not the player is grounded.
     [SerializeField] private const float k_GroundedRadius = 0.4f; // Radius of the overlap circle to determine if grounded
-    [SerializeField] private bool m_isOnPlatform;
     [SerializeField] private bool m_isOnWall;
     [SerializeField] private bool m_isFacingRight = true;
     [SerializeField] private bool m_isJumping;
@@ -133,7 +132,6 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         m_isOnWall = IsTouchingWall();
-        m_isOnPlatform = IsOnPlatform();
         m_axisX = InputManager.instance.ReturnAxisX();
         AnimatePlayer();
         AjustPlayerLight();
@@ -176,11 +174,10 @@ public class PlayerManager : MonoBehaviour
         {
             PlayerDied(GameManager.CauseOfDeath.enemy);
         }
-        else if (collision.gameObject.CompareTag("Platform") && m_isOnPlatform)
+        else if (collision.gameObject.CompareTag("Platform") && IsOnPlatform())
         {
             gameObject.transform.parent = collision.transform;
             m_Rigidbody2D.velocity = new Vector3(m_Rigidbody2D.velocity.x, 0, 0);
-            m_isOnPlatform = true;
         }
         else if (collision.gameObject.CompareTag("Inside Of Object") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
@@ -199,10 +196,9 @@ public class PlayerManager : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Platform") && m_isOnPlatform)
+        if (collision.gameObject.CompareTag("Platform") && IsOnPlatform())
         {
             gameObject.transform.parent = collision.transform;
-            m_isOnPlatform = true;
         }
     }
 
@@ -210,7 +206,6 @@ public class PlayerManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Platform"))
         {
-            m_isOnPlatform = false;
             gameObject.transform.parent = null;
         }
     }
@@ -234,7 +229,7 @@ public class PlayerManager : MonoBehaviour
             m_isLightIncreasing = false;
         }
     }
-    #endregion
+    # endregion
 
     public void StartGame()
     {
