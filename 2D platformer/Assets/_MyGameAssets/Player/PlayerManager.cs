@@ -8,6 +8,7 @@ using DG.Tweening;
 
 public class PlayerManager : MonoBehaviour
 {
+    #region variables
     public static PlayerManager instance;
     [Header("Setup: ")]
     [SerializeField] private Rigidbody2D m_Rigidbody2D;
@@ -111,6 +112,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private UnityEvent m_airJumpRegainedEvent;
     [SerializeField] private UnityEvent m_groundedRegainedEvent;
     [SerializeField] private UnityEvent m_diedEvent;
+    #endregion
 
     public enum SoundType
     {
@@ -167,6 +169,7 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    #region collisions
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy") && GameManager.instance.GetState() == GameManager.GameState.playing)
@@ -231,6 +234,7 @@ public class PlayerManager : MonoBehaviour
             m_isLightIncreasing = false;
         }
     }
+    #endregion
 
     public void StartGame()
     {
