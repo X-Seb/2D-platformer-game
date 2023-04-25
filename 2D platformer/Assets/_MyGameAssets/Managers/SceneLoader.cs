@@ -39,7 +39,6 @@ public class SceneLoader : MonoBehaviour
     private void Start()
     {
         m_loadingCanva.SetActive(false);
-        m_loadingCanva.SetActive(false);
     }
 
     private void TryToGetVariables()
@@ -70,7 +69,6 @@ public class SceneLoader : MonoBehaviour
         //Fade in the loading screen + disable other screens
         RandomizeFunnyText();
         m_loadingCanva.SetActive(true);
-        m_loadingScreen.SetActive(true);
         yield return new WaitForSecondsRealtime(0.1f);
 
         if (SceneManager.GetActiveScene().buildIndex == 0)

@@ -178,7 +178,6 @@ public class PlayerManager : MonoBehaviour
             gameObject.transform.parent = collision.transform;
             m_Rigidbody2D.velocity = new Vector3(m_Rigidbody2D.velocity.x, 0, 0);
             m_isOnPlatform = true;
-            //m_isJumping = false;
         }
         else if (collision.gameObject.CompareTag("Inside Of Object") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
@@ -627,15 +626,27 @@ public class PlayerManager : MonoBehaviour
         {
             m_isAirJumpUnlocked = true;
         }
+        else
+        {
+            m_isAirJumpUnlocked = false;
+        }
 
         if (PlayerPrefs.HasKey("Dash_Unlocked"))
         {
             m_isDashUnlocked = true;
         }
+        else
+        {
+            m_isDashUnlocked = false;
+        }
 
         if (PlayerPrefs.HasKey("WallJump_Unlocked"))
         {
             m_isWallJumpUnlocked = true;
+        }
+        else
+        {
+            m_isWallJumpUnlocked = false;
         }
     }
 }
