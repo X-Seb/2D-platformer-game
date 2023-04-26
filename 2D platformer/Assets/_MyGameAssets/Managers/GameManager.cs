@@ -71,6 +71,12 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         instance = this;
 
         if (PlayerPrefs.HasKey("Last_Checkpoint"))
@@ -226,7 +232,7 @@ public class GameManager : MonoBehaviour
             m_teleportingObjects[i].JumpTeleport();
         }
     }
-
+    
     public void TeleportDashPlatforms()
     {
         for (int i = 0; i < m_teleportingObjects.Length; i++)
@@ -279,8 +285,12 @@ public class GameManager : MonoBehaviour
 
         // TODO fade out game screen and fade in lose screen
 
-        m_gameScreen.SetActive(false);
         m_loseScreen.SetActive(true);
+        CanvasGroup loseScreen = m_loseScreen.GetComponent<CanvasGroup>();
+        loseScreen.alpha = 0.0f;
+        yield return loseScreen.DOFade(1f, 0.5f).WaitForCompletion();
+
+        m_gameScreen.SetActive(false);
 
         // Watch yourself explode before going back to the last checkpoint
         yield return new WaitForSeconds(1.5f);

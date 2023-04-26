@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
@@ -79,10 +78,6 @@ public class SceneLoader : MonoBehaviour
         {
             m_gameManager.LeavingScene();
         }
-        else if (SceneManager.GetActiveScene().buildIndex == 2)
-        {
-
-        }
 
         if (m_loadAsync)
         {
@@ -99,7 +94,6 @@ public class SceneLoader : MonoBehaviour
         TryToGetVariables();
 
         // Deactivate the loading Screen
-        m_loadingCanva.SetActive(false);
         m_loadingScreen.SetActive(false);
     }
 

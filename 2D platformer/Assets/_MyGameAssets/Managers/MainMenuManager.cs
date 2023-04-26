@@ -249,6 +249,7 @@ public class MainMenuManager : MonoBehaviour
 
         PlayerPrefs.DeleteAll();
 
+        // Reset the player's settings to the original values
         PlayerPrefs.SetInt("Quality", quality);
         m_qualityDropdown.value = PlayerPrefs.GetInt("Quality");
         PlayerPrefs.SetFloat("Volume", volume);
@@ -307,5 +308,6 @@ public class MainMenuManager : MonoBehaviour
         m_settingsScreen.SetActive(false);
         m_creditsScreen.SetActive(false);
         m_statsScreen.SetActive(false);
+        // TODO: transitions
     }
 }
