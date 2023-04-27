@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.UI;
 
 //This class controls the entire game flow
 public class GameManager : MonoBehaviour
@@ -18,11 +19,17 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject m_loseScreen;
     [SerializeField] private GameObject m_victoryScreen;
     [SerializeField] private GameObject m_itemScreen;
+    [SerializeField] private CanvasGroup m_startScreenCG;
+    [SerializeField] private CanvasGroup m_gameScreenCG;
+    [SerializeField] private CanvasGroup m_loseScreenCG;
+    [SerializeField] private CanvasGroup m_victoryScreenCG;
+    [SerializeField] private CanvasGroup m_itemScreenCG;
     [Header("Item Screen UI elements: ")]
     [SerializeField] private TextMeshProUGUI m_itemTopText;
     [SerializeField] private TextMeshProUGUI m_itemNameText;
     [SerializeField] private TextMeshProUGUI m_itemLoreText;
     [SerializeField] private TextMeshProUGUI m_itemDescriptionText;
+    [SerializeField] private Button m_continueButton;
     [Header("End screen UI elements: ")]
     [SerializeField] private TextMeshProUGUI m_causeOfDeathText;
     [SerializeField] private TextMeshProUGUI m_smallerText;
@@ -76,7 +83,6 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
         instance = this;
 
         if (PlayerPrefs.HasKey("Last_Checkpoint"))
@@ -92,7 +98,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-
+        // Scene setup
         Time.timeScale = 1.0f;
         SetState(GameState.start);
         m_startScreen.SetActive(true);
@@ -101,13 +107,12 @@ public class GameManager : MonoBehaviour
         m_loseScreen.SetActive(false);
         m_victoryScreen.SetActive(false);
         m_itemScreen.SetActive(false);
-
+        m_startScreenCG.alpha = 1.0f;
         MovePlayer();
-
-        // Get all the teleporting objects
         m_teleportingObjects = GameObject.FindObjectsOfType<TeleportObject>();
 
-        StartCoroutine(StartingGameTransition(3.0f));
+        // Starting animations + starts the next coroutine
+        StartCoroutine(JustLoadedTransition());
     }
 
     public void SetState(GameState newState)
@@ -149,25 +154,9 @@ public class GameManager : MonoBehaviour
         m_gameScreen.SetActive(true);
     }
 
-    public void RestartLevel()
-    {
-        MovePlayer();
-        PlayerManager.instance.StartGame();
-        StartPlaying();
-    }
-
-    public void StartPlaying()
-    {
-        SetState(GameState.playing);
-        m_gameScreen.SetActive(true);
-        m_startScreen.SetActive(false);
-    }
-
     public void ContinuePlaying()
     {
-        currentGameState = GameState.playing;
-        m_itemScreen.SetActive(false);
-        m_gameScreen.SetActive(true);
+        StartCoroutine(ContinuePlayingTransition());
     }
 
     public void LoadScene(int sceneBuildIndex)
@@ -192,17 +181,28 @@ public class GameManager : MonoBehaviour
 
     public void CollectItem(CollectibleItem collectibleItem)
     {
+        StartCoroutine(CollectItemCo(collectibleItem));
+    }
+
+    public IEnumerator CollectItemCo(CollectibleItem collectibleItem)
+    {
         m_rb.velocity = new Vector3(0, 0, 0);
         currentGameState = GameState.collectedItem;
-        m_gameScreen.SetActive(false);
-        m_itemScreen.SetActive(true);
-
-        //TODO fade out game UI and fade in item screen
-
         m_itemTopText.text = collectibleItem.topText;
         m_itemNameText.text = collectibleItem.itemName;
         m_itemLoreText.text = collectibleItem.loreText;
         m_itemDescriptionText.text = collectibleItem.descriptionText;
+        m_continueButton.interactable = false;
+
+        // Wait before fading in the item description
+        yield return new WaitForSeconds(0.5f);
+        m_gameScreenCG.DOFade(0.0f, 0.8f);
+        yield return new WaitForSeconds(0.5f);
+        m_itemScreen.SetActive(true);
+        m_itemScreenCG.alpha = 0.0f;
+        m_itemScreenCG.DOFade(1.0f, 2.0f);
+        yield return new WaitForSeconds(1.8f);
+        m_continueButton.interactable = true;
     }
 
     public void SetLastCheckpoint(GameObject newCheckpoint)
@@ -239,6 +239,14 @@ public class GameManager : MonoBehaviour
         {
             m_teleportingObjects[i].DashTeleport();
         }
+    }
+
+    private IEnumerator JustLoadedTransition()
+    {
+        yield return new WaitForSeconds(0.8f);
+        m_startScreenCG.DOFade(0.0f, 1.0f);
+        yield return new WaitForSeconds(0.8f);
+        StartCoroutine(StartingGameTransition(2.0f));
     }
 
     private IEnumerator EndGameTransition(CauseOfDeath causeOfDeath)
@@ -283,28 +291,28 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
         SetState(GameState.lose);
 
-        // TODO fade out game screen and fade in lose screen
+        // Watch yourself explode with no distractions
+        yield return new WaitForSeconds(0.5f);
+        m_gameScreenCG.DOFade(0.0f, 0.5f);
+        yield return new WaitForSeconds(0.4f);
 
+        // Fade out game screen and fade in lose screen
+        m_loseScreenCG.alpha = 0.0f;
         m_loseScreen.SetActive(true);
-        CanvasGroup loseScreen = m_loseScreen.GetComponent<CanvasGroup>();
-        loseScreen.alpha = 0.0f;
-        yield return loseScreen.DOFade(1f, 0.5f).WaitForCompletion();
+        m_loseScreenCG.DOFade(1f, 0.8f);
 
-        m_gameScreen.SetActive(false);
-
-        // Watch yourself explode before going back to the last checkpoint
-        yield return new WaitForSeconds(1.5f);
+        // Wait for animations to end 
+        yield return new WaitForSeconds(1.0f);
         MovePlayer();
 
-        // Activate the starting UI and the start playing in 1 second
-        //yield return new WaitForSeconds(0.2f);
-        m_startScreen.SetActive(true);
-        m_gameScreen.SetActive(false);
-        m_pauseScreen.SetActive(false);
-        m_loseScreen.SetActive(false);
-        m_victoryScreen.SetActive(false);
-        m_itemScreen.SetActive(false);
-        StartCoroutine(StartingGameTransition(1.0f));
+        // Wait a little before fading back out
+        yield return new WaitForSeconds(0.3f);
+        m_loseScreenCG.DOFade(0.0f, 0.6f).OnComplete(() =>
+        {
+            m_loseScreen.SetActive(false);
+        });
+
+        StartCoroutine(StartingGameTransition(0.6f));
     }
 
     private IEnumerator StartingGameTransition(float seconds = 1.0f)
@@ -312,23 +320,25 @@ public class GameManager : MonoBehaviour
         // Resets the player, waits for the time you inputed and then you can start playing
         PlayerManager.instance.StartGame();
 
-        //TODO fade in game UI
-
+        // Fade in game UI before playing:
+        m_gameScreen.SetActive(true);
+        m_gameScreenCG.alpha = 0.0f;
+        m_gameScreenCG.DOFade(1.0f, seconds);
         yield return new WaitForSeconds(seconds);
-        StartPlaying();
+        SetState(GameState.playing);
     }
 
-    public IEnumerator FadeAudio(AudioSource audioSource, float duration, float targetVolume)
+    private IEnumerator ContinuePlayingTransition()
     {
-        float currentTime = 0;
-        float start = audioSource.volume;
-        while (currentTime < duration)
-        {
-            currentTime += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
-            yield return null;
-        }
-        yield break;
+        m_continueButton.interactable = false;
+        m_itemScreenCG.DOFade(0.0f, 1.0f);
+        yield return new WaitForSeconds(0.8f);
+        m_gameScreen.SetActive(true);
+        m_gameScreenCG.alpha = 0.0f;
+        m_gameScreenCG.DOFade(1.0f, 0.8f);
+        yield return new WaitForSeconds(1.0f);
+        m_itemScreen.SetActive(false);
+        SetState(GameState.playing);
     }
 
     #region Editor stuff
