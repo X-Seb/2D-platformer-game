@@ -44,21 +44,32 @@ public class SceneLoader : MonoBehaviour
 
     private void TryToGetVariables()
     {
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        switch (SceneManager.GetActiveScene().buildIndex)
         {
-            m_mainMenuManager = GameObject.Find("MainMenuManager").GetComponent<MainMenuManager>();
-        }
-        else if (SceneManager.GetActiveScene().buildIndex == 1)
-        {
-            m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-            m_player = GameObject.Find("Player");
+            case 0:
+                m_mainMenuManager = GameObject.Find("MainMenuManager").GetComponent<MainMenuManager>();
+                break;
+            case 1:
+                m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+                m_player = GameObject.Find("Player");
+                break;
+            default:
+                break;
         }
     }
 
     public void LoadScene(int sceneBuildIndex)
     {
         TryToGetVariables();
-        StartCoroutine(LoadPlayerAtCheckpoint(sceneBuildIndex, 2.0f));
+
+        if (m_loadAsync)
+        {
+            StartCoroutine(LoadSceneAsync(sceneBuildIndex, 2.0f));
+        }
+        else
+        {
+            StartCoroutine(LoadSceneDefault(sceneBuildIndex, 2.0f));
+        }
     }
 
     public void FadeOut()
@@ -66,10 +77,8 @@ public class SceneLoader : MonoBehaviour
         StartCoroutine(FadeOutTransition());
     }
 
-    private IEnumerator LoadPlayerAtCheckpoint(int targetSceneIndex, float fadeTime)
+    private IEnumerator LoadSceneDefault(int targetSceneIndex, float fadeTime)
     {
-        AsyncOperation scene;
-
         // Start fading out the current scene UI
         switch (SceneManager.GetActiveScene().buildIndex)
         {
@@ -83,11 +92,6 @@ public class SceneLoader : MonoBehaviour
                 break;
         }
 
-        if (m_loadAsync)
-        {
-            scene = SceneManager.LoadSceneAsync(targetSceneIndex);
-        }
-
         // Wait before fading-in the loading screen
         yield return new WaitForSecondsRealtime(0.8f);
         RandomizeFunnyText();
@@ -96,15 +100,45 @@ public class SceneLoader : MonoBehaviour
         m_loadingScreenCG.alpha = 0.0f;
         m_loadingScreenCG.DOFade(1.0f, fadeTime).SetUpdate(true);
         yield return new WaitForSecondsRealtime(fadeTime);
+        SceneManager.LoadScene(targetSceneIndex);
+    }
 
-        if (m_loadAsync)
+    private IEnumerator LoadSceneAsync(int targetSceneIndex, float fadeTime)
+    {
+        // Start fading out the current scene UI
+        switch (SceneManager.GetActiveScene().buildIndex)
         {
-            //scene.allowSceneActivation = true;
+            case 0:
+                m_mainMenuManager.LeavingScene(1.0f);
+                break;
+            case 1:
+                m_gameManager.LeavingScene(1.0f);
+                break;
+            default:
+                break;
         }
-        else
+
+        // Start loading the scene asynchronously
+        AsyncOperation scene = SceneManager.LoadSceneAsync(targetSceneIndex);
+        scene.allowSceneActivation = false;
+
+        // Wait before fading-in the loading screen
+        yield return new WaitForSecondsRealtime(0.8f);
+        RandomizeFunnyText();
+        m_loadingCanva.SetActive(true);
+        m_loadingScreen.SetActive(true);
+        m_loadingScreenCG.alpha = 0.0f;
+        m_loadingScreenCG.DOFade(1.0f, fadeTime).SetUpdate(true);
+        yield return new WaitForSecondsRealtime(1.2f);
+
+        // Wait until the scene is loaded
+        while (!scene.isDone)
         {
-            SceneManager.LoadScene(targetSceneIndex);
-            TryToGetVariables();
+            if (scene.progress >= 0.9f)
+            {
+                scene.allowSceneActivation = true;
+            }
+            yield return null;
         }
     }
 
