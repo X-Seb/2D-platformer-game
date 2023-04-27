@@ -69,7 +69,6 @@ public class SceneLoader : MonoBehaviour
     private IEnumerator LoadPlayerAtCheckpoint(int targetSceneIndex, float fadeTime)
     {
         AsyncOperation scene;
-        Time.timeScale = 1.0f;
 
         // Start fading out the current scene UI
         switch (SceneManager.GetActiveScene().buildIndex)
@@ -95,7 +94,7 @@ public class SceneLoader : MonoBehaviour
         m_loadingCanva.SetActive(true);
         m_loadingScreen.SetActive(true);
         m_loadingScreenCG.alpha = 0.0f;
-        m_loadingScreenCG.DOFade(1.0f, fadeTime);
+        m_loadingScreenCG.DOFade(1.0f, fadeTime).SetUpdate(true);
         yield return new WaitForSecondsRealtime(fadeTime);
 
         if (m_loadAsync)
@@ -112,7 +111,7 @@ public class SceneLoader : MonoBehaviour
     private IEnumerator FadeOutTransition()
     {
         TryToGetVariables();
-        m_loadingScreenCG.DOFade(0.0f, 1.0f);
+        m_loadingScreenCG.DOFade(0.0f, 1.0f).SetUpdate(true);
         yield return new WaitForSecondsRealtime(1.0f);
         m_loadingScreen.SetActive(false);
     }

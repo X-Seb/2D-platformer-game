@@ -16,10 +16,10 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private TrailRenderer m_trailRenderer;
     [SerializeField] private TrailRenderer m_mainTrailRenderer;
     [SerializeField] private Animator m_animator;
-    [SerializeField] private LayerMask m_groundLayer;
-    [SerializeField] private LayerMask m_movingPlatformLayer;
+    [SerializeField] private LayerMask m_groundLayerMask;
+    [SerializeField] private LayerMask m_movingPlatformLayerMask;
     [SerializeField] private Transform m_groundCheck;
-    [SerializeField] private Camera m_cam;
+    [SerializeField] private Camera m_mainCam;
     [Header("Upgrading the player: ")]
     [SerializeField] private bool m_isDashUnlocked;
     [SerializeField] private bool m_isAirJumpUnlocked;
@@ -111,16 +111,17 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private UnityEvent m_airJumpRegainedEvent;
     [SerializeField] private UnityEvent m_groundedRegainedEvent;
     [SerializeField] private UnityEvent m_diedEvent;
-    #endregion
 
+    // Keep public since other scripts play the sounds
     public enum SoundType
     {
         bouncy
     }
 
+    #endregion
+
     private void Awake()
     {
-        m_Rigidbody2D = GetComponent<Rigidbody2D>();
         instance = this;
     }
 
@@ -268,11 +269,11 @@ public class PlayerManager : MonoBehaviour
 
         if (m_playDeathCamFX)
         {
-            m_cam.DOKill();
-            m_cam.DOOrthoSize(7, m_zoomDuration).SetEase(Ease.InCubic);
-            m_cam.DOShakeRotation(m_collisionDuration, m_collisionStrength, m_collisionVibrato, m_collisionRandomness, true, ShakeRandomnessMode.Harmonic).OnComplete(() =>
+            m_mainCam.DOKill();
+            m_mainCam.DOOrthoSize(7, m_zoomDuration).SetEase(Ease.InCubic);
+            m_mainCam.DOShakeRotation(m_collisionDuration, m_collisionStrength, m_collisionVibrato, m_collisionRandomness, true, ShakeRandomnessMode.Harmonic).OnComplete(() =>
             {
-                m_cam.DOOrthoSize(9, 0.7f).SetEase(Ease.InOutSine);
+                m_mainCam.DOOrthoSize(9, 0.7f).SetEase(Ease.InOutSine);
             });
         }
 
@@ -365,6 +366,11 @@ public class PlayerManager : MonoBehaviour
             {
                 m_dashRegainedEvent.Invoke();
             }
+        }
+        else
+        {
+            m_mainTrailRenderer.startColor = Color.white;
+            m_mainTrailRenderer.endColor = Color.white;
         }
     }
 
@@ -516,9 +522,9 @@ public class PlayerManager : MonoBehaviour
         // Will make you zoom in while you dash and zoom out soon after
         if (m_playDashCamFX)
         {
-            m_cam.DOKill();
-            m_cam.DOOrthoSize(m_dashZoomAmount, m_dashDuration * 0.9f).OnComplete(() => {
-                m_cam.DOOrthoSize(9, 0.3f);
+            m_mainCam.DOKill();
+            m_mainCam.DOOrthoSize(m_dashZoomAmount, m_dashDuration * 0.9f).OnComplete(() => {
+                m_mainCam.DOOrthoSize(9, 0.3f);
             });
         }
 
@@ -579,7 +585,7 @@ public class PlayerManager : MonoBehaviour
         m_isGrounded = false;
 
         // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_groundCheck.position, k_GroundedRadius, m_groundLayer);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_groundCheck.position, k_GroundedRadius, m_groundLayerMask);
         for (int i = 0; i < colliders.Length; i++)
         {
             if (colliders[i].gameObject != gameObject)
@@ -601,7 +607,7 @@ public class PlayerManager : MonoBehaviour
 
     private bool IsOnPlatform()
     {
-        return Physics2D.OverlapCircle(m_groundCheck.position, k_GroundedRadius, m_movingPlatformLayer);
+        return Physics2D.OverlapCircle(m_groundCheck.position, k_GroundedRadius, m_movingPlatformLayerMask);
     }
 
     private bool IsTouchingWall()

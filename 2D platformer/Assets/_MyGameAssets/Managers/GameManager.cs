@@ -340,7 +340,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LeavingSceneTransition(float fadeTime)
     {
-        m_pauseScreenCG.DOFade(0.0f, fadeTime);
+        m_pauseScreenCG.DOFade(0.0f, fadeTime).SetUpdate(true);
         yield return new WaitForSeconds(fadeTime);
         m_pauseScreenCG.DOKill();
         m_startScreen.SetActive(false);
