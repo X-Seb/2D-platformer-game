@@ -4891,6 +4891,7 @@ GameObject:
   - component: {fileID: 8383186564984455764}
   - component: {fileID: 8383186564984455765}
   - component: {fileID: 7531080002956799036}
+  - component: {fileID: 1597328830438641552}
   m_Layer: 0
   m_Name: Fireball
   m_TagString: Fire
@@ -4947,6 +4948,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_speed: 5
   m_volume: 1
+  m_animator: {fileID: 1597328830438641552}
   m_light: {fileID: 8383186565645452777}
   m_audioSource: {fileID: 8383186565025332056}
   m_audioClip: {fileID: 8300000, guid: d1698dd553af8ef4d887bc83b9687173, type: 3}
@@ -4977,6 +4979,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!95 &1597328830438641552
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8383186564984455766}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 964dbc0fc73f348b5b6e683f10675597, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8383186565025332058
 GameObject:
   m_ObjectHideFlags: 0
@@ -5321,3 +5344,4 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

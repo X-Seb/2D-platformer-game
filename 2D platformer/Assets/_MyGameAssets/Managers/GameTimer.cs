@@ -49,8 +49,9 @@ public class GameTimer : MonoBehaviour
 
             if (m_isPlayerSpeedrunning)
             {
-                m_text = (Mathf.Round(m_timeElapsed * 100) * 0.01f).ToString();
-                m_timeElapsedText.text = m_text;
+                int roundedTime = Mathf.RoundToInt(m_timeElapsed * 100);
+                float formattedTime = (float)roundedTime * 0.01f;
+                m_timeElapsedText.text = formattedTime.ToString("F2");
             }
         }
     }

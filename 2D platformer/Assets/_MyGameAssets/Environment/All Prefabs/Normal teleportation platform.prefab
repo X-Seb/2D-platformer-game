@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2897790635054873026}
   - component: {fileID: 2851525681279705275}
   - component: {fileID: 2851525681279705274}
+  - component: {fileID: 6909919851762592449}
   m_Layer: 7
   m_Name: Normal teleportation platform
   m_TagString: Ground
@@ -97,12 +98,34 @@ MonoBehaviour:
   m_type: 0
   m_emptyPlatform: {fileID: 9010157891016936872}
   m_audioSource: {fileID: 9010157890996995843}
-  m_audioClip: {fileID: 8300000, guid: 35cf7766e9e2aa542811e896fde57989, type: 3}
+  m_teleportAudioClip: {fileID: 8300000, guid: 35cf7766e9e2aa542811e896fde57989, type: 3}
+  m_warningAudioClip: {fileID: 8300000, guid: b83bf8726a7fac349a54389f0c57cda6, type: 3}
   m_volume: 1
   m_timePerCycle: 3
   m_targetPos: {x: 0, y: 0, z: 0}
   m_startPos: {x: 0, y: 0, z: 0}
   m_isAtOriginalPos: 0
+--- !u!95 &6909919851762592449
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2851525681279705273}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d8ea0548e5ea543608e74ef96871fcef, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5974919887288531044
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +262,7 @@ MonoBehaviour:
   m_Intensity: 0.8
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000a57c1d3c89fd2d24639ae9a23bf416f7514fd3523f4147165b3607b4337227614193f11b
+  m_ApplyToSortingLayers: 00000000a57c1d3c89fd2d24639ae9a23bf416f7514fd3523f4147165b3607b433722761
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -350,7 +373,7 @@ MonoBehaviour:
   m_Intensity: 0.8
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000a57c1d3c89fd2d24639ae9a23bf416f7514fd3523f4147165b3607b4337227614193f11b
+  m_ApplyToSortingLayers: 00000000a57c1d3c89fd2d24639ae9a23bf416f7514fd3523f4147165b3607b433722761
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0

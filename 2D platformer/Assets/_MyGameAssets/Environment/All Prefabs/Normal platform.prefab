@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 1506671835874189424}
   - component: {fileID: 6781050320972692438}
   m_Layer: 7
-  m_Name: Light 2D (1)
+  m_Name: Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Intensity: 0.8
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000a57c1d3c89fd2d24639ae9a23bf416f7514fd3523f4147165b3607b4337227614193f11b
+  m_ApplyToSortingLayers: 00000000a57c1d3c89fd2d24639ae9a23bf416f7514fd3523f4147165b3607b433722761
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -221,7 +221,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7288140541204806460}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.500168, y: -48.50096, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -269,3 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_difficulty: 0
+  m_changeCycleTime: 0
+  m_easyCycleTime: 0
+  m_mediumCycleTime: 0
+  m_hardCycleTime: 0

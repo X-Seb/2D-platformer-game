@@ -4,25 +4,28 @@ using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 public class PlayerManager : MonoBehaviour
 {
-    [Header("Setup: ")]
+    #region variables
     public static PlayerManager instance;
+    [Header("Setup: ")]
     [SerializeField] private Rigidbody2D m_Rigidbody2D;
+    [SerializeField] private SpriteRenderer m_spriteRenderer;
     [SerializeField] private TrailRenderer m_trailRenderer;
+    [SerializeField] private TrailRenderer m_mainTrailRenderer;
     [SerializeField] private Animator m_animator;
-    [SerializeField] private LayerMask m_groundLayer; // A mask determining what is ground to the character
-    [SerializeField] private LayerMask m_movingPlatformLayer;
-    [SerializeField] private Transform m_groundCheck;  // A position marking where to check if the player is grounded.
+    [SerializeField] private LayerMask m_groundLayerMask;
+    [SerializeField] private LayerMask m_movingPlatformLayerMask;
+    [SerializeField] private Transform m_groundCheck;
+    [SerializeField] private Camera m_mainCam;
     [Header("Upgrading the player: ")]
     [SerializeField] private bool m_isDashUnlocked;
     [SerializeField] private bool m_isAirJumpUnlocked;
     [SerializeField] private bool m_isWallSlideUnlocked;
     [SerializeField] private bool m_isWallJumpUnlocked;
     [SerializeField] private bool m_isAcidImmunityUnlocked;
-    [Header("Input: ")]
-    [SerializeField] private float m_axisX = 0f; // Either -1, 0, or 1
     [Header("Movement: ")]
     [Range(0, 200)][SerializeField] private float m_playerMoveSpeed = 80f; // How fast the player can move.
     [Range(0, .3f)][SerializeField] private float m_MovementSmoothing = .05f; // How much to smooth out the movement
@@ -57,11 +60,12 @@ public class PlayerManager : MonoBehaviour
     [Header("Reference information: ")]
     [SerializeField] private bool m_isGrounded;  // Whether or not the player is grounded.
     [SerializeField] private const float k_GroundedRadius = 0.4f; // Radius of the overlap circle to determine if grounded
-    [SerializeField] private bool m_isOnPlatform;
     [SerializeField] private bool m_isOnWall;
-    [SerializeField] private bool m_isFacingRight = true; // For determining which way the player is currently facing.
+    [SerializeField] private bool m_isFacingRight = true;
+    [SerializeField] private bool m_isJumping;
     [SerializeField] private int m_numberOfAirJumps = 0;
     [SerializeField] private int m_numberOfDash = 0;
+    [SerializeField] private float m_axisX = 0f; // Either -1, 0, or 1
     [Header("Audio: ")]
     [SerializeField] private AudioSource m_playerAudioSource;
     [SerializeField] private AudioClip m_deathAudioClip;
@@ -80,23 +84,44 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float m_minLightOuterRadius;
     [SerializeField] private float m_maxLightOuterRadius;
     [SerializeField] private float m_increasingLightSpeed;
-    [SerializeField] private float m_decreasingLightSpeedMedium;
-    [SerializeField] private float m_decreasingLightSpeedHard;
+    [Range(0.001f, 0.1f)][SerializeField] private float m_decreasingLightSpeedEasy;
+    [Range(0.001f, 0.1f)][SerializeField] private float m_decreasingLightSpeedMedium;
+    [Range(0.001f, 0.1f)][SerializeField] private float m_decreasingLightSpeedHard;
     [SerializeField] private float m_decreasingLightSpeedDead;
     [SerializeField] private float m_currentLightIntensity;
     [SerializeField] private float m_currentLightOuterRadius;
     [Header("Effects: ")]
-    [SerializeField] private TrailRenderer m_mainTrailRenderer;
+    [SerializeField] private bool m_playDeathCamFX;
+    [SerializeField] private bool m_playDashCamFX;
     [SerializeField] private bool m_isMainTrailEmmiting = false;
+    [SerializeField] private Color m_pinkTrailColor;
+    [SerializeField] private Color m_playerAirJumpColor;
+    [SerializeField] private float m_dashZoomAmount;
+    [SerializeField] private float m_zoomDuration;
+    [SerializeField] private float m_collisionDuration;
+    [SerializeField] private Vector3 m_collisionStrength;
+    [SerializeField] private int m_collisionVibrato;
+    [SerializeField] private float m_collisionRandomness;
+    [Header("Events: ")]
+    [SerializeField] private UnityEvent m_dashRegainedEvent;
+    [SerializeField] private UnityEvent m_dashEvent;
+    [SerializeField] private UnityEvent m_jumpEvent;
+    [SerializeField] private UnityEvent m_airJumpEvent;
+    [SerializeField] private UnityEvent m_wallJumpEvent;
+    [SerializeField] private UnityEvent m_airJumpRegainedEvent;
+    [SerializeField] private UnityEvent m_groundedRegainedEvent;
+    [SerializeField] private UnityEvent m_diedEvent;
 
+    // Keep public since other scripts play the sounds
     public enum SoundType
     {
         bouncy
     }
 
+    #endregion
+
     private void Awake()
     {
-        m_Rigidbody2D = GetComponent<Rigidbody2D>();
         instance = this;
     }
 
@@ -108,10 +133,11 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         m_isOnWall = IsTouchingWall();
-        m_isOnPlatform = IsOnPlatform();
         m_axisX = InputManager.instance.ReturnAxisX();
         AnimatePlayer();
         AjustPlayerLight();
+        AdjustTrailColor(false);
+        AdjustPlayerColor();
 
         if (!m_isMainTrailEmmiting && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
@@ -142,35 +168,38 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
+    #region collisions
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Enemy") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             PlayerDied(GameManager.CauseOfDeath.enemy);
         }
-        else if (collision.gameObject.CompareTag("Platform") && m_isOnPlatform)
+        else if (collision.gameObject.CompareTag("Platform") && IsOnPlatform())
         {
             gameObject.transform.parent = collision.transform;
             m_Rigidbody2D.velocity = new Vector3(m_Rigidbody2D.velocity.x, 0, 0);
-            m_isOnPlatform = true;
         }
         else if (collision.gameObject.CompareTag("Inside Of Object") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             PlayerDied(GameManager.CauseOfDeath.insideObject);
         }
-        else if (collision.gameObject.CompareTag("Fire") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if ((collision.gameObject.CompareTag("Fire") || collision.gameObject.CompareTag("FireOnCandle"))
+            && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             PlayerDied(GameManager.CauseOfDeath.fire);
         }
-
+        else if (collision.gameObject.CompareTag("Ground") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            m_isJumping = false;
+        }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Platform") && m_isOnPlatform)
+        if (collision.gameObject.CompareTag("Platform") && IsOnPlatform())
         {
             gameObject.transform.parent = collision.transform;
-            m_isOnPlatform = true;
         }
     }
 
@@ -178,7 +207,6 @@ public class PlayerManager : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Platform"))
         {
-            m_isOnPlatform = false;
             gameObject.transform.parent = null;
         }
     }
@@ -202,6 +230,7 @@ public class PlayerManager : MonoBehaviour
             m_isLightIncreasing = false;
         }
     }
+    # endregion
 
     public void StartGame()
     {
@@ -209,8 +238,11 @@ public class PlayerManager : MonoBehaviour
         GameManager.instance.SetState(GameManager.GameState.start);
         m_animator.SetBool("isDead", false);
         m_canWallJump = true;
+        m_isJumping = false;
         m_lightPercentage = 1;
         UpdatePlayerPowers();
+        AdjustTrailColor(false);
+        AdjustPlayerColor();
 
         // Adjust player prefs if you've never played before
         if (!PlayerPrefs.HasKey("Jumps_Count"))
@@ -232,8 +264,19 @@ public class PlayerManager : MonoBehaviour
     private void PlayerDied(GameManager.CauseOfDeath causeOfDeath)
     {
         GameManager.instance.SetState(GameManager.GameState.lose);
-        m_playerAudioSource.PlayOneShot(m_deathAudioClip);
         m_animator.SetBool("isDead", true);
+        m_diedEvent.Invoke();
+
+        if (m_playDeathCamFX)
+        {
+            m_mainCam.DOKill();
+            m_mainCam.DOOrthoSize(7, m_zoomDuration).SetEase(Ease.InCubic);
+            m_mainCam.DOShakeRotation(m_collisionDuration, m_collisionStrength, m_collisionVibrato, m_collisionRandomness, true, ShakeRandomnessMode.Harmonic).OnComplete(() =>
+            {
+                m_mainCam.DOOrthoSize(9, 0.7f).SetEase(Ease.InOutSine);
+            });
+        }
+
         GameManager.instance.EndGame(causeOfDeath);
     }
 
@@ -258,6 +301,16 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
+        // Decrease light % if you're not gaining any light + you're on easy mode
+        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 0 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            m_lightPercentage -= Time.deltaTime * m_decreasingLightSpeedEasy;
+            if (m_lightPercentage <= 0)
+            {
+                m_lightPercentage = 0;
+            }
+        }
+
         // Decrease the light percentage if you're not gaining any light (reminder: 2 is easy, 1 is medium, 0 is hard)
         else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 1 && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
@@ -268,7 +321,7 @@ public class PlayerManager : MonoBehaviour
             }
         }
 
-        // Decrease the light percentage if you're not gaining any + difficulty is set to hard
+        // Decrease the light percentage if you're not gaining any light + difficulty is set to hard
         else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 0 && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             m_lightPercentage -= Time.deltaTime * m_decreasingLightSpeedHard;
@@ -300,6 +353,36 @@ public class PlayerManager : MonoBehaviour
             m_currentLightOuterRadius = Mathf.Lerp(m_minLightOuterRadius, m_maxLightOuterRadius, m_lightPercentage);
             m_playerLight.pointLightOuterRadius = m_currentLightOuterRadius;
             m_lightSlider.value = m_lightPercentage;
+        }
+    }
+
+    private void AdjustTrailColor(bool playEffects = true)
+    {
+        if (m_canDash && m_isDashUnlocked && (m_numberOfDash >= 1 || m_isInfiniteDashAllowed) && GameManager.instance.GetState() == GameManager.GameState.playing)
+        {
+            m_mainTrailRenderer.startColor = m_pinkTrailColor;
+            m_mainTrailRenderer.endColor = m_pinkTrailColor;
+            if (playEffects)
+            {
+                m_dashRegainedEvent.Invoke();
+            }
+        }
+        else
+        {
+            m_mainTrailRenderer.startColor = Color.white;
+            m_mainTrailRenderer.endColor = Color.white;
+        }
+    }
+
+    private void AdjustPlayerColor()
+    {
+        if (m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps >= 1))
+        {
+            m_spriteRenderer.material.color = m_playerAirJumpColor;
+        }
+        else
+        {
+            m_spriteRenderer.material.color = new Color(1, 1, 1);
         }
     }
 
@@ -337,8 +420,9 @@ public class PlayerManager : MonoBehaviour
             m_isGrounded = false;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_jumpForce);
             PlayerPrefs.SetInt("Jumps_Count", PlayerPrefs.GetInt("Jumps_Count") + 1);
-            m_playerAudioSource.PlayOneShot(m_jumpAudioClip);
             GameManager.instance.TeleportJumpPlatforms();
+            m_jumpEvent.Invoke();
+            m_isJumping = true;
         }
 
         // Jump in mid-air
@@ -348,8 +432,9 @@ public class PlayerManager : MonoBehaviour
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_airJumpForce);
             m_numberOfAirJumps--;
             PlayerPrefs.SetInt("AirJumps_Count", PlayerPrefs.GetInt("AirJumps_Count") + 1);
-            m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
             GameManager.instance.TeleportJumpPlatforms();
+            m_airJumpEvent.Invoke();
+            m_isJumping = true;
         }
 
         // Jump while sliding down a wall
@@ -366,7 +451,7 @@ public class PlayerManager : MonoBehaviour
             StartCoroutine(WallJump());
         }
 
-        else if (ctx.canceled && m_Rigidbody2D.velocity.y > 0)
+        else if (ctx.canceled && m_isJumping && m_Rigidbody2D.velocity.y > 0)
         {
             // If player is currently jumping => slow down the player 
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_Rigidbody2D.velocity.y * 0.4f);
@@ -414,6 +499,9 @@ public class PlayerManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("Dashes_Count", PlayerPrefs.GetInt("Dashes_Count") + 1);
 
+        m_mainTrailRenderer.startColor = new Color(1, 1, 1);
+        m_mainTrailRenderer.endColor = new Color(1, 1, 1);
+
         m_canDash = false;
         m_isDashing = true;
         m_animator.SetBool("isDashing", true);
@@ -429,9 +517,19 @@ public class PlayerManager : MonoBehaviour
         m_Rigidbody2D.velocity = new Vector2(transform.localScale.x * m_dashForce, 0f);
         m_trailRenderer.emitting = true;
         m_playerAudioSource.PlayOneShot(m_dashAudioClip);
+        m_dashEvent.Invoke();
 
-        //Wait for the player to finish dashing
+        // Will make you zoom in while you dash and zoom out soon after
+        if (m_playDashCamFX)
+        {
+            m_mainCam.DOKill();
+            m_mainCam.DOOrthoSize(m_dashZoomAmount, m_dashDuration * 0.9f).OnComplete(() => {
+                m_mainCam.DOOrthoSize(9, 0.3f);
+            });
+        }
+
         yield return new WaitForSeconds(m_dashDuration);
+
         m_trailRenderer.emitting = false;
         m_Rigidbody2D.gravityScale = originalGravity;
         m_isDashing = false;
@@ -440,6 +538,7 @@ public class PlayerManager : MonoBehaviour
         // Wait for the cooldown to finish before allowing you to dash again
         yield return new WaitForSeconds(m_dashingCooldownTime);
         m_canDash = true;
+        AdjustTrailColor();
     }
 
     private IEnumerator WallJump()
@@ -458,7 +557,8 @@ public class PlayerManager : MonoBehaviour
         }
 
         m_Rigidbody2D.velocity = new Vector2(m_wallJumpingDirection * m_wallJumpingPower.x, m_wallJumpingPower.y);
-        m_playerAudioSource.PlayOneShot(m_airJumpAudioClip);
+        m_wallJumpEvent.Invoke();
+        m_isJumping = true;
 
         if (transform.localScale.x != m_wallJumpingDirection)
         {
@@ -485,7 +585,7 @@ public class PlayerManager : MonoBehaviour
         m_isGrounded = false;
 
         // The player is grounded if a circlecast to the groundcheck position hits anything designated as ground
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_groundCheck.position, k_GroundedRadius, m_groundLayer);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(m_groundCheck.position, k_GroundedRadius, m_groundLayerMask);
         for (int i = 0; i < colliders.Length; i++)
         {
             if (colliders[i].gameObject != gameObject)
@@ -497,7 +597,9 @@ public class PlayerManager : MonoBehaviour
                 if (!wasGrounded && m_isGrounded && m_Rigidbody2D.velocity.y <= 0 &&
                     colliders[i].gameObject.GetComponent<BouncyObject>() == null && GameManager.instance.GetState() == GameManager.GameState.playing)
                 {
-                    m_playerAudioSource.PlayOneShot(m_landAudioClip, 0.3f);
+                    m_isJumping = false;
+                    m_groundedRegainedEvent.Invoke();
+                    m_airJumpRegainedEvent.Invoke();
                 }
             }
         }
@@ -505,7 +607,7 @@ public class PlayerManager : MonoBehaviour
 
     private bool IsOnPlatform()
     {
-        return Physics2D.OverlapCircle(m_groundCheck.position, k_GroundedRadius, m_movingPlatformLayer);
+        return Physics2D.OverlapCircle(m_groundCheck.position, k_GroundedRadius, m_movingPlatformLayerMask);
     }
 
     private bool IsTouchingWall()
@@ -529,15 +631,27 @@ public class PlayerManager : MonoBehaviour
         {
             m_isAirJumpUnlocked = true;
         }
+        else
+        {
+            m_isAirJumpUnlocked = false;
+        }
 
         if (PlayerPrefs.HasKey("Dash_Unlocked"))
         {
             m_isDashUnlocked = true;
         }
+        else
+        {
+            m_isDashUnlocked = false;
+        }
 
         if (PlayerPrefs.HasKey("WallJump_Unlocked"))
         {
             m_isWallJumpUnlocked = true;
+        }
+        else
+        {
+            m_isWallJumpUnlocked = false;
         }
     }
 }

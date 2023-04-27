@@ -1,7 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using DG.Tweening;
 
 public class SpecialItemController : MonoBehaviour
 {
@@ -69,13 +69,14 @@ public class SpecialItemController : MonoBehaviour
 
         // Do the effects: 
         m_audioSource.PlayOneShot(m_item.collectedSFX, m_volume);
-        StartCoroutine(GameManager.instance.FadeAudio(m_audioSource, 5, 0));
+        m_audioSource.DOFade(0.0f, 3.0f);
         m_light.intensity = 0.0f;
         m_spriteRenderer.color = new Color(255, 255, 255, 0);
         m_pfx.Play();
 
         // Wait before destroying the item:
         yield return new WaitForSeconds(5.0f);
+        m_audioSource.DOKill();
         Destroy(gameObject);
     }
 }

@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5375229464702849345, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
       propertyPath: m_Name
-      value: Acid water (66)
+      value: Acid water (66) Variant
       objectReference: {fileID: 0}
     - target: {fileID: 5375229464702849346, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
       propertyPath: m_RootOrder
@@ -63,9 +63,25 @@ PrefabInstance:
       propertyPath: m_Size.x
       value: 22
       objectReference: {fileID: 0}
+    - target: {fileID: 5375229466476973310, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
+      propertyPath: Priority
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 5375229466476973310, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
+      propertyPath: m_Volume
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 5375229466495257513, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
       propertyPath: m_LocalScale.x
       value: 66
+      objectReference: {fileID: 0}
+    - target: {fileID: 6810506145724198181, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
+      propertyPath: Priority
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 6810506145724198181, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
+      propertyPath: m_Volume
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6810506145724198186, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -75,13 +91,37 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 26.000488
       objectReference: {fileID: 0}
+    - target: {fileID: 6810506146428547299, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
+      propertyPath: Priority
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 6810506146428547299, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
+      propertyPath: m_Volume
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 6810506146853186388, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 13.000244
       objectReference: {fileID: 0}
+    - target: {fileID: 6810506146853186391, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
+      propertyPath: Priority
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 6810506146853186391, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
+      propertyPath: m_Volume
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 6810506147481674644, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
       propertyPath: m_LocalPosition.x
       value: -26.00055
+      objectReference: {fileID: 0}
+    - target: {fileID: 6810506147481674647, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
+      propertyPath: Priority
+      value: 130
+      objectReference: {fileID: 0}
+    - target: {fileID: 6810506147481674647, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}
+      propertyPath: m_Volume
+      value: 0.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ede3828354ac44b5ba6ddb691bcc7f1e, type: 3}

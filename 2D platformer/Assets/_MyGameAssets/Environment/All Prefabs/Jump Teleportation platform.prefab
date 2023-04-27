@@ -439,7 +439,7 @@ MonoBehaviour:
   m_Intensity: 0.8
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000a57c1d3c89fd2d24639ae9a23bf416f7514fd3523f4147165b3607b4337227614193f11b
+  m_ApplyToSortingLayers: 00000000a57c1d3c89fd2d24639ae9a23bf416f7514fd3523f4147165b3607b433722761
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -550,7 +550,7 @@ MonoBehaviour:
   m_Intensity: 0.8
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000a57c1d3c89fd2d24639ae9a23bf416f7514fd3523f4147165b3607b4337227614193f11b
+  m_ApplyToSortingLayers: 00000000a57c1d3c89fd2d24639ae9a23bf416f7514fd3523f4147165b3607b433722761
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -621,6 +621,7 @@ GameObject:
   - component: {fileID: 8688794490569668835}
   - component: {fileID: 8588767772592578970}
   - component: {fileID: 8588767772592578971}
+  - component: {fileID: 4467007716934055589}
   m_Layer: 7
   m_Name: Jump Teleportation platform
   m_TagString: Ground
@@ -706,9 +707,31 @@ MonoBehaviour:
   m_type: 1
   m_emptyPlatform: {fileID: 3290243922938285193}
   m_audioSource: {fileID: 3290243922553439778}
-  m_audioClip: {fileID: 8300000, guid: 7cc057bed53baf34799f52aab3c84800, type: 3}
+  m_teleportAudioClip: {fileID: 8300000, guid: ba39bf8baf6d13046889b2d64822381a, type: 3}
+  m_warningAudioClip: {fileID: 8300000, guid: e58d8bd078f188a4ba314e933b98528b, type: 3}
   m_volume: 1
   m_timePerCycle: 3
   m_targetPos: {x: 0, y: 0, z: 0}
   m_startPos: {x: 0, y: 0, z: 0}
   m_isAtOriginalPos: 0
+--- !u!95 &4467007716934055589
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8588767772592578968}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ddc6f9a6a3a5748b6b74ce090c24abc1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -27,7 +27,6 @@ public class ObjectPooler : MonoBehaviour
             tmp = Instantiate(m_object, Vector3.zero, Quaternion.identity, gameObject.transform);
             tmp.SetActive(false);
             m_objects.Add(tmp);
-            Debug.Log("Created a fireball");
         }
     }
 

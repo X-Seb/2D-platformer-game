@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject m_creditsScreen;
     [SerializeField] private GameObject m_statsScreen;
     [SerializeField] private GameObject m_howToPlayScreen;
+    [SerializeField] private CanvasGroup m_startScreenCG;
     [Header("Text UI elements: ")]
     [SerializeField] private TextMeshProUGUI m_coinCountText;
     [SerializeField] private TextMeshProUGUI m_deathCountText;
@@ -41,20 +43,24 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown m_qualityDropdown;
     [Header("Difficulty: ")]
     [SerializeField] private TMP_Dropdown m_difficultyDropdown;
+    [Header("Other: ")]
+    [SerializeField] private bool m_areButtonsInteractable;
+
 
     void Start()
     {
         Time.timeScale = 1.0f;
+        SceneLoader.instance.FadeOut();
         m_mainScreen.SetActive(true);
         m_settingsScreen.SetActive(false);
         m_creditsScreen.SetActive(false);
         m_statsScreen.SetActive(false);
 
         SetSettingsInformation();
-
         SetStatsInformation();
-        UpdateRelicColors();
-        UpdateItemColors();
+        SetRelicColors();
+        SetItemColors();
+        m_areButtonsInteractable = true;
     }
 
     private void SetSettingsInformation()
@@ -100,7 +106,7 @@ public class MainMenuManager : MonoBehaviour
         m_airJumpCountText.text = "Air-jumps: " + PlayerPrefs.GetInt("AirJumps_Count").ToString();
     }
 
-    private void UpdateItemColors()
+    private void SetItemColors()
     {
         if (PlayerPrefs.HasKey("AirJump_Unlocked"))
         {
@@ -130,7 +136,7 @@ public class MainMenuManager : MonoBehaviour
         }
     }
 
-    private void UpdateRelicColors()
+    private void SetRelicColors()
     {
         if (PlayerPrefs.HasKey("Relic_" + 1 + "_Collected"))
         {
@@ -189,49 +195,69 @@ public class MainMenuManager : MonoBehaviour
 
     public void PlayButton(int sceneBuildIndex)
     {
-        m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
-        SceneLoader.instance.LoadScene(sceneBuildIndex);
+        if (m_areButtonsInteractable)
+        {
+            m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+            m_areButtonsInteractable = false;
+            SceneLoader.instance.LoadScene(sceneBuildIndex);
+        }
     }
 
     public void CreditsButton()
     {
-        m_statsScreen.SetActive(false);
-        m_mainScreen.SetActive(false);
-        m_creditsScreen.SetActive(true);
-        m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+        if (m_areButtonsInteractable)
+        {
+            m_statsScreen.SetActive(false);
+            m_mainScreen.SetActive(false);
+            m_creditsScreen.SetActive(true);
+            m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+        }
     }
 
     public void HowToPlayButton()
     {
-        m_statsScreen.SetActive(false);
-        m_mainScreen.SetActive(false);
-        m_howToPlayScreen.SetActive(true);
-        m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+        if (m_areButtonsInteractable)
+        {
+            m_statsScreen.SetActive(false);
+            m_mainScreen.SetActive(false);
+            m_howToPlayScreen.SetActive(true);
+            m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+        }
     }
 
     public void SettingsButton()
     {
-        m_statsScreen.SetActive(false);
-        m_mainScreen.SetActive(false);
-        m_settingsScreen.SetActive(true);
-        m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+        if (m_areButtonsInteractable)
+        {
+            m_statsScreen.SetActive(false);
+            m_mainScreen.SetActive(false);
+            m_settingsScreen.SetActive(true);
+            m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+        }
+  
     }
 
     public void StatsButton()
     {
-        m_mainScreen.SetActive(false);
-        m_statsScreen.SetActive(true);
-        m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+        if (m_areButtonsInteractable)
+        {
+            m_mainScreen.SetActive(false);
+            m_statsScreen.SetActive(true);
+            m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+        }
     }
 
     public void BackButton()
     {
-        m_mainScreen.SetActive(true);
-        m_statsScreen.SetActive(false);
-        m_settingsScreen.SetActive(false);
-        m_creditsScreen.SetActive(false);
-        m_howToPlayScreen.SetActive(false);
-        m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+        if (m_areButtonsInteractable)
+        {
+            m_mainScreen.SetActive(true);
+            m_statsScreen.SetActive(false);
+            m_settingsScreen.SetActive(false);
+            m_creditsScreen.SetActive(false);
+            m_howToPlayScreen.SetActive(false);
+            m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
+        }
     }
 
     public void PlayButtonSound()
@@ -249,6 +275,7 @@ public class MainMenuManager : MonoBehaviour
 
         PlayerPrefs.DeleteAll();
 
+        // Reset the player's settings to the original values
         PlayerPrefs.SetInt("Quality", quality);
         m_qualityDropdown.value = PlayerPrefs.GetInt("Quality");
         PlayerPrefs.SetFloat("Volume", volume);
@@ -258,8 +285,8 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.SetInt("Difficulty", difficulty);
         m_difficultyDropdown.value = PlayerPrefs.GetInt("Difficulty");
         SetStatsInformation();
-        UpdateRelicColors();
-        UpdateItemColors();
+        SetRelicColors();
+        SetItemColors();
 
         PlayerPrefs.Save();
         Debug.Log("All stats got reset!");
@@ -301,11 +328,16 @@ public class MainMenuManager : MonoBehaviour
         m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
     }
 
-    public void LeavingScene()
+    public void LeavingScene(float fadeTime)
     {
+        StartCoroutine(LeavingSceneTransition(fadeTime));
+    }
+
+    private IEnumerator LeavingSceneTransition(float fadeTime)
+    {
+        m_startScreenCG.DOFade(0.0f, fadeTime);
+        yield return new WaitForSecondsRealtime(fadeTime);
+        m_startScreenCG.DOKill();
         m_mainScreen.SetActive(false);
-        m_settingsScreen.SetActive(false);
-        m_creditsScreen.SetActive(false);
-        m_statsScreen.SetActive(false);
     }
 }

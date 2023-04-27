@@ -47,6 +47,7 @@ public class GateController : MonoBehaviour
     private void TryToUnlock()
     {
         // Only open the gate if you collected, but didn't use one of the keys in the array
+        // TODO: fix this since it's currently using up all the keys you have
         bool keyUsed = false; ;
         for (int i = 0; i < m_keys.Length; i++)
         {

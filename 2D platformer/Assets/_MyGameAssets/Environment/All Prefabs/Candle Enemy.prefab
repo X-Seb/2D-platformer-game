@@ -33,7 +33,6 @@ Transform:
   m_Children:
   - {fileID: 1449029536746518463}
   - {fileID: 1449029537088007013}
-  - {fileID: 1449029536418632132}
   - {fileID: 1449029537937265960}
   - {fileID: 1449029537013838695}
   - {fileID: 1449029536636644263}
@@ -74,7 +73,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_spawnInterval: 3
+  m_randomizeSpawnInterval: 0
+  m_minSpawnTime: 0
+  m_maxSpawnTime: 0
   m_speed: 8
+  m_randomizeSpeed: 0
+  m_minSpeedTime: 0
+  m_maxSpeedTime: 0
   m_spawnOnAwake: 1
   m_direction: {x: -1, y: 0, z: 0}
   m_rotation: {x: 0, y: 0, z: 0, w: 0}
@@ -141,7 +146,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1449029536225400993}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &1449029536240433589
 ParticleSystem:
@@ -4943,37 +4948,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!1 &1449029536418632135
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1449029536418632132}
-  m_Layer: 0
-  m_Name: Spawned Objects parent
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
---- !u!4 &1449029536418632132
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1449029536418632135}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1449029536225400993}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1449029536562092432
 GameObject:
   m_ObjectHideFlags: 0
@@ -5005,7 +4979,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1449029536225400993}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &1449029536562092447
 ParticleSystem:
@@ -9829,7 +9803,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1449029536225400993}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &1449029536636644261
 ParticleSystem:
@@ -14680,7 +14654,7 @@ GameObject:
   - component: {fileID: 1449029536746518460}
   m_Layer: 0
   m_Name: Fire Collider
-  m_TagString: Fire
+  m_TagString: FireOnCandle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -14746,7 +14720,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1449029536225400993}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &1449029537013838692
 AudioSource:
@@ -14906,7 +14880,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1449029536225400993}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &1449029537152071564
 ParticleSystem:
@@ -19805,7 +19779,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1449029536225400993}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1449029537936525200
 MonoBehaviour:
@@ -19916,7 +19890,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1449029536225400993}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1449029537937265961
 SpriteRenderer:
