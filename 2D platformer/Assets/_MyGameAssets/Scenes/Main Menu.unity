@@ -635,6 +635,7 @@ MonoBehaviour:
   m_creditsScreen: {fileID: 1564367807}
   m_statsScreen: {fileID: 1477486225}
   m_howToPlayScreen: {fileID: 805085387}
+  m_startScreenCG: {fileID: 2030366851}
   m_coinCountText: {fileID: 2128477482}
   m_deathCountText: {fileID: 1332141914}
   m_timeElapsedText: {fileID: 714157655}
@@ -657,6 +658,7 @@ MonoBehaviour:
   m_soundEffectsVolume: 0.53
   m_qualityDropdown: {fileID: 1451831369}
   m_difficultyDropdown: {fileID: 1899922506}
+  m_areButtonsInteractable: 0
 --- !u!1 &74035354
 GameObject:
   m_ObjectHideFlags: 0
@@ -32338,6 +32340,7 @@ GameObject:
   - component: {fileID: 2030366848}
   - component: {fileID: 2030366850}
   - component: {fileID: 2030366849}
+  - component: {fileID: 2030366851}
   m_Layer: 0
   m_Name: Start Screen
   m_TagString: Untagged
@@ -32410,6 +32413,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2030366847}
   m_CullTransparentMesh: 1
+--- !u!225 &2030366851
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030366847}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &2051508206
 GameObject:
   m_ObjectHideFlags: 0

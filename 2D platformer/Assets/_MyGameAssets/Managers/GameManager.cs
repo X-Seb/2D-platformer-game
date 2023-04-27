@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private CanvasGroup m_gameScreenCG;
     [SerializeField] private CanvasGroup m_loseScreenCG;
     [SerializeField] private CanvasGroup m_victoryScreenCG;
+    [SerializeField] private CanvasGroup m_pauseScreenCG;
     [SerializeField] private CanvasGroup m_itemScreenCG;
     [Header("Item Screen UI elements: ")]
     [SerializeField] private TextMeshProUGUI m_itemTopText;
@@ -101,6 +102,7 @@ public class GameManager : MonoBehaviour
         // Scene setup
         Time.timeScale = 1.0f;
         SetState(GameState.start);
+        SceneLoader.instance.FadeOut();
         m_startScreen.SetActive(true);
         m_gameScreen.SetActive(false);
         m_pauseScreen.SetActive(false);
@@ -164,14 +166,9 @@ public class GameManager : MonoBehaviour
         SceneLoader.instance.LoadScene(sceneBuildIndex);
     }
 
-    public void LeavingScene()
+    public void LeavingScene(float fadeTime)
     {
-        m_startScreen.SetActive(false);
-        m_gameScreen.SetActive(false);
-        m_pauseScreen.SetActive(false);
-        m_loseScreen.SetActive(false);
-        m_victoryScreen.SetActive(false);
-        m_itemScreen.SetActive(false);
+        StartCoroutine(LeavingSceneTransition(fadeTime));
     }
 
     public void EndGame(CauseOfDeath causeOfDeath)
@@ -339,6 +336,19 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         m_itemScreen.SetActive(false);
         SetState(GameState.playing);
+    }
+
+    private IEnumerator LeavingSceneTransition(float fadeTime)
+    {
+        m_pauseScreenCG.DOFade(0.0f, fadeTime);
+        yield return new WaitForSeconds(fadeTime);
+        m_pauseScreenCG.DOKill();
+        m_startScreen.SetActive(false);
+        m_gameScreen.SetActive(false);
+        m_pauseScreen.SetActive(false);
+        m_loseScreen.SetActive(false);
+        m_victoryScreen.SetActive(false);
+        m_itemScreen.SetActive(false);
     }
 
     #region Editor stuff
