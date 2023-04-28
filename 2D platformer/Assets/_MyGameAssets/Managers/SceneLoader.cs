@@ -20,7 +20,6 @@ public class SceneLoader : MonoBehaviour
     [SerializeField] private MainMenuManager m_mainMenuManager;
     [Header("Other: ")]
     [SerializeField] private GameManager m_gameManager;
-    [SerializeField] private GameObject m_player;
     [SerializeField] private string[] m_funnyTextOptions;
 
     private void Awake()
@@ -51,7 +50,6 @@ public class SceneLoader : MonoBehaviour
                 break;
             case 1:
                 m_gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-                m_player = GameObject.Find("Player");
                 break;
             default:
                 break;
