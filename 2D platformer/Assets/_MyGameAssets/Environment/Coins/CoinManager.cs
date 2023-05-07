@@ -6,6 +6,9 @@ public class CoinManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_coinCountText;
     [SerializeField] private static int m_coinCount;
     public static CoinManager instance;
+    [Header("Effects: ")]
+    [SerializeField] private AudioSource m_coinAudioSource;
+    [SerializeField] private AudioClip m_collectedSFX;
 
     private void Awake()
     {
@@ -38,6 +41,7 @@ public class CoinManager : MonoBehaviour
         m_coinCount++;
         m_coinCountText.text = m_coinCount.ToString();
         PlayerPrefs.SetInt("Coin_Count", m_coinCount);
+        m_coinAudioSource.PlayOneShot(m_collectedSFX);
     }
 
     private void OnDisable()

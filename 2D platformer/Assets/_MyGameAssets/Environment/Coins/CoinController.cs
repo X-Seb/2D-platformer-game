@@ -5,17 +5,14 @@ using UnityEngine;
 public class CoinController : MonoBehaviour
 {
     [Header("Setup: ")]
-    [SerializeField] private CoinManager m_coinManager;
-    [Tooltip("Make sure each coinID is unique!")]
-    [SerializeField] private int m_coinID;
-    [Header("Audio: ")]
-    [SerializeField] private AudioSource m_coinAudioSource;
+    [SerializeField] private Collider2D m_collider;
+    [SerializeField] private ParticleSystem m_pfx;
 
     private void Awake()
     {
-        if (PlayerPrefs.HasKey("Coin_" + m_coinID + "_Collected"))
+        if (PlayerPrefs.HasKey("Coin_" + gameObject.GetHashCode() + "_Collected"))
         {
-            Destroy(gameObject);
+            Destroy(base.gameObject);
         }
     }
 
@@ -27,13 +24,15 @@ public class CoinController : MonoBehaviour
         }
     }
 
-    private void CoinCollected()
+    private IEnumerator CoinCollected()
     {
-        m_coinManager.IncreaseCoinCount();
-        Debug.Log("Coin " + m_coinID + " collected!");
-        PlayerPrefs.SetInt("Coin_" + m_coinID + "_Collected", 1);
+        CoinManager.instance.IncreaseCoinCount();
+        Debug.Log("Coin " + gameObject.GetHashCode() + " collected!");
+        PlayerPrefs.SetInt("Coin_" + gameObject.GetHashCode() + "_Collected", 1);
         PlayerPrefs.Save();
-        m_coinAudioSource.Play();
-        Destroy(gameObject);
+        m_pfx.Play();
+        m_collider.enabled = false;
+        yield return new WaitForSeconds(5.0f);
+        Destroy(base.gameObject);
     }
 }
