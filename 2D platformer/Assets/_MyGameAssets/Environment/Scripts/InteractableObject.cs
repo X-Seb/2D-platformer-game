@@ -69,7 +69,7 @@ public class InteractableObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             if (m_type == Type.forever && !m_isActivated)
             {
