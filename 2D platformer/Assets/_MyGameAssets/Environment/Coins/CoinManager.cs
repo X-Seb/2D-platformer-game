@@ -4,7 +4,20 @@ using TMPro;
 public class CoinManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI m_coinCountText;
-    [SerializeField] private int m_coinCount;
+    [SerializeField] private static int m_coinCount;
+    public static CoinManager instance;
+
+    private void Awake()
+    {
+        if (instance != this && instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
     private void Start()
     {

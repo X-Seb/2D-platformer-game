@@ -176,6 +176,11 @@ public class GameManager : MonoBehaviour
         StartCoroutine(EndGameTransition(causeOfDeath));
     }
 
+    public void WinGame()
+    {
+        StartCoroutine(WinGameTransition());
+    }
+
     public void CollectItem(CollectibleItem collectibleItem)
     {
         StartCoroutine(CollectItemCo(collectibleItem));
@@ -310,6 +315,11 @@ public class GameManager : MonoBehaviour
         });
 
         StartCoroutine(StartingGameTransition(0.6f));
+    }
+
+    private IEnumerator WinGameTransition()
+    {
+        yield return null;
     }
 
     private IEnumerator StartingGameTransition(float seconds = 1.0f)
