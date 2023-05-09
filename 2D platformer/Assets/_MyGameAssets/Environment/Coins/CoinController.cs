@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class CoinController : MonoBehaviour
 {
+    [Header("Each coinID must be unique! ")]
+    [SerializeField] private int coinID;
     [Header("Setup: ")]
     [SerializeField] private Collider2D m_collider;
     [SerializeField] private ParticleSystem m_pfx;
+    [SerializeField] private GameObject m_spriteRenderer;
 
     private void Awake()
     {
-        if (PlayerPrefs.HasKey("Coin_" + gameObject.GetHashCode() + "_Collected"))
+        if (PlayerPrefs.HasKey("Coin_" + coinID + "_Collected"))
         {
-            Destroy(base.gameObject);
+            Destroy(gameObject);
         }
     }
 
@@ -20,19 +23,20 @@ public class CoinController : MonoBehaviour
     {
         if (collision.CompareTag("Player") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
-            CoinCollected();
+            StartCoroutine(CoinCollected());
         }
     }
 
     private IEnumerator CoinCollected()
     {
         CoinManager.instance.IncreaseCoinCount();
-        Debug.Log("Coin " + gameObject.GetHashCode() + " collected!");
-        PlayerPrefs.SetInt("Coin_" + gameObject.GetHashCode() + "_Collected", 1);
+        Debug.Log("Coin " + coinID + " collected!");
+        PlayerPrefs.SetInt("Coin_" + coinID + "_Collected", 1);
         PlayerPrefs.Save();
         m_pfx.Play();
         m_collider.enabled = false;
+        m_spriteRenderer.SetActive(false);
         yield return new WaitForSeconds(5.0f);
-        Destroy(base.gameObject);
+        Destroy(gameObject);
     }
 }
