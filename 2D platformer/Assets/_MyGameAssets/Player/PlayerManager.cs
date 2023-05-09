@@ -444,12 +444,12 @@ public class PlayerManager : MonoBehaviour
         }
 
         // Jump from a wall, but use a air-jump (before you unlock wall-jump)
-        else if (ctx.performed && m_canWallJump && m_isWallSliding &&
-            m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) &&
-            !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
-        {
-            StartCoroutine(WallJump());
-        }
+        //else if (ctx.performed && m_canWallJump && m_isWallSliding &&
+        //    m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) &&
+        //    !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        //{
+        //    StartCoroutine(WallJump());
+        //}
 
         else if (ctx.canceled && m_isJumping && m_Rigidbody2D.velocity.y > 0)
         {
