@@ -20,10 +20,7 @@ public class CoinManager : MonoBehaviour
         {
             instance = this;
         }
-    }
 
-    private void Start()
-    {
         if (PlayerPrefs.HasKey("Coin_Count"))
         {
             m_coinCount = PlayerPrefs.GetInt("Coin_Count");
@@ -33,6 +30,10 @@ public class CoinManager : MonoBehaviour
             PlayerPrefs.SetInt("Coin_Count", 0);
             m_coinCount = 0;
         }
+    }
+
+    private void Start()
+    {
         m_coinCountText.text = m_coinCount.ToString();
     }
 
