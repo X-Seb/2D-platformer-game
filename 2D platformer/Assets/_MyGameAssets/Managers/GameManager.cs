@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.UI;
+using UnityEngine.Device;
 
 //This class controls the entire game flow
 public class GameManager : MonoBehaviour
@@ -31,6 +32,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_itemLoreText;
     [SerializeField] private TextMeshProUGUI m_itemDescriptionText;
     [SerializeField] private Button m_continueButton;
+    [SerializeField] private Button m_ggButton;
     [Header("End screen UI elements: ")]
     [SerializeField] private TextMeshProUGUI m_causeOfDeathText;
     [SerializeField] private TextMeshProUGUI m_smallerText;
@@ -156,9 +158,14 @@ public class GameManager : MonoBehaviour
         m_gameScreen.SetActive(true);
     }
 
-    public void ContinuePlaying()
+    public void ContinueFromItemScreen()
     {
-        StartCoroutine(ContinuePlayingTransition());
+        StartCoroutine(ContinuePlayingTransition(m_continueButton, m_itemScreen, m_itemScreenCG));
+    }
+
+    public void ContinueFromVictoryScreen()
+    {
+        StartCoroutine(ContinuePlayingTransition(m_ggButton, m_gameScreen, m_gameScreenCG));
     }
 
     public void LoadScene(int sceneBuildIndex)
@@ -178,6 +185,7 @@ public class GameManager : MonoBehaviour
 
     public void WinGame()
     {
+        PlayerPrefs.SetInt("PlayerWon", 1);
         StartCoroutine(WinGameTransition());
     }
 
@@ -319,7 +327,15 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator WinGameTransition()
     {
-        yield return null;
+        m_victoryScreen.SetActive(true);
+        m_victoryScreenCG.alpha = 0.0f;
+        m_ggButton.enabled = false;
+        SetState(GameState.win);
+        m_gameScreenCG.DOFade(0.0f, 1.0f);
+        yield return new WaitForSeconds(0.8f);
+        m_victoryScreenCG.DOFade(1.0f, 2.5f);
+        yield return new WaitForSeconds(2.5f);
+        m_ggButton.enabled = true;
     }
 
     private IEnumerator StartingGameTransition(float seconds = 1.0f)
@@ -335,16 +351,16 @@ public class GameManager : MonoBehaviour
         SetState(GameState.playing);
     }
 
-    private IEnumerator ContinuePlayingTransition()
+    private IEnumerator ContinuePlayingTransition(Button continueButton, GameObject screen, CanvasGroup screenCG)
     {
-        m_continueButton.interactable = false;
-        m_itemScreenCG.DOFade(0.0f, 1.0f);
+        continueButton.interactable = false;
+        screenCG.DOFade(0.0f, 1.0f);
         yield return new WaitForSeconds(0.8f);
-        m_gameScreen.SetActive(true);
-        m_gameScreenCG.alpha = 0.0f;
-        m_gameScreenCG.DOFade(1.0f, 0.8f);
+        screen.SetActive(true);
+        screenCG.alpha = 0.0f;
+        screenCG.DOFade(1.0f, 0.8f);
         yield return new WaitForSeconds(1.0f);
-        m_itemScreen.SetActive(false);
+        screen.SetActive(false);
         SetState(GameState.playing);
     }
 

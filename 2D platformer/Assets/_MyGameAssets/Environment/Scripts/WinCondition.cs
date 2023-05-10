@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class WinCondition : MonoBehaviour
 {
+    [SerializeField] private GameTimer m_gameTimer;
+    [SerializeField] private AudioSource m_audioSource;
+    [SerializeField] private AudioClip m_winAudioClip;
+    [Range(0, 1)][SerializeField] private float m_volume;
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && GameManager.instance.GetState() == GameManager.GameState.playing &&
@@ -14,6 +19,8 @@ public class WinCondition : MonoBehaviour
             PlayerPrefs.HasKey("Relic_5_Collected") &&
             PlayerPrefs.HasKey("Relic_6_Collected"))
         {
+            m_gameTimer.PlayerWon();
+            m_audioSource.PlayOneShot(m_winAudioClip, m_volume);
             GameManager.instance.WinGame();
         }
     }

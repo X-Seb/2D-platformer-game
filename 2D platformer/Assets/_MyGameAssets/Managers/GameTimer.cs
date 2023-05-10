@@ -11,6 +11,7 @@ public class GameTimer : MonoBehaviour
     [Header("Variables for reference only: ")]
     [SerializeField] private float m_timeElapsed = 0.0f;
     [SerializeField] private bool m_isPlayerSpeedrunning;
+    [SerializeField] private bool m_playerWon;
     private string m_text = "";
 
     private void Start()
@@ -24,6 +25,15 @@ public class GameTimer : MonoBehaviour
         {
             m_isPlayerSpeedrunning = true;
             m_gameTimer.SetActive(true);
+        }
+
+        if (PlayerPrefs.HasKey("PlayerWon"))
+        {
+            m_playerWon = true;
+        }
+        else
+        {
+            m_playerWon = false;
         }
 
         if (PlayerPrefs.HasKey("Current_Time_Elapsed"))
@@ -42,7 +52,7 @@ public class GameTimer : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (GameManager.instance.GetState() == GameManager.GameState.playing && !m_playerWon)
         {
             m_timeElapsed += Time.deltaTime;
             PlayerPrefs.SetFloat("Current_Time_Elapsed", m_timeElapsed);
@@ -54,5 +64,10 @@ public class GameTimer : MonoBehaviour
                 m_timeElapsedText.text = formattedTime.ToString("F2");
             }
         }
+    }
+
+    public void PlayerWon()
+    {
+        m_playerWon = true;
     }
 }
