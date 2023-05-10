@@ -19,6 +19,6 @@ MonoBehaviour:
   relicID: 3
   keyID: 0
   topText: You found a
-  loreText: After applying lots of force, you manage to turn it over and look at
-    it's shiny surface. For some reason, you decide to take it along with you.
-  descriptionText: You hope it's weight won't slow you down too much...
+  loreText: After applying lots of force, you manage to turn it over. For some reason,
+    you decide to take it along with you.
+  descriptionText: Let's hope its weight won't slow you down too much...

@@ -19,6 +19,6 @@ MonoBehaviour:
   relicID: 4
   keyID: 0
   topText: You found a
-  loreText: As you approach it, you can feel it's powerful energy pulling you closer.
-    Fascinated by it, you take it along with you.
-  descriptionText: You can still feel its strange vibrations from within your pouch.
+  loreText: You can feel it's powerful energy pulling you closer. Fascinated, you
+    take it along with you.
+  descriptionText: You can still feel its strange vibrations...
