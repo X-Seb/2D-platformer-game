@@ -12,7 +12,20 @@ public class GameTimer : MonoBehaviour
     [SerializeField] private float m_timeElapsed = 0.0f;
     [SerializeField] private bool m_isPlayerSpeedrunning;
     [SerializeField] private bool m_playerWon;
+    public static GameTimer instance;
     private string m_text = "";
+
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
     private void Start()
     {
@@ -64,6 +77,19 @@ public class GameTimer : MonoBehaviour
                 m_timeElapsedText.text = formattedTime.ToString("F2");
             }
         }
+    }
+
+    public float GetTimeElapsed(bool round = false)
+    {
+        if (!round)
+        {
+            return m_timeElapsed;
+        }
+        else
+        {
+            return Mathf.RoundToInt(m_timeElapsed * 100) * 0.01f;
+        }
+        
     }
 
     public void PlayerWon()

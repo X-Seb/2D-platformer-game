@@ -37,6 +37,18 @@ public class CoinManager : MonoBehaviour
         m_coinCountText.text = m_coinCount.ToString();
     }
 
+    public int GetCoinCount()
+    {
+        if (PlayerPrefs.HasKey("Coin_Count"))
+        {
+            return m_coinCount;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     public void IncreaseCoinCount()
     {
         m_coinCount++;
