@@ -27,12 +27,20 @@ public class RelicManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            instance = this;
+        }
     }
 
     private void Start()
     {
-        UpdateRelicColors();
+        UpdateRelicInfo();
         s_showRelics = false; // This will become true instantly if the player is spawned in a checkpoint box
     }
 
@@ -52,11 +60,13 @@ public class RelicManager : MonoBehaviour
         }
     }
 
-    public void UpdateRelicColors()
+    public void UpdateRelicInfo()
     {
+        m_relicCount = 0;
         if (PlayerPrefs.HasKey("Relic_" + 1 + "_Collected"))
         {
             m_relic1Image.color = new Color32(255, 255, 255, 255);
+            m_relicCount++;
         }
         else
         {
@@ -66,6 +76,7 @@ public class RelicManager : MonoBehaviour
         if (PlayerPrefs.HasKey("Relic_" + 2 + "_Collected"))
         {
             m_relic2Image.color = new Color32(255, 255, 255, 255);
+            m_relicCount++;
         }
         else
         {
@@ -75,6 +86,7 @@ public class RelicManager : MonoBehaviour
         if (PlayerPrefs.HasKey("Relic_" + 3 + "_Collected"))
         {
             m_relic3Image.color = new Color32(255, 255, 255, 255);
+            m_relicCount++;
         }
         else
         {
@@ -84,6 +96,7 @@ public class RelicManager : MonoBehaviour
         if (PlayerPrefs.HasKey("Relic_" + 4 + "_Collected"))
         {
             m_relic4Image.color = new Color32(255, 255, 255, 255);
+            m_relicCount++;
         }
         else
         {
@@ -93,6 +106,7 @@ public class RelicManager : MonoBehaviour
         if (PlayerPrefs.HasKey("Relic_" + 5 + "_Collected"))
         {
             m_relic5Image.color = new Color32(255, 255, 255, 255);
+            m_relicCount++;
         }
         else
         {
@@ -102,16 +116,19 @@ public class RelicManager : MonoBehaviour
         if (PlayerPrefs.HasKey("Relic_" + 6 + "_Collected"))
         {
             m_relic6Image.color = new Color32(255, 255, 255, 255);
+            m_relicCount++;
         }
         else
         {
             m_relic6Image.color = new Color32(0, 0, 0, 255);
         }
+
+        PlayerPrefs.Save();
     }
 
     public void IncreaseRelicCount()
     {
-        m_relicCount++;
+        UpdateRelicInfo();
         PlayerPrefs.SetInt("Relic_Count", m_relicCount);
         StartCoroutine(ShowRelics());
     }

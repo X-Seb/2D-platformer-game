@@ -93,7 +93,10 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        instance = this;
+        else
+        {
+            instance = this;
+        }
 
         if (PlayerPrefs.HasKey("Last_Checkpoint"))
         {
@@ -128,6 +131,8 @@ public class GameManager : MonoBehaviour
 
     #endregion
 
+    #region Getter and Setter methods
+
     public void SetState(GameState newState)
     {
         currentGameState = newState;
@@ -138,6 +143,8 @@ public class GameManager : MonoBehaviour
     {
         return currentGameState;
     }
+
+    #endregion
 
     public void SwitchPause()
     {
@@ -176,7 +183,7 @@ public class GameManager : MonoBehaviour
 
     public void ContinueFromVictoryScreen()
     {
-        StartCoroutine(ContinuePlayingTransition(m_victoryContinueButton, m_gameScreen, m_gameScreenCG));
+        StartCoroutine(ContinuePlayingTransition(m_victoryContinueButton, m_victoryScreen, m_victoryScreenCG));
     }
 
     public void LoadScene(int sceneBuildIndex)
@@ -252,7 +259,7 @@ public class GameManager : MonoBehaviour
     public IEnumerator CollectItemTransition(CollectibleItem collectibleItem)
     {
         m_rb.velocity = new Vector3(0, 0, 0);
-        currentGameState = GameState.collectedItem;
+        SetState(GameState.collectedItem);
         m_itemTopText.text = collectibleItem.topText;
         m_itemNameText.text = collectibleItem.itemName;
         m_itemLoreText.text = collectibleItem.loreText;
@@ -346,6 +353,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator WinGameTransition()
     {
+        m_rb.velocity = new Vector3(0, 0, 0);
         m_victoryScreen.SetActive(true);
         m_victoryScreenCG.alpha = 0.0f;
         m_coinCG.alpha = 0.0f;

@@ -8,6 +8,7 @@ using DG.Tweening;
 
 public class MainMenuManager : MonoBehaviour
 {
+    public static MainMenuManager instance;
     [Header("UI: ")]
     [SerializeField] private GameObject m_mainScreen;
     [SerializeField] private GameObject m_settingsScreen;
@@ -46,6 +47,18 @@ public class MainMenuManager : MonoBehaviour
     [Header("Other: ")]
     [SerializeField] private bool m_areButtonsInteractable;
 
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
     void Start()
     {

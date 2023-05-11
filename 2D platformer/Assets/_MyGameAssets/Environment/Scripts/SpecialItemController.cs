@@ -49,7 +49,6 @@ public class SpecialItemController : MonoBehaviour
             case CollectibleItem.itemCategory.relic:
                 RelicManager.instance.IncreaseRelicCount();
                 PlayerPrefs.SetInt("Relic_" + m_item.relicID + "_Collected", 1);
-                RelicManager.instance.UpdateRelicColors();
                 Debug.Log("Relic " + m_item.relicID + " Collected!");
                 break;
             case CollectibleItem.itemCategory.potion:

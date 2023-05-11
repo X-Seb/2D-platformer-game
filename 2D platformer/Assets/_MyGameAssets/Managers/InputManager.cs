@@ -13,7 +13,15 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            instance = this;
+        }
     }
 
     public void Jump(InputAction.CallbackContext ctx)
