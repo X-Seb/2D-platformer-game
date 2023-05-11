@@ -25,6 +25,15 @@ public class GameTimer : MonoBehaviour
         {
             instance = this;
         }
+
+        if (PlayerPrefs.HasKey("PlayerWon"))
+        {
+            m_playerWon = true;
+        }
+        else
+        {
+            m_playerWon = false;
+        }
     }
 
     private void Start()
@@ -38,15 +47,6 @@ public class GameTimer : MonoBehaviour
         {
             m_isPlayerSpeedrunning = true;
             m_gameTimer.SetActive(true);
-        }
-
-        if (PlayerPrefs.HasKey("PlayerWon"))
-        {
-            m_playerWon = true;
-        }
-        else
-        {
-            m_playerWon = false;
         }
 
         if (PlayerPrefs.HasKey("Current_Time_Elapsed"))

@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WinCondition : MonoBehaviour
 {
-    [SerializeField] private GameTimer m_gameTimer;
+    [Header("Effects: ")]
     [SerializeField] private AudioSource m_audioSource;
     [SerializeField] private AudioClip m_winAudioClip;
     [Range(0, 1)][SerializeField] private float m_volume;
@@ -19,7 +20,7 @@ public class WinCondition : MonoBehaviour
             PlayerPrefs.HasKey("Relic_5_Collected") &&
             PlayerPrefs.HasKey("Relic_6_Collected"))
         {
-            m_gameTimer.PlayerWon();
+            GameTimer.instance.PlayerWon();
             m_audioSource.PlayOneShot(m_winAudioClip, m_volume);
             GameManager.instance.WinGame();
         }
