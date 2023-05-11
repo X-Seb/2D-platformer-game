@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_itemNameText;
     [SerializeField] private TextMeshProUGUI m_itemLoreText;
     [SerializeField] private TextMeshProUGUI m_itemDescriptionText;
-    [SerializeField] private Button m_continueButton;
-    [SerializeField] private Button m_ggButton;
+    [SerializeField] private Button m_itemContinueButton;
+    [SerializeField] private Button m_victoryContinueButton;
     [SerializeField] private CanvasGroup m_coinCG;
     [SerializeField] private CanvasGroup m_timeCG;
     [SerializeField] private TextMeshProUGUI m_coinCountText;
@@ -171,12 +171,12 @@ public class GameManager : MonoBehaviour
 
     public void ContinueFromItemScreen()
     {
-        StartCoroutine(ContinuePlayingTransition(m_continueButton, m_itemScreen, m_itemScreenCG));
+        StartCoroutine(ContinuePlayingTransition(m_itemContinueButton, m_itemScreen, m_itemScreenCG));
     }
 
     public void ContinueFromVictoryScreen()
     {
-        StartCoroutine(ContinuePlayingTransition(m_ggButton, m_gameScreen, m_gameScreenCG));
+        StartCoroutine(ContinuePlayingTransition(m_victoryContinueButton, m_gameScreen, m_gameScreenCG));
     }
 
     public void LoadScene(int sceneBuildIndex)
@@ -257,17 +257,17 @@ public class GameManager : MonoBehaviour
         m_itemNameText.text = collectibleItem.itemName;
         m_itemLoreText.text = collectibleItem.loreText;
         m_itemDescriptionText.text = collectibleItem.descriptionText;
-        m_continueButton.interactable = false;
+        m_itemContinueButton.interactable = false;
 
         // Wait before fading in the item description
         yield return new WaitForSeconds(0.5f);
-        m_gameScreenCG.DOFade(0.0f, 0.8f);
-        yield return new WaitForSeconds(0.5f);
+        m_gameScreenCG.DOFade(0.0f, 1.0f);
+        yield return new WaitForSeconds(0.8f);
         m_itemScreen.SetActive(true);
         m_itemScreenCG.alpha = 0.0f;
-        m_itemScreenCG.DOFade(1.0f, 2.0f);
-        yield return new WaitForSeconds(1.8f);
-        m_continueButton.interactable = true;
+        m_itemScreenCG.DOFade(1.0f, 2.5f);
+        yield return new WaitForSeconds(2.5f);
+        m_itemContinueButton.interactable = true;
     }
 
     private IEnumerator JustLoadedTransition()
@@ -350,7 +350,7 @@ public class GameManager : MonoBehaviour
         m_victoryScreenCG.alpha = 0.0f;
         m_coinCG.alpha = 0.0f;
         m_timeCG.alpha = 0.0f;
-        m_ggButton.enabled = false;
+        m_victoryContinueButton.enabled = false;
         m_coinCountText.text = CoinManager.instance.GetCoinCount().ToString() + " / 35";
         m_totalTimeText.text = GameTimer.instance.GetTimeElapsed(true).ToString() + " seconds";
 
@@ -363,7 +363,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         m_timeCG.DOFade(1.0f, 0.8f);
         yield return new WaitForSeconds(1.0f);
-        m_ggButton.enabled = true;
+        m_victoryContinueButton.enabled = true;
     }
 
     private IEnumerator StartingGameTransition(float seconds = 1.0f)
@@ -386,9 +386,10 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
         screen.SetActive(true);
         screenCG.alpha = 0.0f;
-        screenCG.DOFade(1.0f, 0.8f);
-        yield return new WaitForSeconds(1.0f);
+        m_gameScreenCG.DOFade(1.0f, 0.8f);
+        yield return new WaitForSeconds(0.4f);
         screen.SetActive(false);
+        yield return new WaitForSeconds(0.6f);
         SetState(GameState.playing);
     }
 
