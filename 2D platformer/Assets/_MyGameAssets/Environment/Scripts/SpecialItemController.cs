@@ -62,7 +62,7 @@ public class SpecialItemController : MonoBehaviour
                 Debug.Log("Key " + m_item.keyID + "Collected!");
                 break;
         }
-            
+
         PlayerPrefs.Save();
         m_collider.enabled = false;
         GameManager.instance.CollectItem(m_item);
