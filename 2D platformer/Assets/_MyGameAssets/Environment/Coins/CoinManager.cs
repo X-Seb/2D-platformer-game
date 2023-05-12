@@ -20,20 +20,11 @@ public class CoinManager : MonoBehaviour
         {
             instance = this;
         }
-
-        if (PlayerPrefs.HasKey("Coin_Count"))
-        {
-            m_coinCount = PlayerPrefs.GetInt("Coin_Count");
-        }
-        else
-        {
-            PlayerPrefs.SetInt("Coin_Count", 0);
-            m_coinCount = 0;
-        }
     }
 
     private void Start()
     {
+        AdjustCoinCount();
         m_coinCountText.text = m_coinCount.ToString();
     }
 
@@ -49,7 +40,7 @@ public class CoinManager : MonoBehaviour
         }
     }
 
-    public void AdjustCoinCount()
+    public void AdjustCoinCount(bool playSFX = false)
     {
         m_coinCount = 0;
         for (int i = 1; i <= 35; i++)
@@ -62,11 +53,16 @@ public class CoinManager : MonoBehaviour
 
         m_coinCountText.text = m_coinCount.ToString();
         PlayerPrefs.SetInt("Coin_Count", m_coinCount);
-        m_coinAudioSource.PlayOneShot(m_collectedSFX);
+
+        if (playSFX)
+        {
+            m_coinAudioSource.PlayOneShot(m_collectedSFX);
+        }
     }
 
     private void OnDisable()
     {
+        AdjustCoinCount();
         PlayerPrefs.SetInt("Coin_Count", m_coinCount);
     }
 }

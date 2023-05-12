@@ -13,6 +13,13 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     [SerializeField] private GameObject m_player;
     [SerializeField] private Rigidbody2D m_rb;
+    [SerializeField] private AudioSource m_audioSource;
+    [SerializeField] private ParticleSystem m_spawnPS;
+    [Header("Audio: ")]
+    [SerializeField] private AudioClip m_buttonSFX;
+    [SerializeField] private AudioClip m_spawnSFX;
+    [SerializeField] private AudioClip m_pauseSFX;
+    [Range(0.0f, 1.0f)][SerializeField] private float m_buttonSoundVolume;
     [Header("UI Screens: ")]
     [SerializeField] private GameObject m_startScreen;
     [SerializeField] private GameObject m_pauseScreen;
@@ -148,6 +155,8 @@ public class GameManager : MonoBehaviour
 
     public void SwitchPause()
     {
+        m_audioSource.PlayOneShot(m_pauseSFX, m_buttonSoundVolume);
+
         if (currentGameState == GameState.paused)
         {
             ResumeGame();
@@ -178,11 +187,14 @@ public class GameManager : MonoBehaviour
 
     public void ContinueFromItemScreen()
     {
+        m_audioSource.PlayOneShot(m_buttonSFX, m_buttonSoundVolume);
+        RelicManager.instance.ShowRelics(3.0f);
         StartCoroutine(ContinuePlayingTransition(m_itemContinueButton, m_itemScreen, m_itemScreenCG));
     }
 
     public void ContinueFromVictoryScreen()
     {
+        m_audioSource.PlayOneShot(m_buttonSFX, m_buttonSoundVolume);
         StartCoroutine(ContinuePlayingTransition(m_victoryContinueButton, m_victoryScreen, m_victoryScreenCG));
     }
 
@@ -384,6 +396,8 @@ public class GameManager : MonoBehaviour
         m_gameScreenCG.alpha = 0.0f;
         m_gameScreenCG.DOFade(1.0f, seconds);
         yield return new WaitForSeconds(seconds);
+        m_spawnPS.Play();
+        m_audioSource.PlayOneShot(m_spawnSFX);
         SetState(GameState.playing);
     }
 

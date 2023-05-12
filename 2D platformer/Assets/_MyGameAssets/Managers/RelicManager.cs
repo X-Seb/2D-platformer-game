@@ -145,17 +145,22 @@ public class RelicManager : MonoBehaviour
         PlayerPrefs.Save();
     }
 
-    public void IncreaseRelicCount()
+    public void ShowRelics(float time = 2.0f)
+    {
+        StartCoroutine(ShowRelicsCo(time));
+    }
+
+    public void CollectedRelic()
     {
         UpdateRelicInfo();
         PlayerPrefs.SetInt("Relic_Count", m_relicCount);
-        StartCoroutine(ShowRelics());
+        StartCoroutine(ShowRelicsCo());
     }
 
-    private IEnumerator ShowRelics()
+    private IEnumerator ShowRelicsCo(float time = 2.0f)
     {
         s_showRelics = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(time);
         s_showRelics = false;
     }
 }

@@ -47,9 +47,10 @@ public class SpecialItemController : MonoBehaviour
         switch (m_item?.itemType)
         {
             case CollectibleItem.itemCategory.relic:
-                RelicManager.instance.IncreaseRelicCount();
                 PlayerPrefs.SetInt("Relic_" + m_item.relicID + "_Collected", 1);
+                RelicManager.instance.CollectedRelic();
                 Debug.Log("Relic " + m_item.relicID + " Collected!");
+
                 break;
             case CollectibleItem.itemCategory.potion:
                 PlayerPrefs.SetInt(m_item.abilityName + "_Unlocked", 1);

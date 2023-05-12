@@ -10,6 +10,7 @@ public class CoinController : MonoBehaviour
     [SerializeField] private Collider2D m_collider;
     [SerializeField] private ParticleSystem m_pfx;
     [SerializeField] private GameObject m_spriteRenderer;
+    private bool m_isCollected;
 
     private void Awake()
     {
@@ -17,25 +18,33 @@ public class CoinController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        else
+        {
+            m_isCollected = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (collision.CompareTag("Player") && GameManager.instance.GetState() == GameManager.GameState.playing && !m_isCollected)
         {
+            m_isCollected = true;
             StartCoroutine(CoinCollected());
         }
     }
 
     private IEnumerator CoinCollected()
     {
-        CoinManager.instance.AdjustCoinCount();
-        Debug.Log("Coin " + coinID + " collected!");
         PlayerPrefs.SetInt("Coin_" + coinID + "_Collected", 1);
         PlayerPrefs.Save();
+        CoinManager.instance.AdjustCoinCount(true);
+        Debug.Log("Coin " + coinID + " collected!");
+
+        // Effects: 
         m_pfx.Play();
         m_collider.enabled = false;
         m_spriteRenderer.SetActive(false);
+
         yield return new WaitForSeconds(5.0f);
         Destroy(gameObject);
     }
