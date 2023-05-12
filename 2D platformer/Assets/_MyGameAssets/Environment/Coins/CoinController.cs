@@ -29,7 +29,7 @@ public class CoinController : MonoBehaviour
 
     private IEnumerator CoinCollected()
     {
-        CoinManager.instance.IncreaseCoinCount();
+        CoinManager.instance.AdjustCoinCount();
         Debug.Log("Coin " + coinID + " collected!");
         PlayerPrefs.SetInt("Coin_" + coinID + "_Collected", 1);
         PlayerPrefs.Save();

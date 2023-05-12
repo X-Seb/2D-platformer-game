@@ -49,9 +49,17 @@ public class CoinManager : MonoBehaviour
         }
     }
 
-    public void IncreaseCoinCount()
+    public void AdjustCoinCount()
     {
-        m_coinCount++;
+        m_coinCount = 0;
+        for (int i = 1; i <= 35; i++)
+        {
+            if (PlayerPrefs.HasKey("Coin_" + i + "_Collected"))
+            {
+                m_coinCount++;
+            }
+        }
+
         m_coinCountText.text = m_coinCount.ToString();
         PlayerPrefs.SetInt("Coin_Count", m_coinCount);
         m_coinAudioSource.PlayOneShot(m_collectedSFX);
