@@ -310,7 +310,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         // Decrease light % if you're not gaining any light + you're on easy mode
-        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 0 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 2 && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             m_lightPercentage -= Time.deltaTime * m_decreasingLightSpeedEasy;
             if (m_lightPercentage <= 0)

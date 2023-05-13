@@ -151,6 +151,11 @@ public class GameManager : MonoBehaviour
         return currentGameState;
     }
 
+    public bool IsPlaying()
+    {
+        return currentGameState == GameState.playing;
+    }
+
     #endregion
 
     public void SwitchPause()
