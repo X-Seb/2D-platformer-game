@@ -11,7 +11,6 @@ public class GameTimer : MonoBehaviour
     [Header("Variables for reference only: ")]
     [SerializeField] private float m_timeElapsed = 0.0f;
     [SerializeField] private bool m_isPlayerSpeedrunning;
-    [SerializeField] private bool m_playerWon;
     public static GameTimer instance;
     private string m_text = "";
 
@@ -24,15 +23,6 @@ public class GameTimer : MonoBehaviour
         else
         {
             instance = this;
-        }
-
-        if (PlayerPrefs.HasKey("PlayerWon"))
-        {
-            m_playerWon = true;
-        }
-        else
-        {
-            m_playerWon = false;
         }
     }
 
@@ -65,7 +55,7 @@ public class GameTimer : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.instance.IsPlaying() && !m_playerWon)
+        if (GameManager.instance.IsPlaying())
         {
             m_timeElapsed += Time.deltaTime;
             PlayerPrefs.SetFloat("Current_Time_Elapsed", m_timeElapsed);
@@ -87,13 +77,14 @@ public class GameTimer : MonoBehaviour
         }
         else
         {
-            return Mathf.RoundToInt(m_timeElapsed * 100) * 0.01f;
+            return (Mathf.RoundToInt(m_timeElapsed * 100) * 0.01f);
         }
         
     }
 
     public void PlayerWon()
     {
-        m_playerWon = true;
+        PlayerPrefs.SetFloat("FinishedTime", m_timeElapsed);
+        PlayerPrefs.Save();
     }
 }

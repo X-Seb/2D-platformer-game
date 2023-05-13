@@ -4929,9 +4929,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60ff4f6c5df7d42bcb532671ce167dcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coinID: 0
   m_collider: {fileID: 4583045692879434766}
   m_pfx: {fileID: 3988487383922944123}
   m_spriteRenderer: {fileID: 4583045694682756311}
+  m_light2D: {fileID: 4583045694379922277}
 --- !u!61 &4583045692879434766
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class CoinController : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class CoinController : MonoBehaviour
     [SerializeField] private Collider2D m_collider;
     [SerializeField] private ParticleSystem m_pfx;
     [SerializeField] private GameObject m_spriteRenderer;
+    [SerializeField] private Light2D m_light2D;
     private bool m_isCollected;
 
     private void Awake()
@@ -44,6 +46,7 @@ public class CoinController : MonoBehaviour
         m_pfx.Play();
         m_collider.enabled = false;
         m_spriteRenderer.SetActive(false);
+        m_light2D.intensity = 0.0f;
 
         yield return new WaitForSeconds(5.0f);
         Destroy(gameObject);

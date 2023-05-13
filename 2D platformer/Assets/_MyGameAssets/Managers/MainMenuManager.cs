@@ -112,11 +112,17 @@ public class MainMenuManager : MonoBehaviour
     private void SetStatsInformation()
     {
         m_coinCountText.text = PlayerPrefs.GetInt("Coin_Count").ToString();
-        m_timeElapsedText.text = (Mathf.Round(PlayerPrefs.GetFloat("Current_Time_Elapsed") * 100) * 0.01).ToString();
         m_deathCountText.text = PlayerPrefs.GetInt("Death_Count").ToString();
         m_dashCountText.text = "Dashes: " + PlayerPrefs.GetInt("Dashes_Count").ToString();
         m_jumpCountText.text = "Jumps: " + PlayerPrefs.GetInt("Jumps_Count").ToString();
         m_airJumpCountText.text = "Air-jumps: " + PlayerPrefs.GetInt("AirJumps_Count").ToString();
+
+        // Time elapsed:
+        float totalSec = PlayerPrefs.GetFloat("Current_Time_Elapsed");
+        int hours = (int) (totalSec / 3600);
+        int minutes = (int) ( (totalSec - (hours * 3600) )  / 60);
+        int sec = (int) ( totalSec - (hours * 3600) - (minutes * 60) );
+        m_timeElapsedText.text = hours + "h " + minutes + "min " + sec + "sec";
     }
 
     private void SetItemColors()
@@ -319,12 +325,14 @@ public class MainMenuManager : MonoBehaviour
 
     public void SetQualityLevel(int qualityIndex)
     {
+        m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
         QualitySettings.SetQualityLevel(qualityIndex);
         PlayerPrefs.SetInt("Quality", qualityIndex);
     }
 
     public void SetDifficultyLevel(int difficulty)
     {
+        m_audioSource.PlayOneShot(m_buttonSound, m_soundEffectsVolume);
         PlayerPrefs.SetInt("Difficulty", difficulty);
     }
 

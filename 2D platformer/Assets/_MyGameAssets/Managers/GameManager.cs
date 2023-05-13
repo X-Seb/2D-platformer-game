@@ -377,7 +377,13 @@ public class GameManager : MonoBehaviour
         m_timeCG.alpha = 0.0f;
         m_victoryContinueButton.enabled = false;
         m_coinCountText.text = CoinManager.instance.GetCoinCount().ToString() + " / 35";
-        m_totalTimeText.text = GameTimer.instance.GetTimeElapsed(true).ToString() + " seconds";
+
+        // Time elapsed:
+        float totalSec = PlayerPrefs.GetFloat("FinishedTime");
+        int hours = (int)(totalSec / 3600);
+        int minutes = (int)((totalSec - (hours * 3600)) / 60);
+        int sec = (int)(totalSec - (hours * 3600) - (minutes * 60));
+        m_totalTimeText.text = hours + "h " + minutes + "min " + sec + "sec";
 
         SetState(GameState.win);
         m_gameScreenCG.DOFade(0.0f, 1.0f);
