@@ -147,7 +147,7 @@ public class PlayerManager : MonoBehaviour
         AdjustTrailColor(false);
         AdjustPlayerColor();
 
-        if (!m_isMainTrailEmmiting && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (!m_isMainTrailEmmiting && !m_isDashing && GameManager.instance.IsPlaying())
         {
             m_mainTrailRenderer.emitting = true;
             m_isMainTrailEmmiting = true;
@@ -170,7 +170,7 @@ public class PlayerManager : MonoBehaviour
         TryToWallSlide();
         Move(m_axisX * Time.fixedDeltaTime * m_playerMoveSpeed);
 
-        if (!m_isWallJumping && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (!m_isWallJumping && GameManager.instance.IsPlaying())
         {
             TryToFlip();
         }
@@ -179,7 +179,7 @@ public class PlayerManager : MonoBehaviour
     #region collisions
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (collision.gameObject.CompareTag("Enemy") && GameManager.instance.IsPlaying())
         {
             PlayerDied(GameManager.CauseOfDeath.enemy);
         }
@@ -188,16 +188,16 @@ public class PlayerManager : MonoBehaviour
             gameObject.transform.parent = collision.transform;
             m_Rigidbody2D.velocity = new Vector3(m_Rigidbody2D.velocity.x, 0, 0);
         }
-        else if (collision.gameObject.CompareTag("Inside Of Object") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (collision.gameObject.CompareTag("Inside Of Object") && GameManager.instance.IsPlaying())
         {
             PlayerDied(GameManager.CauseOfDeath.insideObject);
         }
         else if ((collision.gameObject.CompareTag("Fire") || collision.gameObject.CompareTag("FireOnCandle"))
-            && GameManager.instance.GetState() == GameManager.GameState.playing)
+            && GameManager.instance.IsPlaying())
         {
             PlayerDied(GameManager.CauseOfDeath.fire);
         }
-        else if (collision.gameObject.CompareTag("Ground") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (collision.gameObject.CompareTag("Ground") && GameManager.instance.IsPlaying())
         {
             m_isJumping = false;
         }
@@ -225,7 +225,7 @@ public class PlayerManager : MonoBehaviour
         {
             m_isLightIncreasing = true;
         }
-        else if (collision.CompareTag("Acid") && !m_isAcidImmunityUnlocked && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (collision.CompareTag("Acid") && !m_isAcidImmunityUnlocked && GameManager.instance.IsPlaying())
         {
             PlayerDied(GameManager.CauseOfDeath.acid);
         }
@@ -300,7 +300,7 @@ public class PlayerManager : MonoBehaviour
     private void AjustPlayerLight()
     {
         // Increase the light percentage if your light should be increasing
-        if (m_isLightIncreasing && m_lightPercentage < 1 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (m_isLightIncreasing && m_lightPercentage < 1 && GameManager.instance.IsPlaying())
         {
             m_lightPercentage += Time.deltaTime * m_increasingLightSpeed;
             if (m_lightPercentage >= 1)
@@ -310,7 +310,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         // Decrease light % if you're not gaining any light + you're on easy mode
-        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 2 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 2 && GameManager.instance.IsPlaying())
         {
             m_lightPercentage -= Time.deltaTime * m_decreasingLightSpeedEasy;
             if (m_lightPercentage <= 0)
@@ -320,7 +320,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         // Decrease the light percentage if you're not gaining any light (reminder: 2 is easy, 1 is medium, 0 is hard)
-        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 1 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 1 && GameManager.instance.IsPlaying())
         {
             m_lightPercentage -= Time.deltaTime * m_decreasingLightSpeedMedium;
             if (m_lightPercentage <= 0)
@@ -330,7 +330,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         // Decrease the light percentage if you're not gaining any light + difficulty is set to hard
-        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 0 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 0 && GameManager.instance.IsPlaying())
         {
             m_lightPercentage -= Time.deltaTime * m_decreasingLightSpeedHard;
             if (m_lightPercentage <= 0)
@@ -349,7 +349,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         // If you're at 0% of light, you die
-        if (m_lightPercentage <= 0 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (m_lightPercentage <= 0 && GameManager.instance.IsPlaying())
         {
             PlayerDied(GameManager.CauseOfDeath.darkness);
         }
@@ -366,7 +366,7 @@ public class PlayerManager : MonoBehaviour
 
     private void AdjustTrailColor(bool playEffects = true)
     {
-        if (m_canDash && m_isDashUnlocked && (m_numberOfDash >= 1 || m_isInfiniteDashAllowed) && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (m_canDash && m_isDashUnlocked && (m_numberOfDash >= 1 || m_isInfiniteDashAllowed) && GameManager.instance.IsPlaying())
         {
             m_mainTrailRenderer.startColor = m_pinkTrailColor;
             m_mainTrailRenderer.endColor = m_pinkTrailColor;
@@ -409,7 +409,7 @@ public class PlayerManager : MonoBehaviour
     private void Move(float move)
     {
         //only control the player if grounded or airControl is turned on, you're not dashing, and you're not in the process of wall jumping
-        if ((m_isGrounded || m_isAirControlAllowed) && !m_isWallSliding && !m_isWallJumping &&!m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if ((m_isGrounded || m_isAirControlAllowed) && !m_isWallSliding && !m_isWallJumping &&!m_isDashing && GameManager.instance.IsPlaying())
         {
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2(move * 10f, m_Rigidbody2D.velocity.y);
@@ -423,7 +423,7 @@ public class PlayerManager : MonoBehaviour
         float value = ctx.ReadValue<float>();
         
         // Jump from the ground
-        if (ctx.performed && m_isGrounded && !m_isDashing && !m_isWallSliding && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (ctx.performed && m_isGrounded && !m_isDashing && !m_isWallSliding && GameManager.instance.IsPlaying())
         {
             m_isGrounded = false;
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_jumpForce);
@@ -435,7 +435,7 @@ public class PlayerManager : MonoBehaviour
 
         // Jump in mid-air
         else if (ctx.performed && m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) && !m_isGrounded && !m_isDashing && !m_isWallJumping && !m_isWallSliding
-            && GameManager.instance.GetState() == GameManager.GameState.playing)
+            && GameManager.instance.IsPlaying())
         {
             m_Rigidbody2D.velocity = new Vector2(m_Rigidbody2D.velocity.x, m_airJumpForce);
             m_numberOfAirJumps--;
@@ -446,7 +446,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         // Jump while sliding down a wall
-        else if (ctx.performed && m_isWallJumpUnlocked && m_canWallJump && m_isWallSliding && !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (ctx.performed && m_isWallJumpUnlocked && m_canWallJump && m_isWallSliding && !m_isGrounded && !m_isDashing && GameManager.instance.IsPlaying())
         {
             StartCoroutine(WallJump());
         }
@@ -454,7 +454,7 @@ public class PlayerManager : MonoBehaviour
         // Jump from a wall, but use a air-jump (before you unlock wall-jump)
         //else if (ctx.performed && m_canWallJump && m_isWallSliding &&
         //    m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) &&
-        //    !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        //    !m_isGrounded && !m_isDashing && GameManager.instance.IsPlaying())
         //{
         //    StartCoroutine(WallJump());
         //}
@@ -483,7 +483,7 @@ public class PlayerManager : MonoBehaviour
     public void TryToDash()
     {
         if (m_isDashUnlocked && (m_isInfiniteDashAllowed || m_numberOfDash > 0) && m_canDash
-            && GameManager.instance.GetState() == GameManager.GameState.playing)
+            && GameManager.instance.IsPlaying())
         {
             StartCoroutine(Dash());
             m_numberOfDash--;
@@ -603,7 +603,7 @@ public class PlayerManager : MonoBehaviour
                 m_numberOfDash = m_maxNumberOfDash;
 
                 if (!wasGrounded && m_isGrounded && m_Rigidbody2D.velocity.y <= 0 &&
-                    colliders[i].gameObject.GetComponent<BouncyObject>() == null && GameManager.instance.GetState() == GameManager.GameState.playing)
+                    colliders[i].gameObject.GetComponent<BouncyObject>() == null && GameManager.instance.IsPlaying())
                 {
                     m_isJumping = false;
                     m_groundedRegainedEvent.Invoke();

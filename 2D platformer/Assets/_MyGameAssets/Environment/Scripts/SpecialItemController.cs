@@ -35,7 +35,7 @@ public class SpecialItemController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.CompareTag("Player") && GameManager.instance.GetState() == GameManager.GameState.playing)
+        if (collider.CompareTag("Player") && GameManager.instance.IsPlaying())
         {
             StartCoroutine(ItemCollected());
         }

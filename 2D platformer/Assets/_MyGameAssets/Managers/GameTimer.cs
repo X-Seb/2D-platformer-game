@@ -65,7 +65,7 @@ public class GameTimer : MonoBehaviour
 
     private void Update()
     {
-        if (GameManager.instance.GetState() == GameManager.GameState.playing && !m_playerWon)
+        if (GameManager.instance.IsPlaying() && !m_playerWon)
         {
             m_timeElapsed += Time.deltaTime;
             PlayerPrefs.SetFloat("Current_Time_Elapsed", m_timeElapsed);

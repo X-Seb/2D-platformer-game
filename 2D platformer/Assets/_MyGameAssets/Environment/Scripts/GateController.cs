@@ -48,7 +48,7 @@ public class GateController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && GameManager.instance.GetState() == GameManager.GameState.playing && !m_isUnlocked)
+        if (collision.CompareTag("Player") && GameManager.instance.IsPlaying() && !m_isUnlocked)
         {
             TryToUnlock();
         }

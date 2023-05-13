@@ -26,7 +26,7 @@ public class CoinController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && GameManager.instance.GetState() == GameManager.GameState.playing && !m_isCollected)
+        if (collision.CompareTag("Player") && GameManager.instance.IsPlaying() && !m_isCollected)
         {
             m_isCollected = true;
             StartCoroutine(CoinCollected());
