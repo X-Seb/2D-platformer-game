@@ -20,5 +20,5 @@ MonoBehaviour:
   keyID: 0
   topText: You found an
   loreText: It seems to be calling you closer... You get the feeling that the right
-    thing to do is take it with you and protect it at all costs.
-  descriptionText: You feel safer with it close to you.
+    thing to do is to take it with you.
+  descriptionText: You feel safer with it next to you.

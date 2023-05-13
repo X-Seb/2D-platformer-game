@@ -19,5 +19,5 @@ MonoBehaviour:
   relicID: 1
   keyID: 0
   topText: 'You found a '
-  loreText: After inspecting it carefully, you gently place it in your pouch.
+  loreText: After inspecting it carefully, you gently place it in your bag.
   descriptionText: You hope it brings you good luck.

@@ -16,8 +16,8 @@ MonoBehaviour:
   itemType: 0
   collectedSFX: {fileID: 8300000, guid: 61e73f3e692c640eb9f9c7ee724ac862, type: 3}
   abilityName: 
-  relicID: 0
+  relicID: 2
   keyID: 0
   topText: You found a
   loreText: 'You bend down to inspect it. It bears strange markings. '
-  descriptionText: You wonder if this will come in handy later on...
+  descriptionText: Hopefully, you'll be able to decipher it later...

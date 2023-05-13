@@ -122,7 +122,15 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            instance = this;
+        }
     }
 
     private void Start()
@@ -302,7 +310,7 @@ public class PlayerManager : MonoBehaviour
         }
 
         // Decrease light % if you're not gaining any light + you're on easy mode
-        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 0 && GameManager.instance.GetState() == GameManager.GameState.playing)
+        else if (!m_isLightIncreasing && PlayerPrefs.GetInt("Difficulty") == 2 && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             m_lightPercentage -= Time.deltaTime * m_decreasingLightSpeedEasy;
             if (m_lightPercentage <= 0)
@@ -444,12 +452,12 @@ public class PlayerManager : MonoBehaviour
         }
 
         // Jump from a wall, but use a air-jump (before you unlock wall-jump)
-        else if (ctx.performed && m_canWallJump && m_isWallSliding &&
-            m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) &&
-            !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
-        {
-            StartCoroutine(WallJump());
-        }
+        //else if (ctx.performed && m_canWallJump && m_isWallSliding &&
+        //    m_isAirJumpUnlocked && (m_isInfiniteAirJumpsAllowed || m_numberOfAirJumps > 0) &&
+        //    !m_isGrounded && !m_isDashing && GameManager.instance.GetState() == GameManager.GameState.playing)
+        //{
+        //    StartCoroutine(WallJump());
+        //}
 
         else if (ctx.canceled && m_isJumping && m_Rigidbody2D.velocity.y > 0)
         {

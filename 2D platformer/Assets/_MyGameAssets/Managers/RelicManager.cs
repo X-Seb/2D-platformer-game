@@ -24,15 +24,30 @@ public class RelicManager : MonoBehaviour
     [SerializeField] private Image m_relic4Image;
     [SerializeField] private Image m_relic5Image;
     [SerializeField] private Image m_relic6Image;
+    [Header("Relic sprite renderers: ")]
+    [SerializeField] private SpriteRenderer m_relic1Sprite;
+    [SerializeField] private SpriteRenderer m_relic2Sprite;
+    [SerializeField] private SpriteRenderer m_relic3Sprite;
+    [SerializeField] private SpriteRenderer m_relic4Sprite;
+    [SerializeField] private SpriteRenderer m_relic5Sprite;
+    [SerializeField] private SpriteRenderer m_relic6Sprite;
 
     private void Awake()
     {
-        instance = this;
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            instance = this;
+        }
     }
 
     private void Start()
     {
-        UpdateRelicColors();
+        UpdateRelicInfo();
         s_showRelics = false; // This will become true instantly if the player is spawned in a checkpoint box
     }
 
@@ -52,74 +67,100 @@ public class RelicManager : MonoBehaviour
         }
     }
 
-    public void UpdateRelicColors()
+    public void UpdateRelicInfo()
     {
+        m_relicCount = 0;
         if (PlayerPrefs.HasKey("Relic_" + 1 + "_Collected"))
         {
             m_relic1Image.color = new Color32(255, 255, 255, 255);
+            m_relic1Sprite.color = new Color(1, 1, 1, 1);
+            m_relicCount++;
         }
         else
         {
             m_relic1Image.color = new Color32(0, 0, 0, 255);
+            m_relic1Sprite.color = new Color(0, 0, 0, 1);
         }
 
         if (PlayerPrefs.HasKey("Relic_" + 2 + "_Collected"))
         {
             m_relic2Image.color = new Color32(255, 255, 255, 255);
+            m_relic2Sprite.color = new Color(1, 1, 1, 1);
+            m_relicCount++;
         }
         else
         {
             m_relic2Image.color = new Color32(0, 0, 0, 255);
+            m_relic2Sprite.color = new Color(0, 0, 0, 1);
         }
 
         if (PlayerPrefs.HasKey("Relic_" + 3 + "_Collected"))
         {
             m_relic3Image.color = new Color32(255, 255, 255, 255);
+            m_relic3Sprite.color = new Color(1, 1, 1, 1);
+            m_relicCount++;
         }
         else
         {
             m_relic3Image.color = new Color32(0, 0, 0, 255);
+            m_relic3Sprite.color = new Color(0, 0, 0, 1);
         }
 
         if (PlayerPrefs.HasKey("Relic_" + 4 + "_Collected"))
         {
             m_relic4Image.color = new Color32(255, 255, 255, 255);
+            m_relic4Sprite.color = new Color(1, 1, 1, 1);
+            m_relicCount++;
         }
         else
         {
             m_relic4Image.color = new Color32(0, 0, 0, 255);
+            m_relic4Sprite.color = new Color(0, 0, 0, 1);
         }
 
         if (PlayerPrefs.HasKey("Relic_" + 5 + "_Collected"))
         {
             m_relic5Image.color = new Color32(255, 255, 255, 255);
+            m_relic5Sprite.color = new Color(1, 1, 1, 1);
+            m_relicCount++;
         }
         else
         {
             m_relic5Image.color = new Color32(0, 0, 0, 255);
+            m_relic5Sprite.color = new Color(0, 0, 0, 1);
         }
 
         if (PlayerPrefs.HasKey("Relic_" + 6 + "_Collected"))
         {
             m_relic6Image.color = new Color32(255, 255, 255, 255);
+            m_relic6Sprite.color = new Color(1, 1, 1, 1);
+            m_relicCount++;
         }
         else
         {
             m_relic6Image.color = new Color32(0, 0, 0, 255);
+            m_relic6Sprite.color = new Color(0, 0, 0, 1);
         }
+
+        PlayerPrefs.Save();
     }
 
-    public void IncreaseRelicCount()
+    public void ShowRelics(float time = 2.0f)
     {
-        m_relicCount++;
-        PlayerPrefs.SetInt("Relic_Count", m_relicCount);
-        StartCoroutine(ShowRelics());
+        StartCoroutine(ShowRelicsCo(time));
     }
 
-    private IEnumerator ShowRelics()
+    public void CollectedRelic()
+    {
+        UpdateRelicInfo();
+        PlayerPrefs.SetInt("Relic_Count", m_relicCount);
+        StartCoroutine(ShowRelicsCo());
+    }
+
+    private IEnumerator ShowRelicsCo(float time = 2.0f)
     {
         s_showRelics = true;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(time);
         s_showRelics = false;
     }
 }

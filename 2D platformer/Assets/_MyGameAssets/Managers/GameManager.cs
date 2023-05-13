@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.UI;
+using UnityEngine.Device;
 
 //This class controls the entire game flow
 public class GameManager : MonoBehaviour
@@ -12,6 +13,13 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     [SerializeField] private GameObject m_player;
     [SerializeField] private Rigidbody2D m_rb;
+    [SerializeField] private AudioSource m_audioSource;
+    [SerializeField] private ParticleSystem m_spawnPS;
+    [Header("Audio: ")]
+    [SerializeField] private AudioClip m_buttonSFX;
+    [SerializeField] private AudioClip m_spawnSFX;
+    [SerializeField] private AudioClip m_pauseSFX;
+    [Range(0.0f, 1.0f)][SerializeField] private float m_buttonSoundVolume;
     [Header("UI Screens: ")]
     [SerializeField] private GameObject m_startScreen;
     [SerializeField] private GameObject m_pauseScreen;
@@ -30,7 +38,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_itemNameText;
     [SerializeField] private TextMeshProUGUI m_itemLoreText;
     [SerializeField] private TextMeshProUGUI m_itemDescriptionText;
-    [SerializeField] private Button m_continueButton;
+    [SerializeField] private Button m_itemContinueButton;
+    [SerializeField] private Button m_victoryContinueButton;
+    [SerializeField] private CanvasGroup m_coinCG;
+    [SerializeField] private CanvasGroup m_timeCG;
+    [SerializeField] private TextMeshProUGUI m_coinCountText;
+    [SerializeField] private TextMeshProUGUI m_totalTimeText;
     [Header("End screen UI elements: ")]
     [SerializeField] private TextMeshProUGUI m_causeOfDeathText;
     [SerializeField] private TextMeshProUGUI m_smallerText;
@@ -75,7 +88,10 @@ public class GameManager : MonoBehaviour
         insideObject,
         fire
     }
+
     #endregion
+
+    #region Unity Functions
 
     private void Awake()
     {
@@ -84,7 +100,10 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        instance = this;
+        else
+        {
+            instance = this;
+        }
 
         if (PlayerPrefs.HasKey("Last_Checkpoint"))
         {
@@ -117,6 +136,10 @@ public class GameManager : MonoBehaviour
         StartCoroutine(JustLoadedTransition());
     }
 
+    #endregion
+
+    #region Getter and Setter methods
+
     public void SetState(GameState newState)
     {
         currentGameState = newState;
@@ -128,8 +151,17 @@ public class GameManager : MonoBehaviour
         return currentGameState;
     }
 
+    public bool IsPlaying()
+    {
+        return currentGameState == GameState.playing;
+    }
+
+    #endregion
+
     public void SwitchPause()
     {
+        m_audioSource.PlayOneShot(m_pauseSFX, m_buttonSoundVolume);
+
         if (currentGameState == GameState.paused)
         {
             ResumeGame();
@@ -156,9 +188,19 @@ public class GameManager : MonoBehaviour
         m_gameScreen.SetActive(true);
     }
 
-    public void ContinuePlaying()
+    #region Public button functions
+
+    public void ContinueFromItemScreen()
     {
-        StartCoroutine(ContinuePlayingTransition());
+        m_audioSource.PlayOneShot(m_buttonSFX, m_buttonSoundVolume);
+        RelicManager.instance.ShowRelics(3.0f);
+        StartCoroutine(ContinuePlayingTransition(m_itemContinueButton, m_itemScreen, m_itemScreenCG));
+    }
+
+    public void ContinueFromVictoryScreen()
+    {
+        m_audioSource.PlayOneShot(m_buttonSFX, m_buttonSoundVolume);
+        StartCoroutine(ContinuePlayingTransition(m_victoryContinueButton, m_victoryScreen, m_victoryScreenCG));
     }
 
     public void LoadScene(int sceneBuildIndex)
@@ -176,31 +218,20 @@ public class GameManager : MonoBehaviour
         StartCoroutine(EndGameTransition(causeOfDeath));
     }
 
+    public void WinGame()
+    {
+        PlayerPrefs.SetInt("PlayerWon", 1);
+        StartCoroutine(WinGameTransition());
+    }
+
     public void CollectItem(CollectibleItem collectibleItem)
     {
-        StartCoroutine(CollectItemCo(collectibleItem));
+        StartCoroutine(CollectItemTransition(collectibleItem));
     }
 
-    public IEnumerator CollectItemCo(CollectibleItem collectibleItem)
-    {
-        m_rb.velocity = new Vector3(0, 0, 0);
-        currentGameState = GameState.collectedItem;
-        m_itemTopText.text = collectibleItem.topText;
-        m_itemNameText.text = collectibleItem.itemName;
-        m_itemLoreText.text = collectibleItem.loreText;
-        m_itemDescriptionText.text = collectibleItem.descriptionText;
-        m_continueButton.interactable = false;
+    #endregion
 
-        // Wait before fading in the item description
-        yield return new WaitForSeconds(0.5f);
-        m_gameScreenCG.DOFade(0.0f, 0.8f);
-        yield return new WaitForSeconds(0.5f);
-        m_itemScreen.SetActive(true);
-        m_itemScreenCG.alpha = 0.0f;
-        m_itemScreenCG.DOFade(1.0f, 2.0f);
-        yield return new WaitForSeconds(1.8f);
-        m_continueButton.interactable = true;
-    }
+    #region Miscellaneous functions
 
     public void SetLastCheckpoint(GameObject newCheckpoint)
     {
@@ -236,6 +267,31 @@ public class GameManager : MonoBehaviour
         {
             m_teleportingObjects[i].DashTeleport();
         }
+    }
+
+    #endregion
+
+    #region UI transitions
+
+    public IEnumerator CollectItemTransition(CollectibleItem collectibleItem)
+    {
+        m_rb.velocity = new Vector3(0, 0, 0);
+        SetState(GameState.collectedItem);
+        m_itemTopText.text = collectibleItem.topText;
+        m_itemNameText.text = collectibleItem.itemName;
+        m_itemLoreText.text = collectibleItem.loreText;
+        m_itemDescriptionText.text = collectibleItem.descriptionText;
+        m_itemContinueButton.interactable = false;
+
+        // Wait before fading in the item description
+        yield return new WaitForSeconds(0.5f);
+        m_gameScreenCG.DOFade(0.0f, 1.0f);
+        yield return new WaitForSeconds(0.8f);
+        m_itemScreen.SetActive(true);
+        m_itemScreenCG.alpha = 0.0f;
+        m_itemScreenCG.DOFade(1.0f, 2.5f);
+        yield return new WaitForSeconds(2.5f);
+        m_itemContinueButton.interactable = true;
     }
 
     private IEnumerator JustLoadedTransition()
@@ -312,6 +368,29 @@ public class GameManager : MonoBehaviour
         StartCoroutine(StartingGameTransition(0.6f));
     }
 
+    private IEnumerator WinGameTransition()
+    {
+        m_rb.velocity = new Vector3(0, 0, 0);
+        m_victoryScreen.SetActive(true);
+        m_victoryScreenCG.alpha = 0.0f;
+        m_coinCG.alpha = 0.0f;
+        m_timeCG.alpha = 0.0f;
+        m_victoryContinueButton.enabled = false;
+        m_coinCountText.text = CoinManager.instance.GetCoinCount().ToString() + " / 35";
+        m_totalTimeText.text = GameTimer.instance.GetTimeElapsed(true).ToString() + " seconds";
+
+        SetState(GameState.win);
+        m_gameScreenCG.DOFade(0.0f, 1.0f);
+        yield return new WaitForSeconds(0.8f);
+        m_victoryScreenCG.DOFade(1.0f, 2.5f);
+        yield return new WaitForSeconds(3.0f);
+        m_coinCG.DOFade(1.0f, 0.8f);
+        yield return new WaitForSeconds(1.0f);
+        m_timeCG.DOFade(1.0f, 0.8f);
+        yield return new WaitForSeconds(1.0f);
+        m_victoryContinueButton.enabled = true;
+    }
+
     private IEnumerator StartingGameTransition(float seconds = 1.0f)
     {
         // Resets the player, waits for the time you inputed and then you can start playing
@@ -322,19 +401,22 @@ public class GameManager : MonoBehaviour
         m_gameScreenCG.alpha = 0.0f;
         m_gameScreenCG.DOFade(1.0f, seconds);
         yield return new WaitForSeconds(seconds);
+        m_spawnPS.Play();
+        m_audioSource.PlayOneShot(m_spawnSFX);
         SetState(GameState.playing);
     }
 
-    private IEnumerator ContinuePlayingTransition()
+    private IEnumerator ContinuePlayingTransition(Button continueButton, GameObject screen, CanvasGroup screenCG)
     {
-        m_continueButton.interactable = false;
-        m_itemScreenCG.DOFade(0.0f, 1.0f);
+        continueButton.interactable = false;
+        screenCG.DOFade(0.0f, 1.0f);
         yield return new WaitForSeconds(0.8f);
-        m_gameScreen.SetActive(true);
-        m_gameScreenCG.alpha = 0.0f;
+        screen.SetActive(true);
+        screenCG.alpha = 0.0f;
         m_gameScreenCG.DOFade(1.0f, 0.8f);
-        yield return new WaitForSeconds(1.0f);
-        m_itemScreen.SetActive(false);
+        yield return new WaitForSeconds(0.4f);
+        screen.SetActive(false);
+        yield return new WaitForSeconds(0.6f);
         SetState(GameState.playing);
     }
 
@@ -350,6 +432,8 @@ public class GameManager : MonoBehaviour
         m_victoryScreen.SetActive(false);
         m_itemScreen.SetActive(false);
     }
+
+    #endregion
 
     #region Editor stuff
 

@@ -15,17 +15,19 @@ public class SpecialItemController : MonoBehaviour
     [SerializeField] private ParticleSystem m_pfx;
     [SerializeField] private BoxCollider2D m_collider;
 
+    private const float WAIT_TIME = 5.0f;
+
     private void Awake()
     {
-        if (m_item.itemType == CollectibleItem.itemCategory.relic && PlayerPrefs.HasKey("Relic_" + m_item.relicID + "_Collected"))
+        if (m_item?.itemType == CollectibleItem.itemCategory.relic && PlayerPrefs.HasKey("Relic_" + m_item.relicID + "_Collected"))
         {
             Destroy(gameObject);
         }
-        else if (m_item.itemType == CollectibleItem.itemCategory.potion && PlayerPrefs.HasKey(m_item.abilityName + "_Unlocked"))
+        else if (m_item?.itemType == CollectibleItem.itemCategory.potion && PlayerPrefs.HasKey(m_item.abilityName + "_Unlocked"))
         {
             Destroy(gameObject);
         }
-        else if (m_item.itemType == CollectibleItem.itemCategory.key && PlayerPrefs.HasKey("Key_" + m_item.keyID + "_Collected"))
+        else if (m_item?.itemType == CollectibleItem.itemCategory.key && PlayerPrefs.HasKey("Key_" + m_item.keyID + "_Collected"))
         {
             Destroy(gameObject);
         }
@@ -33,7 +35,7 @@ public class SpecialItemController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.CompareTag("Player"))
+        if (collider.CompareTag("Player") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             StartCoroutine(ItemCollected());
         }
@@ -42,40 +44,34 @@ public class SpecialItemController : MonoBehaviour
     private IEnumerator ItemCollected()
     {
         // Update essential game info based on what type of object it is:
-        if (m_item.itemType == CollectibleItem.itemCategory.relic)
+        switch (m_item?.itemType)
         {
-            RelicManager.instance.IncreaseRelicCount();
-            PlayerPrefs.SetInt("Relic_" + m_item.relicID + "_Collected", 1);
-            RelicManager.instance.UpdateRelicColors();
-            Debug.Log("Relic " + m_item.relicID + " collected!");
-        }
-        else if (m_item.itemType == CollectibleItem.itemCategory.potion)
-        {
-            PlayerPrefs.SetInt(m_item.abilityName + "_Unlocked", 1);
-            PlayerManager.instance.UpdatePlayerPowers();
-            Debug.Log(m_item.abilityName + "_Unlocked!");
-        }
-        else if (m_item.itemType == CollectibleItem.itemCategory.key)
-        {
-            PlayerPrefs.SetInt("Key_" + m_item.keyID + "_Collected", 1);
-            Debug.Log("Key " + m_item.keyID + "Collected!");
+            case CollectibleItem.itemCategory.relic:
+                PlayerPrefs.SetInt("Relic_" + m_item.relicID + "_Collected", 1);
+                RelicManager.instance.CollectedRelic();
+                Debug.Log("Relic " + m_item.relicID + " Collected!");
+
+                break;
+            case CollectibleItem.itemCategory.potion:
+                PlayerPrefs.SetInt(m_item.abilityName + "_Unlocked", 1);
+                PlayerManager.instance.UpdatePlayerPowers();
+                Debug.Log(m_item.abilityName + "_Unlocked!");
+                break;
+            case CollectibleItem.itemCategory.key:
+                PlayerPrefs.SetInt("Key_" + m_item.keyID + "_Collected", 1);
+                Debug.Log("Key " + m_item.keyID + "Collected!");
+                break;
         }
 
         PlayerPrefs.Save();
         m_collider.enabled = false;
-
-        // Go to the collected item screen: 
         GameManager.instance.CollectItem(m_item);
-
-        // Do the effects: 
         m_audioSource.PlayOneShot(m_item.collectedSFX, m_volume);
         m_audioSource.DOFade(0.0f, 3.0f);
         m_light.intensity = 0.0f;
         m_spriteRenderer.color = new Color(255, 255, 255, 0);
         m_pfx.Play();
-
-        // Wait before destroying the item:
-        yield return new WaitForSeconds(5.0f);
+        yield return new WaitForSeconds(WAIT_TIME);
         m_audioSource.DOKill();
         Destroy(gameObject);
     }

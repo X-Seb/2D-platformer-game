@@ -6,7 +6,7 @@ public class CheckpointController : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && GameManager.instance.GetState() == GameManager.GameState.playing)
         {
             RelicManager.s_showRelics = true;
             GameManager.instance.SetLastCheckpoint(gameObject);

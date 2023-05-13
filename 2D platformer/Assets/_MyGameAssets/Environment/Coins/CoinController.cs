@@ -4,36 +4,48 @@ using UnityEngine;
 
 public class CoinController : MonoBehaviour
 {
+    [Header("Each coinID must be unique! ")]
+    [SerializeField] private int coinID;
     [Header("Setup: ")]
-    [SerializeField] private CoinManager m_coinManager;
-    [Tooltip("Make sure each coinID is unique!")]
-    [SerializeField] private int m_coinID;
-    [Header("Audio: ")]
-    [SerializeField] private AudioSource m_coinAudioSource;
+    [SerializeField] private Collider2D m_collider;
+    [SerializeField] private ParticleSystem m_pfx;
+    [SerializeField] private GameObject m_spriteRenderer;
+    private bool m_isCollected;
 
     private void Awake()
     {
-        if (PlayerPrefs.HasKey("Coin_" + m_coinID + "_Collected"))
+        if (PlayerPrefs.HasKey("Coin_" + coinID + "_Collected"))
         {
             Destroy(gameObject);
+        }
+        else
+        {
+            m_isCollected = false;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && GameManager.instance.GetState() == GameManager.GameState.playing && !m_isCollected)
         {
-            CoinCollected();
+            m_isCollected = true;
+            StartCoroutine(CoinCollected());
         }
     }
 
-    private void CoinCollected()
+    private IEnumerator CoinCollected()
     {
-        m_coinManager.IncreaseCoinCount();
-        Debug.Log("Coin " + m_coinID + " collected!");
-        PlayerPrefs.SetInt("Coin_" + m_coinID + "_Collected", 1);
+        PlayerPrefs.SetInt("Coin_" + coinID + "_Collected", 1);
         PlayerPrefs.Save();
-        m_coinAudioSource.Play();
+        CoinManager.instance.AdjustCoinCount(true);
+        Debug.Log("Coin " + coinID + " collected!");
+
+        // Effects: 
+        m_pfx.Play();
+        m_collider.enabled = false;
+        m_spriteRenderer.SetActive(false);
+
+        yield return new WaitForSeconds(5.0f);
         Destroy(gameObject);
     }
 }
