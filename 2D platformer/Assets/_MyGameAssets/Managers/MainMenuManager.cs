@@ -34,6 +34,8 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Image m_dashItemImage;
     [SerializeField] private Image m_airJumpItemImage;
     [SerializeField] private Image m_wallJumpItemImage;
+    [Header("Other UI elements: ")]
+    [SerializeField] private Toggle m_speedrunningToggle;
     [Header("Audio: ")]
     [SerializeField] private AudioMixer m_audioMixer;
     [SerializeField] private Slider m_volumeSlider;
@@ -86,12 +88,18 @@ public class MainMenuManager : MonoBehaviour
         else
         {
             PlayerPrefs.SetFloat("Volume", 0.0f);
+            m_volumeSlider.value = 0.0f;
         }
 
         if (PlayerPrefs.HasKey("Quality"))
         {
             QualitySettings.SetQualityLevel(PlayerPrefs.GetInt("Quality"));
             m_qualityDropdown.value = PlayerPrefs.GetInt("Quality");
+        }
+        else
+        {
+            QualitySettings.SetQualityLevel(0);
+            m_qualityDropdown.value = 0;
         }
 
         if (PlayerPrefs.HasKey("Difficulty"))
@@ -101,11 +109,21 @@ public class MainMenuManager : MonoBehaviour
         else
         {
             PlayerPrefs.SetInt("Difficulty", 1);
+            m_difficultyDropdown.value = 1;
         }
 
         if (!PlayerPrefs.HasKey("Speedrunning"))
         {
             SetSpeedrunningMode(false);
+            m_speedrunningToggle.isOn = false;
+        }
+        else if (PlayerPrefs.GetInt("Speedrunning") == 1)
+        {
+            m_speedrunningToggle.isOn = true;
+        }
+        else
+        {
+            m_speedrunningToggle.isOn = false;
         }
     }
 
