@@ -257,7 +257,10 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < m_teleportingObjects.Length; i++)
         {
-            m_teleportingObjects[i].JumpTeleport();
+            if (m_teleportingObjects[i] != null)
+            {
+                m_teleportingObjects[i].JumpTeleport();
+            }
         }
     }
     
@@ -265,7 +268,10 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < m_teleportingObjects.Length; i++)
         {
-            m_teleportingObjects[i].DashTeleport();
+            if (m_teleportingObjects[i] != null)
+            {
+                m_teleportingObjects[i].DashTeleport();
+            }
         }
     }
 

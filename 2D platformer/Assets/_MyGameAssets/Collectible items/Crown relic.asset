@@ -19,6 +19,6 @@ MonoBehaviour:
   relicID: 6
   keyID: 0
   topText: You found an
-  loreText: Despite its age, it still shines. It's probably worth something... Right?
-    You pack it along with your other stuff.
+  loreText: Despite its age, it still shines. You wonder who it could have belonged
+    to before packing it along with your other stuff.
   descriptionText: Your bag is starting to get heavy...

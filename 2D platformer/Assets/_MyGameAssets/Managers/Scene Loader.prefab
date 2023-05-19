@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d2da1e0388894eb48a8d40d3cc3c345, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_loadAsync: 0
+  m_loadAsync: 1
   m_loadingCanva: {fileID: 369066003224516237}
   m_loadingScreen: {fileID: 369066004930451996}
   m_loadingScreenCG: {fileID: 680416478028762459}
@@ -53,7 +53,6 @@ MonoBehaviour:
   m_lastCheckpoint: 0
   m_mainMenuManager: {fileID: 0}
   m_gameManager: {fileID: 0}
-  m_player: {fileID: 0}
   m_funnyTextOptions:
   - This is taking too long...
   - haha yes
