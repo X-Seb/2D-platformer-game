@@ -30948,7 +30948,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "- Objects: Pixel Frog, Brackeys, BayatGames, Cainos, \nPolyMeshWorld\n-
-    World: Ansimuz, BlackSpire, SimpleArt, Digial Moons\n- User Interface: Bonk!,
+    World: Ansimuz, BlackSpire, SimpleArt, Digital Moons\n- User Interface: Bonk!,
     Homeless"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 75afa24bf4bea4d4d9a0a0255ce5878c, type: 2}
