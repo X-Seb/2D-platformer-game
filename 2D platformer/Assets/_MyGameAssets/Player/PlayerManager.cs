@@ -58,14 +58,14 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private float m_wallJumpingDuration = 0.3f;
     [SerializeField] private Vector2 m_wallJumpingPower = new Vector2(8.0f, 16.0f);
     [Header("Reference information: ")]
-    [SerializeField] private bool m_isGrounded;  // Whether or not the player is grounded.
-    [SerializeField] private const float k_GroundedRadius = 0.4f; // Radius of the overlap circle to determine if grounded
+    [SerializeField] private bool m_isGrounded;
+    [SerializeField] private const float k_GroundedRadius = 0.5f; // Radius of the overlap circle to determine if grounded
     [SerializeField] private bool m_isOnWall;
     [SerializeField] private bool m_isFacingRight = true;
     [SerializeField] private bool m_isJumping;
-    [SerializeField] private int m_numberOfAirJumps = 0;
-    [SerializeField] private int m_numberOfDash = 0;
-    [SerializeField] private float m_axisX = 0f; // Either -1, 0, or 1
+    [SerializeField] private int m_numberOfAirJumps;
+    [SerializeField] private int m_numberOfDash;
+    [SerializeField] private float m_axisX; // Either -1, 0, or 1
     [Header("Audio: ")]
     [SerializeField] private AudioSource m_playerAudioSource;
     [SerializeField] private AudioClip m_deathAudioClip;
