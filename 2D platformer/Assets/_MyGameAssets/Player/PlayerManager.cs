@@ -174,6 +174,12 @@ public class PlayerManager : MonoBehaviour
         {
             TryToFlip();
         }
+
+        if (m_isWallSlideUnlocked && m_isOnWall && !m_isGrounded && !m_isDashing && m_axisX != 0 && m_Rigidbody2D.velocity.y < 0.01 && GameManager.instance.IsPlaying())
+        {
+            Debug.Log("Wall sliding failsafe! ");
+            m_Rigidbody2D.velocity = new Vector2(0, -m_wallSlidingSpeed);
+        }
     }
 
     #region collisions
