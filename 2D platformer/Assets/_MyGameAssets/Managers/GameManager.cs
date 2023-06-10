@@ -5,6 +5,7 @@ using TMPro;
 using DG.Tweening;
 using UnityEngine.UI;
 using UnityEngine.Device;
+using Application = UnityEngine.Device.Application;
 
 //This class controls the entire game flow
 public class GameManager : MonoBehaviour
@@ -87,6 +88,14 @@ public class GameManager : MonoBehaviour
         enemy,
         insideObject,
         fire
+    }
+
+    public enum SocialPlatform
+    {
+        youtube,
+        twitter,
+        myWebsite,
+        itch
     }
 
     #endregion
@@ -272,6 +281,28 @@ public class GameManager : MonoBehaviour
             {
                 m_teleportingObjects[i].DashTeleport();
             }
+        }
+    }
+
+    public void OpenLink(SocialPlatform platform)
+    {
+        switch (platform)
+        {
+            case SocialPlatform.youtube:
+                Application.OpenURL("https://www.youtube.com/@RandomGameDev");
+                break;
+            case SocialPlatform.twitter:
+                Application.OpenURL("https://twitter.com/RandomGameDev");
+                break;
+            case SocialPlatform.itch:
+                Application.OpenURL("https://randomgamedevzone.itch.io");
+                break;
+            case SocialPlatform.myWebsite:
+                Debug.Log("I don't have a website yet.");
+                break;
+            default:
+                Debug.LogError("Unsupported social platform.");
+                break;
         }
     }
 

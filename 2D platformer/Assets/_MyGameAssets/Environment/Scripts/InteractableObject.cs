@@ -11,19 +11,21 @@ public class InteractableObject : MonoBehaviour
     [SerializeField] private UnityEvent m_disableEvent;
     [Header("Essential info: ")]
     [SerializeField] Type m_type;
+    [Header("Setup: ")]
+    [SerializeField] private BoxCollider2D m_collider;
+    [SerializeField] private bool m_playEffects;
     [Header("For timer only: ")]
     [SerializeField] private float m_waitTime;
     [Header("For reference only: ")]
     [SerializeField] private bool m_isActivated;
     [SerializeField] private bool m_justActivated;
     [SerializeField] private bool m_isWaiting;
-    [Header("Setup: ")]
+    [Header("Effects: ")]
     [SerializeField] private Color m_onColor;
     [SerializeField] private Color m_offColor;
     [SerializeField] private SpriteRenderer m_spriteRenderer;
     [SerializeField] private Sprite m_onSprite;
     [SerializeField] private Sprite m_offSprite;
-    [SerializeField] private BoxCollider2D m_collider;
     [SerializeField] private Light2D m_light;
     [SerializeField] private AudioSource m_audioSource;
     [SerializeField] private float m_volume;
@@ -118,7 +120,7 @@ public class InteractableObject : MonoBehaviour
 
         m_disableEvent.Invoke();
         m_isActivated = false;
-        PlayerPrefs.SetInt(gameObject.name + "_Activated", 1);
+        PlayerPrefs.SetInt(gameObject.name + "_Activated", 0);
     }
 
     private IEnumerator StartDelay()
