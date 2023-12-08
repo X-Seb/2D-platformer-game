@@ -134,6 +134,7 @@ public class SceneLoader : MonoBehaviour
         {
             if (scene.progress >= 0.9f)
             {
+                DOTween.KillAll();
                 scene.allowSceneActivation = true;
             }
             yield return null;
@@ -149,8 +150,7 @@ public class SceneLoader : MonoBehaviour
     }
 
     private void RandomizeFunnyText()
-    {
-        string text = m_funnyTextOptions[Random.Range(0, m_funnyTextOptions.Length - 1)];
+    {        string text = m_funnyTextOptions[Random.Range(0, m_funnyTextOptions.Length - 1)];
         m_funnyText.text = text;
     }
 }

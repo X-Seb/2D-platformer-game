@@ -39,17 +39,14 @@ public class Emitter : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        TryToActivate();
+    }
+
     private void Start()
     {
-        if (PlayerPrefs.HasKey(gameObject.name + "_Activated") && PlayerPrefs.GetInt(gameObject.name + "_Activated") == 1)
-        {
-            m_isActivated = true;
-            m_activateEvent.Invoke();
-        }
-        else
-        {
-            m_isActivated = false;
-        }
+        TryToActivate();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -94,6 +91,19 @@ public class Emitter : MonoBehaviour
         m_disableEvent.Invoke();
         m_isActivated = false;
         PlayerPrefs.SetInt(gameObject.name + "_Activated", 0);
+    }
+
+    private void TryToActivate()
+    {
+        if (PlayerPrefs.HasKey(gameObject.name + "_Activated") && PlayerPrefs.GetInt(gameObject.name + "_Activated") == 1)
+        {
+            m_isActivated = true;
+            m_activateEvent.Invoke();
+        }
+        else
+        {
+            m_isActivated = false;
+        }
     }
 
     private IEnumerator StartDelay()
